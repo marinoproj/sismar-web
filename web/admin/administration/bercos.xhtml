@@ -1,0 +1,299 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>                
+
+        <title>Sismar - Berços</title>       
+
+        <!-- Importações padrão -->
+        <ui:include src="/admin/components/headdefault.xhtml" />   
+
+    </h:head>
+
+    <h:body>
+
+        <div class="container-fluid" style="padding: 0px">           
+
+            <!-- Importar menu -->
+            <ui:include src="/admin/components/menu.xhtml" />
+
+            <!-- Importar header -->
+            <ui:include src="/admin/components/header.xhtml" />   
+
+            <!-- Corpo do container: conteúdo -->
+            <div id="content" class="col-xs-12">
+
+                <!-- Título do conteúdo -->
+                <div id="content-header" class="col-xs-12">
+                    <span id="content-title">Berços</span> 
+                    <span id="content-subtitle">Cadastrados</span>
+                </div>
+
+                <!-- Área para exibir a lista de berços cadastrados -->
+                <div>
+
+                    <div class="col-xs-12 col-md-12 col-md-offset-0 col-xs-offset-0"
+                         style="padding: 0px !important;">
+
+                        <div class="col-sm-12" style="margin-bottom: 25px !important; 
+                             text-align: center;">                            
+                            <a style="float: initial !important" href="addberco.xhtml" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+                                <span class="ui-button-text ui-c">Cadastrar berço</span>
+                            </a>
+                        </div>
+
+                        <h:form id="form-list-bercos">                                                                                                        
+
+                            <p:dataTable value="#{BercoBean.listBercos}" 
+                                         var="berco"
+                                         rows="10"
+                                         paginator="true"                                         
+                                         rowIndexVar="index"
+                                         emptyMessage="Nenhum resultado encontrado"
+                                         paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         id="table-list-bercos">
+
+                                <p:column headerText="Nome">
+                                    #{berco.nome}
+                                </p:column>
+
+                                <p:column headerText="Cabeços">
+                                    #{BercoBean.getCabecos(berco)}
+                                </p:column>
+
+                                <p:column rendered="#{!BercoBean.deviceMobile}"
+                                          headerText="Tipo de Cais">
+                                    #{BercoBean.getTipoCais(berco)}
+                                </p:column>
+
+                                <p:column headerText="Empresa">
+                                    #{BercoBean.getEmpresa(berco)}
+                                </p:column>
+
+                                <p:column rendered="#{!BercoBean.deviceMobile}"
+                                          headerText="Mercadoria">
+                                    #{BercoBean.getMercadoria(berco)}
+                                </p:column>
+
+                                <p:column>
+
+                                    <div style="text-align: right;">
+                                        <p:commandLink update=":form-list-bercos:open-berco-details"
+                                                       oncomplete="PF('open-berco-details').show()"
+                                                       style="margin-right: 8px;">
+                                            <i class="glyphicon glyphicon-search"></i>
+                                            <f:setPropertyActionListener value="#{berco}" 
+                                                                         target="#{BercoBean.bercoSelectedDetails}">
+                                            </f:setPropertyActionListener>
+                                        </p:commandLink>
+
+                                        <a href="editberco.xhtml?berco=#{berco.codBerco}"
+                                           style="margin-right: 8px;">
+                                            <i class="glyphicon glyphicon-pencil"></i>
+                                        </a>                                                                              
+
+                                        <p:commandLink actionListener="#{BercoBean.selectBercoDelete(berco)}" 
+                                                       onclick="PF('confirmationDialogDelete').show()"
+                                                       style="color: red">
+                                            <i class="glyphicon glyphicon-trash"></i>
+                                        </p:commandLink> 
+                                    </div>
+
+                                </p:column>
+
+                            </p:dataTable>
+
+                            <p:dialog widgetVar="open-berco-details" 
+                                      position="center center"
+                                      modal="true"
+                                      draggable="true"
+                                      resizable="false"        
+                                      closeOnEscape="true"
+                                      id="open-berco-details"
+                                      class="open-berco-details"
+                                      appendTo="@(body)">                
+
+                                <f:facet name="header">
+                                    #{BercoBean.bercoSelectedDetails.nome}
+                                </f:facet>
+
+                                <div class="col-xs-12 col-md-12" id="open-berco-details-content">
+
+                                    <div class="row">
+                                        <div class="col-xs-12 col-md-5">
+                                            IMAGEM
+                                        </div>
+                                        <div class="col-xs-12 col-md-7">                                            
+                                            <h:graphicImage name="#{BercoBean.getImageBerco(BercoBean.bercoSelectedDetails)}"
+                                                            width="200px" 
+                                                            height="100px"/>                                            
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-md-5">
+                                            NOME
+                                        </div>
+                                        <div class="col-xs-12 col-md-7">
+                                            #{BercoBean.bercoSelectedDetails.nome}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-md-5">
+                                            CABEÇOS
+                                        </div>
+                                        <div class="col-xs-12 col-md-7">
+                                            #{BercoBean.getCabecos(BercoBean.bercoSelectedDetails)}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-md-5">
+                                            COMPRIMENTO
+                                        </div>
+                                        <div class="col-xs-12 col-md-7">
+                                            #{BercoBean.getComprimento(BercoBean.bercoSelectedDetails)}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-md-5">
+                                            TIPO DE CAIS
+                                        </div>
+                                        <div class="col-xs-12 col-md-7">
+                                            #{BercoBean.getTipoCais(BercoBean.bercoSelectedDetails)}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-md-5">
+                                            PROFUNDIDADE
+                                        </div>
+                                        <div class="col-xs-12 col-md-7">
+                                            #{BercoBean.getProfundidade(BercoBean.bercoSelectedDetails)}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-md-5">
+                                            CALADO - BAIXA MARÉ
+                                        </div>
+                                        <div class="col-xs-12 col-md-7">
+                                            #{BercoBean.getCaladoBaixaMare(BercoBean.bercoSelectedDetails)}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-md-5">
+                                            CALADO - PREA MARÉ
+                                        </div>
+                                        <div class="col-xs-12 col-md-7">
+                                            #{BercoBean.getCaladoPreaMare(BercoBean.bercoSelectedDetails)}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-md-5">
+                                            BERÇO ARREDONDADO
+                                        </div>
+                                        <div class="col-xs-12 col-md-7">
+                                            #{BercoBean.getBercoArredondado(BercoBean.bercoSelectedDetails)}
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-xs-12 col-md-5">
+                                            EMPRESA
+                                        </div>
+                                        <div class="col-xs-12 col-md-7">
+                                            #{BercoBean.getEmpresa(BercoBean.bercoSelectedDetails)}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-md-5">
+                                            MERCADORIA
+                                        </div>
+                                        <div class="col-xs-12 col-md-7">
+                                            #{BercoBean.getMercadoria(BercoBean.bercoSelectedDetails)}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-md-5">
+                                            ÁREA
+                                        </div>
+                                        <div class="col-xs-12 col-md-7">
+                                            #{BercoBean.getArea(BercoBean.bercoSelectedDetails)}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-md-5">
+                                            POIN
+                                        </div>
+                                        <div class="col-xs-12 col-md-7">
+                                            #{BercoBean.getPoin(BercoBean.bercoSelectedDetails)}
+                                        </div>
+                                    </div>                                     
+                                    <div class="row">
+                                        <div class="col-xs-12 col-md-5">
+                                            LATITUDE
+                                        </div>
+                                        <div class="col-xs-12 col-md-7">
+                                            #{BercoBean.getLatitude(BercoBean.bercoSelectedDetails)}
+                                        </div>
+                                    </div> 
+                                    <div class="row">
+                                        <div class="col-xs-12 col-md-5">
+                                            LONGITUDE
+                                        </div>
+                                        <div class="col-xs-12 col-md-7">
+                                            #{BercoBean.getLongitude(BercoBean.bercoSelectedDetails)}
+                                        </div>
+                                    </div> 
+
+                                </div>
+
+                            </p:dialog>
+
+                        </h:form>
+
+                    </div>
+
+                </div> <!-- Fechamento da área que exibe a lista de berços -->
+
+            </div> <!-- Fechamento do conteúdo -->  
+
+        </div> <!-- Fechamento do container -->          
+
+        <p:confirmDialog widgetVar="confirmationDialogDelete" 
+                         severity="alert" 
+                         message="Deseja realmente excluir o cadastro?" 
+                         header="Excluir cadastro" 
+                         appendTo="@(body)"
+                         id="confirmationDialog">  
+            <h:form>                
+                <p:commandButton value="Sim" 
+                                 actionListener="#{BercoBean.deleteBerco}"
+                                 onclick="PF('confirmationDialogDelete').hide();PF('statusdialog').show()"
+                                 onsuccess="PF('statusdialog').hide()"
+                                 onerror="PF('statusdialog').hide()"                                                 
+                                 update=":form-list-bercos:table-list-bercos"/>
+                <p:commandButton value="Não" 
+                                 onclick="PF('confirmationDialogDelete').hide()" 
+                                 type="button"/>
+            </h:form>
+        </p:confirmDialog>        
+
+        <!-- Importações scripts -->
+        <h:outputScript name="js/menu.js" target="body"/>
+
+        <!-- Importações templates -->        
+        <ui:include src="/admin/components/footer.xhtml" />           
+
+        <script>
+            $(function () {
+                $(".menu-administration").addClass("active");
+                $(".menu-administration-bercos").addClass("active-link");
+            });
+        </script>
+
+    </h:body>
+
+</html>

@@ -1,0 +1,402 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <h:head>       
+
+        <title>Sismar - Atracação em tempo real</title>
+
+        <ui:include src="/admin/components/headdefault.xhtml" /> 
+
+        <style>
+
+            .data-atualizacao {
+                font-size: 12px;
+                font-weight: 100;
+                color: #ababab;
+            }
+
+            .status-sem-embarcacao{
+                background: #828282 !important;
+            }
+
+            .status-offline{
+                background: #f74646 !important;
+            }
+
+            .status-atracando{
+                background: #f39c12 !important;
+            }
+
+            .status-atracado{ 
+                background: #009551 !important;
+            }
+
+            .status-partindo{               
+                background: #f39c12 !important;
+            }
+
+            .disabled {
+                background: #eee;
+            }
+
+            .ui-selectcheckboxmenu-header {
+                padding: 0px !important;
+                margin: 0px !important;
+            }
+
+            .ui-selectcheckboxmenu-item label {
+                font-weight: normal;
+            }
+
+            .ui-datatable .ui-datatable-header {
+                text-align: right !important;
+            }
+
+            .ui-button-text-only .ui-button-text {
+                padding: 0.3em 0.4em;
+            }
+
+            .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-header .ui-chkbox {
+                visibility: hidden;
+            }
+
+            .ui-filter-column .ui-column-customfilter .custom-filter {
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .year-spinner input {
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .ui-selectcheckboxmenu-items-wrapper, .ui-selectcheckboxmenu-header, .ui-selectonemenu-items{
+                background: #ffffff !important;
+                border: none !important;
+            }
+
+            .ui-selectmanymenu{
+                width: 100%;
+            }
+
+            .ui-selectmanymenu .ui-selectlistbox-filter {
+                display: block !important;
+                width: 100% !important; 
+                height: 34px !important;
+                padding: 6px 12px !important;
+                font-size: 14px !important;
+                line-height: 1.42857143 !important;
+                color: #555 !important;
+                background-color: #fff !important;
+                background-image: none !important;
+                border: 1px solid #ccc !important;
+                border-radius: 4px !important;
+                box-shadow: inset 0 1px 1px rgba(0,0,0,.075) !important;    
+                transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s !important;
+
+            }
+
+            .ui-selectmanymenu .ui-selectlistbox-filter:focus{
+                border-color: #66afe9 !important;
+                outline: 0 !important;    
+                box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6) !important;
+            }
+
+            .ui-selectmanymenu .ui-selectlistbox-item > td:first-child {
+                width: 30px;
+                padding-left: 10px;
+            }
+
+            .ui-selectmanymenu .ui-state-highlight {
+                background: #dcdcdc !important;
+                color: black !important;
+                text-shadow: none !important;
+            }
+
+            .ui-selectmanymenu .ui-selectlistbox-listcontainer{
+                height: 300px !important;
+            }
+
+            .button-variable-monitor{
+                height: 25px !important;
+                font-size: 12px !important;
+                margin-left: 10px !important;
+                margin-top: 20px !important;
+            }
+
+            .button-rules{
+                padding: 0px;
+                margin: 0px;
+                height: 30px;
+                margin-top: 3px;   
+                margin-left: 5px !important;
+            }
+
+            .button-rules button{
+                padding: 0px;
+                margin: 0px;
+                height: 30px;
+                margin-top: 3px;   
+            }
+
+            .ui-colorpicker button {
+                padding: 0px;
+                margin: 0px;
+            }
+            .label-rule{
+                padding: 5px;
+            }
+
+            .body-hide{
+                display: none;
+            }
+
+            .card-variable-monitor-title{
+                margin-top: 10px;
+                background: #efefef;
+                padding: 10px;
+                font-weight: bold;
+                color: #8a8a8a;
+                border-left: 1px solid #d4d4d4;
+                border-top: 1px solid #d4d4d4;
+                border-right: 1px solid #d4d4d4;
+                display: flex;
+            }
+
+            .card-variable-monitor-body{
+                border-left: 1px solid #d4d4d4;
+                border-bottom: 1px solid #d4d4d4;
+                border-right: 1px solid #d4d4d4;
+                padding-top: 15px;
+                padding-bottom: 15px;
+            }
+
+            .ui-selectoneradio tr {
+                padding-left: 10px;
+            }
+
+            .tags_message{
+                text-align: center;
+                padding-top: 5px;
+            }
+
+            .tag_message{
+                background: #e2e2e2;
+                border-radius: 10px;
+                padding: 3px 5px;
+                font-size: 11px;
+            }
+
+            .pe-inputNumber{
+                display: block !important;
+                width: 100px !important; 
+                height: 34px !important;
+                padding: 6px 12px !important;
+                font-size: 14px !important;
+                line-height: 1.42857143 !important;
+                color: #555 !important;
+                background-color: #fff !important;
+                background-image: none !important;
+                border: 1px solid #ccc !important;
+                border-radius: 4px !important;
+                box-shadow: inset 0 1px 1px rgba(0,0,0,.075) !important;    
+                transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s !important;
+            }
+            .pe-inputNumber:focus{
+                border-color: #66afe9 !important;
+                outline: 0 !important;    
+                box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6) !important;
+            }
+
+            .ui-selectoneradio label {
+                font-weight: normal !important;
+            }
+
+            .ui-selectoneradio tbody {
+                display: flex !important;
+            }
+
+            .ui-autocomplete-panel{
+                background: white !important;
+            }
+
+            .ui-autocomplete-itemtip {
+                width: 250px !important;
+            }
+
+            .ui-autocomplete {
+                width: 100% !important;
+            }
+
+            .ui-autocomplete-input{
+                display: block !important;
+                width: 100% !important; 
+                height: 34px !important;
+                padding: 6px 12px !important;
+                font-size: 14px !important;
+                line-height: 1.42857143 !important;
+                color: #555 !important;
+                background-color: #fff !important;
+                background-image: none !important;
+                border: 1px solid #ccc !important;
+                border-radius: 4px !important;
+                box-shadow: inset 0 1px 1px rgba(0,0,0,.075) !important;    
+                transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s !important;
+            }
+            .ui-autocomplete-input:focus{
+                border-color: #66afe9 !important;
+                outline: 0 !important;    
+                box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6) !important;
+            }
+
+            .form-horizontal .form-group {
+                margin-right: 0px !important;
+                margin-left: 0px !important;
+                padding: 0px !important;
+            }
+
+        </style>
+
+    </h:head>
+
+    <h:body>
+
+        <div class="container-fluid" style="padding: 0px">           
+
+            <ui:include src="/admin/components/menu.xhtml" />
+            <ui:include src="/admin/components/header.xhtml" />   
+
+            <div id="content" class="col-xs-12">
+
+                <div id="content-header" class="col-xs-12">
+                    <span id="content-title">Atracação</span>   
+                </div>
+
+                <div class="col-xs-12 content-card">
+
+                    <div class="row" style="text-align: center" id="tb-mooring">
+
+                        <div class="col-xs-12 col-md-6 col-md-offset-3 col-xs-offset-0">
+
+                            <!-- Título da área -->
+                            <div class="col-xs-12 content-card-header" style="margin-bottom: 50px">
+                                <span class="col-xs-12 content-card-title" style="text-align: center">
+                                    #{MooringRealtimeBean.berco.nome}<br/>
+                                    <p:commandLink onclick="PF('filtrobercodialog').show()" class="content-card-description-chart">
+                                        Selecionar outro berço
+                                        <i class="glyphicon glyphicon-search"></i>
+                                    </p:commandLink>
+                                </span>                         
+                            </div>
+
+                            <h:form>
+
+                                <div class="row">
+                                    <div class="col-xs-12 tb-mooring-title">EMBARCAÇÃO</div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-12 tb-mooring-value">
+                                        <h:outputText id="name-ship" value="#{MooringRealtimeBean.nomeEmbarcacao}&nbsp;"/>
+                                    </div>
+                                </div>
+
+                                <div class="row" style="margin-top: 15px;">
+                                    <div class="col-xs-12 tb-mooring-title">ÂNGULO</div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-12 tb-mooring-value">
+                                        <h:outputText id="angle-ship" value="#{MooringRealtimeBean.angulo}&nbsp;"/>
+                                    </div>
+                                </div>
+
+                                <div class="row tb-mooring-margin" style="margin-top: 15px;">
+                                    <div class="col-xs-3 tb-mooring-nopadding tb-mooring-title">
+                                        ESQUERDA<br/>
+                                        <span class="data-atualizacao">
+                                            <h:outputText id="data-atualizacao-esquerdo" value="#{MooringRealtimeBean.dataUltimaAtualizacaoEsquerdo}"/>
+                                        </span>
+                                    </div>
+                                    <div class="col-xs-6 tb-mooring-nopadding"></div>
+                                    <div class="col-xs-3 tb-mooring-nopadding tb-mooring-title">
+                                        DIREITA<br/>
+                                        <span class="data-atualizacao">
+                                            <h:outputText id="data-atualizacao-direito" value="#{MooringRealtimeBean.dataUltimaAtualizacaoDireito}"/>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="row tb-mooring-margin">
+                                    <div class="col-xs-3 tb-mooring-nopadding tb-mooring-number tb-mooring-value">
+                                        <h:outputText id="distleft-ship" value="#{MooringRealtimeBean.distanciaEsquerda}&nbsp;"/>
+                                    </div>
+                                    <div class="col-xs-6 tb-mooring-nopadding ">DISTÂNCIA 'm'</div>
+                                    <div class="col-xs-3 tb-mooring-nopadding tb-mooring-number tb-mooring-value">
+                                        <h:outputText id="distright-ship" value="#{MooringRealtimeBean.distanciaDireita}&nbsp;"/>
+                                    </div>
+                                </div>
+
+                                <div class="row tb-mooring-margin">
+                                    <div class="col-xs-3 tb-mooring-nopadding tb-mooring-number tb-mooring-value">
+                                        <h:outputText id="velleft-ship" value="#{MooringRealtimeBean.velocidadeEsquerda}&nbsp;"/>                                   
+                                    </div>
+                                    <div class="col-xs-6 tb-mooring-nopadding ">VELOCIDADE 'cm/s'</div>
+                                    <div class="col-xs-3 tb-mooring-nopadding tb-mooring-number tb-mooring-value">
+                                        <h:outputText id="velright-ship" value="#{MooringRealtimeBean.velocidadeDireita}&nbsp;"/>
+                                    </div>
+                                </div>
+
+                                <!-- Mensagem status -->
+                                <div class="col-xs-12 content-card-data-value-status"
+                                     style="margin-top: 15px;
+                                     text-align: center;">
+                                    <h:outputText id="status-ship" 
+                                                  class="#{MooringRealtimeBean.classStatus}"
+                                                  value="#{MooringRealtimeBean.status}"/>
+                                </div>
+
+                                <c:if test="#{MooringRealtimeBean.comAtracacao}">
+                                    <div class="container-filtrodialog-group">    
+                                        <p:commandButton 
+                                            actionListener="#{MooringRealtimeBean.verNoMapa}"
+                                            value="Ver no mapa"
+                                            update="@form">                                    
+                                        </p:commandButton>
+                                    </div>
+                                </c:if>
+
+                                <p:poll interval="1" 
+                                        listener="#{MooringRealtimeBean.reloadAtracacao()}" 
+                                        update="name-ship angle-ship distleft-ship distright-ship velleft-ship velright-ship status-ship data-atualizacao-direito data-atualizacao-esquerdo"/>
+
+                            </h:form>
+
+                        </div>
+
+                    </div>
+
+                </div> <!-- Fechamento da área que exibe informações de corrente -->
+
+            </div>
+
+        </div>
+
+        <ui:include src="/admin/components/footer.xhtml" />  
+        <h:outputScript name="js/menu.js" target="body"/>        
+
+        <script>
+            $(function () {
+                $(".menu-moorings").addClass("active");
+                $(".menu-moorings-shipsmoored").addClass("active-link");
+            });
+        </script>
+
+    </h:body>
+
+</html>

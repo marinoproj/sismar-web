@@ -1,0 +1,365 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>               
+
+        <title>Sismar - Inicio</title>
+        
+        <!-- Importações padrão -->
+        <ui:include src="/admin/components/headdefault.xhtml" /> 
+
+    </h:head>
+
+    <h:body>
+
+        <div class="container-fluid" style="padding: 0px">           
+
+            <!-- Importar menu -->
+            <ui:include src="/admin/components/menu.xhtml" />
+
+            <!-- Importar header -->
+            <ui:include src="/admin/components/header.xhtml" />   
+
+            <!-- Corpo do container: conteúdo -->
+            <div id="content" class="col-xs-12">
+
+                <!-- Título do conteúdo -->
+                <div id="content-header" class="col-xs-12">
+                    <span id="content-title">Resumo</span> 
+                    <span id="content-subtitle">Painel de controle</span>
+                </div>
+
+                <!-- Área para exibir informações sobre o vento -->
+                <ui:fragment rendered="#{HomeBean.isActiveFeature('vento')}">
+
+                    <div class="col-xs-12 content-card">
+
+                        <h:form>
+
+                            <!-- Título da área -->
+                            <div class="col-xs-12 content-card-header">
+                                <span class="content-card-title">Vento</span>  
+                                <!-- Mensagem status -->
+                                <h:panelGroup id="wind-message-status" layout="block" class="message-status" style="margin-top: 5px; margin-left: 10px;">
+                                    <span class="message-status-#{HomeBean.windMessageStatus}">#{HomeBean.windMessageStatus}</span>
+                                </h:panelGroup> 
+                                <!--<h:link value="Mais" outcome="wind" class="content-card-menu">
+                                </h:link>-->                        
+                            </div>
+
+                            <!-- Card que exibe as informações de velocidade -->
+                            <div class="col-xs-12 col-md-4 content-card-data">
+
+                                <div class="col-xs-12 content-card-data-type1">
+
+                                    <!-- titulo -->
+                                    <div class="col-xs-12 content-card-data-title">
+                                        <span class="content-card-data-title">Velocidade</span>
+                                    </div>
+
+                                    <!-- Valor -->
+                                    <div class="col-xs-8 content-card-data-value">
+                                        <span class="content-card-data-value-number">
+                                            <h:outputText id="wind-vel" value="#{HomeBean.windVel}"/>
+                                            <h:outputText id="wind-vel-s" value="#{HomeBean.windVelNos}" 
+                                                          style="font-size: 20px"/>
+                                        </span>                                      
+                                    </div>
+
+                                    <!-- Icone de representação -->
+                                    <div class="col-xs-4 content-card-data-icon">
+                                        <span class="sismar-icon sismar-icon-speed"></span>
+                                    </div>
+
+                                </div>
+
+                            </div> <!-- Fechamento do card -->
+
+                            <!-- Card que exibe as informações de rajada -->
+                            <div class="col-xs-12 col-md-4 content-card-data">
+
+                                <div class="col-xs-12 content-card-data-type2">
+
+                                    <!-- titulo -->
+                                    <div class="col-xs-12 content-card-data-title">
+                                        <span class="content-card-data-title">Rajada</span>
+                                    </div>
+
+                                    <!-- Valor -->
+                                    <div class="col-xs-8 content-card-data-value">
+                                        <span class="content-card-data-value-number">
+                                            <h:outputText id="wind-raj" value="#{HomeBean.windRaj}"/>
+                                            <h:outputText id="wind-raj-s" value="#{HomeBean.windRajNos}" 
+                                                          style="font-size: 20px"/>
+                                        </span>                                
+                                    </div>
+
+                                    <!-- Icone de representação -->
+                                    <div class="col-xs-4 content-card-data-icon">
+                                        <span class="sismar-icon sismar-icon-speed"></span>
+                                    </div>
+
+                                </div> 
+
+                            </div> <!-- Fechamento do card -->
+
+                            <!-- Card que exibe as informações de direção -->
+                            <div class="col-xs-12 col-md-4 content-card-data">
+
+                                <div class="col-xs-12 content-card-data-type3">
+
+                                    <!-- titulo -->
+                                    <div class="col-xs-12 content-card-data-title">
+                                        <span class="content-card-data-title">Direção</span>
+                                    </div>
+
+                                    <!-- Valor -->
+                                    <div class="col-xs-8 content-card-data-value">
+                                        <span class="content-card-data-value-number">
+                                            <h:outputText class="value-unique" id="wind-dir" value="#{HomeBean.windDir}"/>
+                                        </span>                                
+                                    </div>
+
+                                    <!-- Icone de representação -->
+                                    <div class="col-xs-4 content-card-data-icon">
+                                        <span class="sismar-icon sismar-icon-direction"></span>
+                                    </div>
+
+                                </div>    
+
+                            </div> <!-- Fechamento do card -->                                                
+
+                            <p:poll interval="30" 
+                                    listener="#{HomeBean.reloadWind(null)}" 
+                                    update="wind-vel wind-raj wind-dir wind-message-status"
+                                    />                            
+
+                        </h:form>
+
+                    </div> <!-- Fechamento da área que exibe informações de vento -->
+                </ui:fragment>
+
+                <!-- Área para exibir informações sobre a corrente -->
+                <ui:fragment rendered="#{HomeBean.isActiveFeature('corrente')}">
+
+                    <div class="col-xs-12 content-card">
+
+                        <h:form>
+
+                            <!-- Título da área -->
+                            <div class="col-xs-12 content-card-header">
+                                <span class="content-card-title">Corrente marítima</span> 
+                                <!-- Mensagem status -->
+                                <h:panelGroup id="seacurrent-message-status" 
+                                              layout="block" 
+                                              class="message-status" 
+                                              style="margin-top: 5px; margin-left: 10px;">
+                                    <span class="message-status-#{HomeBean.seaCurrentMessageStatus}">#{HomeBean.seaCurrentMessageStatus}</span>
+                                </h:panelGroup> 
+                                <!--<h:link value="Mais" outcome="seacurrent" class="content-card-menu">
+                                </h:link>-->
+                            </div>
+
+                            <!-- Card que exibe as informações de velocidade -->
+                            <div class="col-xs-12 col-md-4 content-card-data">
+
+                                <div class="col-xs-12 content-card-data-type1">
+
+                                    <!-- titulo -->
+                                    <div class="col-xs-12 content-card-data-title">
+                                        <span class="content-card-data-title">Velocidade</span>
+                                    </div>
+
+                                    <!-- Valor -->
+                                    <div class="col-xs-8 content-card-data-value">
+                                        <span class="content-card-data-value-number">
+                                            <h:outputText class="value-unique" id="seacurrent-speed" value="#{HomeBean.seaCurrentSpeed}"/>
+                                        </span>  
+                                    </div>
+
+                                    <!-- Icone de representação -->
+                                    <div class="col-xs-4 content-card-data-icon">
+                                        <span class="sismar-icon sismar-icon-speed"></span>
+                                    </div>
+
+                                </div>
+
+                            </div> <!-- Fechamento do card -->
+
+                            <!-- Card que exibe as informações de direção -->
+                            <div class="col-xs-12 col-md-4 content-card-data">
+
+                                <div class="col-xs-12 content-card-data-type3">
+
+                                    <!-- titulo -->
+                                    <div class="col-xs-12 content-card-data-title">
+                                        <span class="content-card-data-title">Direção</span>
+                                    </div>
+
+                                    <!-- Valor -->
+                                    <div class="col-xs-8 content-card-data-value">
+                                        <span class="content-card-data-value-number">
+                                            <h:outputText class="value-unique" id="seacurrent-dir" value="#{HomeBean.seaCurrentDir}"/>
+                                        </span>   
+                                    </div>
+
+                                    <!-- Icone de representação -->
+                                    <div class="col-xs-4 content-card-data-icon">
+                                        <span class="sismar-icon sismar-icon-direction"></span>
+                                    </div>
+
+                                </div>    
+
+                            </div> <!-- Fechamento do card -->
+
+                            <p:poll interval="30" listener="#{HomeBean.reloadSeaCurrent(null)}" update="seacurrent-speed seacurrent-dir seacurrent-message-status"/>
+
+                        </h:form>
+
+                    </div> <!-- Fechamento da área que exibe informações de corrente -->
+                </ui:fragment>
+
+                <!-- Área para exibir informações sobre as embarcações atracadas -->
+                <ui:fragment rendered="#{HomeBean.isActiveFeature('atracações')}">
+
+                    <div class="col-xs-12 content-card">
+
+                        <!-- Título da área -->
+                        <div class="col-xs-12 content-card-header">
+                            <span class="content-card-title">Atracações</span> 
+                        </div>
+
+                        <h:form>
+
+                            <!-- Card que exibe informações do pier -->
+                            <div class="col-xs-12 col-md-6 content-card-data">
+
+                                <div class="col-xs-12 content-card-data-type4">
+
+                                    <!-- Identificação do pier -->
+                                    <div class="col-xs-1 content-card-data-value-pier">
+                                        <span>P1</span>
+                                    </div>                           
+
+                                    <!-- Identificação da embarcação -->
+                                    <div class="col-xs-7 content-card-data-value-ship">
+                                        <h:outputText id="p1-name-ship" value="#{HomeBean.getNameShip(1)}&nbsp;" class="content-card-data-value-ship-name"/>
+                                        <h:outputText id="p1-imo-ship" value="#{HomeBean.getImoShip(1)}&nbsp;"/>
+                                    </div>
+
+                                    <!-- Status de operação do pier -->
+                                    <div class="col-xs-4 content-card-data-value-status">
+                                        <h:outputText id="p1-status-ship" class="#{HomeBean.getClassByStatus(1)}" value="#{HomeBean.getStatus(1)}"/>
+                                    </div>
+
+                                </div>
+
+                            </div> <!-- Fechamento do card que exibe informações do pier -->
+
+                            <!-- Card que exibe informações do pier -->
+                            <div class="col-xs-12 col-md-6 content-card-data">
+
+                                <div class="col-xs-12 content-card-data-type4">
+
+                                    <!-- Identificação do pier -->
+                                    <div class="col-xs-1 content-card-data-value-pier">
+                                        <span>P2</span>
+                                    </div>                           
+
+                                    <!-- Identificação da embarcação -->
+                                    <div class="col-xs-7 content-card-data-value-ship">
+                                        <h:outputText id="p2-name-ship" value="#{HomeBean.getNameShip(2)}&nbsp;" class="content-card-data-value-ship-name"/>
+                                        <h:outputText id="p2-imo-ship" value="#{HomeBean.getImoShip(2)}&nbsp;"/>
+                                    </div>
+
+                                    <!-- Status de operação do pier -->
+                                    <div class="col-xs-4 content-card-data-value-status">
+                                        <h:outputText id="p2-status-ship" class="#{HomeBean.getClassByStatus(2)}" value="#{HomeBean.getStatus(2)}"/>
+                                    </div>
+
+                                </div>
+
+                            </div> <!-- Fechamento do card que exibe informações do pier -->
+
+
+                            <!-- Card que exibe informações do pier -->
+                            <div class="col-xs-12 col-md-6 content-card-data">
+
+                                <div class="col-xs-12 content-card-data-type4">
+
+                                    <!-- Identificação do pier -->
+                                    <div class="col-xs-1 content-card-data-value-pier">
+                                        <span>P3</span>
+                                    </div>                           
+
+                                    <!-- Identificação da embarcação -->
+                                    <div class="col-xs-7 content-card-data-value-ship">
+                                        <h:outputText id="p3-name-ship" value="#{HomeBean.getNameShip(3)}&nbsp;" class="content-card-data-value-ship-name"/>
+                                        <h:outputText id="p3-imo-ship" value="#{HomeBean.getImoShip(3)}&nbsp;"/>
+                                    </div>
+
+                                    <!-- Status de operação do pier -->
+                                    <div class="col-xs-4 content-card-data-value-status">
+                                        <h:outputText id="p3-status-ship" class="#{HomeBean.getClassByStatus(3)}" value="#{HomeBean.getStatus(3)}"/>
+                                    </div>
+
+                                </div>
+
+                            </div> <!-- Fechamento do card que exibe informações do pier -->
+
+
+                            <!-- Card que exibe informações do pier -->
+                            <div class="col-xs-12 col-md-6 content-card-data">
+
+                                <div class="col-xs-12 content-card-data-type4">
+
+                                    <!-- Identificação do pier -->
+                                    <div class="col-xs-1 content-card-data-value-pier">
+                                        <span>P4</span>
+                                    </div>                           
+
+                                    <!-- Identificação da embarcação -->
+                                    <div class="col-xs-7 content-card-data-value-ship">
+                                        <h:outputText id="p4-name-ship" value="#{HomeBean.getNameShip(4)}&nbsp;" class="content-card-data-value-ship-name"/>
+                                        <h:outputText id="p4-imo-ship" value="#{HomeBean.getImoShip(4)}&nbsp;"/>
+                                    </div>
+
+                                    <!-- Status de operação do pier -->
+                                    <div class="col-xs-4 content-card-data-value-status">
+                                        <h:outputText id="p4-status-ship" class="#{HomeBean.getClassByStatus(4)}" value="#{HomeBean.getStatus(4)}"/>
+                                    </div>
+
+                                </div>
+
+                            </div> <!-- Fechamento do card que exibe informações do pier -->
+
+                            <p:poll interval="60" listener="#{HomeBean.reloadOperacoes(null)}" update="p1-name-ship p1-imo-ship p1-status-ship p2-name-ship p2-imo-ship p2-status-ship p3-name-ship p3-imo-ship p3-status-ship p4-name-ship p4-imo-ship p4-status-ship"/>
+
+                        </h:form>
+
+                    </div> <!-- Fechamento da área que exibe informações sobre as embarcações atracadas -->
+                </ui:fragment>
+
+            </div> <!-- Fechamento do conteúdo -->  
+
+        </div> <!-- Fechamento do container -->          
+
+        <!-- Importações scripts -->
+        <h:outputScript name="js/menu.js" target="body"/>
+        
+        <!-- Importar templates -->
+        <ui:include src="/admin/components/footer.xhtml" />   
+
+        <script>
+            $(function () {
+                $(".menu-home").addClass("active");                
+            });
+        </script>
+
+    </h:body>
+
+</html>

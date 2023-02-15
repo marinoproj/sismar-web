@@ -1,0 +1,427 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>        
+
+        <title>Sismar - Atracações</title>
+        <ui:include src="/admin/components/headdefault.xhtml" /> 
+
+        <style>
+
+            .ui-datatable thead th, .ui-datatable tfoot td {
+                text-align: left !important;
+            }
+
+            .status-atracando{
+                color: #f39c12;
+                font-weight: bold;
+            }
+
+            .status-atracado{ 
+                color:#009551;
+                font-weight: bold;
+            }
+
+            .status-partindo{               
+                color: #f39c12;
+                font-weight: bold;
+            }
+
+            .status-nao-informado{
+                color: red;
+                opacity: .3;
+                font-size: 11px;
+            }
+
+            .ui-selectcheckboxmenu-header {
+                padding: 0px !important;
+                margin: 0px !important;
+            }
+
+            .ui-selectcheckboxmenu-item label {
+                font-weight: normal;
+            }
+
+            .ui-datatable .ui-datatable-header {
+                text-align: right !important;
+            }
+
+            .ui-button-text-only .ui-button-text {
+                padding: 0.3em 0.4em;
+            }
+
+            .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-header .ui-chkbox {
+                visibility: hidden;
+            }
+
+            .ui-filter-column .ui-column-customfilter .custom-filter {
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .year-spinner input {
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .ui-selectcheckboxmenu-items-wrapper, .ui-selectcheckboxmenu-header, .ui-selectonemenu-items{
+                background: #ffffff !important;
+                border: none !important;
+            }
+
+            .ui-selectmanymenu{
+                width: 100%;
+            }
+
+            .ui-selectmanymenu .ui-selectlistbox-filter {
+                display: block !important;
+                width: 100% !important; 
+                height: 34px !important;
+                padding: 6px 12px !important;
+                font-size: 14px !important;
+                line-height: 1.42857143 !important;
+                color: #555 !important;
+                background-color: #fff !important;
+                background-image: none !important;
+                border: 1px solid #ccc !important;
+                border-radius: 4px !important;
+                box-shadow: inset 0 1px 1px rgba(0,0,0,.075) !important;    
+                transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s !important;
+
+            }
+
+            .ui-selectmanymenu .ui-selectlistbox-filter:focus{
+                border-color: #66afe9 !important;
+                outline: 0 !important;    
+                box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6) !important;
+            }
+
+            .ui-selectmanymenu .ui-selectlistbox-item > td:first-child {
+                width: 30px;
+                padding-left: 10px;
+            }
+
+            .ui-selectmanymenu .ui-state-highlight {
+                background: #dcdcdc !important;
+                color: black !important;
+                text-shadow: none !important;
+            }
+
+            .ui-selectmanymenu .ui-selectlistbox-listcontainer{
+                height: 300px !important;
+            }
+
+            .button-variable-monitor{
+                height: 25px !important;
+                font-size: 12px !important;
+                margin-left: 10px !important;
+                margin-top: 20px !important;
+            }
+
+            .button-rules{
+                padding: 0px;
+                margin: 0px;
+                height: 30px;
+                margin-top: 3px;   
+                margin-left: 5px !important;
+            }
+
+            .button-rules button{
+                padding: 0px;
+                margin: 0px;
+                height: 30px;
+                margin-top: 3px;   
+            }
+
+            .ui-colorpicker button {
+                padding: 0px;
+                margin: 0px;
+            }
+            .label-rule{
+                padding: 5px;
+            }
+
+            .body-hide{
+                display: none;
+            }
+
+            .card-variable-monitor-title{
+                margin-top: 10px;
+                background: #efefef;
+                padding: 10px;
+                font-weight: bold;
+                color: #8a8a8a;
+                border-left: 1px solid #d4d4d4;
+                border-top: 1px solid #d4d4d4;
+                border-right: 1px solid #d4d4d4;
+                display: flex;
+            }
+
+            .card-variable-monitor-body{
+                border-left: 1px solid #d4d4d4;
+                border-bottom: 1px solid #d4d4d4;
+                border-right: 1px solid #d4d4d4;
+                padding-top: 15px;
+                padding-bottom: 15px;
+            }
+
+            .ui-selectoneradio tr {
+                padding-left: 10px;
+            }
+
+            .tags_message{
+                text-align: center;
+                padding-top: 5px;
+            }
+
+            .tag_message{
+                background: #e2e2e2;
+                border-radius: 10px;
+                padding: 3px 5px;
+                font-size: 11px;
+            }
+
+            .pe-inputNumber{
+                display: block !important;
+                width: 100px !important; 
+                height: 34px !important;
+                padding: 6px 12px !important;
+                font-size: 14px !important;
+                line-height: 1.42857143 !important;
+                color: #555 !important;
+                background-color: #fff !important;
+                background-image: none !important;
+                border: 1px solid #ccc !important;
+                border-radius: 4px !important;
+                box-shadow: inset 0 1px 1px rgba(0,0,0,.075) !important;    
+                transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s !important;
+            }
+            .pe-inputNumber:focus{
+                border-color: #66afe9 !important;
+                outline: 0 !important;    
+                box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6) !important;
+            }
+
+            .ui-selectoneradio label {
+                font-weight: normal !important;
+            }
+
+            .ui-selectoneradio tbody {
+                display: flex !important;
+            }
+
+            .ui-autocomplete-panel{
+                background: white !important;
+            }
+
+            .ui-autocomplete-itemtip {
+                width: 250px !important;
+            }
+
+            .ui-autocomplete {
+                width: 100% !important;
+            }
+
+            .ui-autocomplete-input{
+                display: block !important;
+                width: 100% !important; 
+                height: 34px !important;
+                padding: 6px 12px !important;
+                font-size: 14px !important;
+                line-height: 1.42857143 !important;
+                color: #555 !important;
+                background-color: #fff !important;
+                background-image: none !important;
+                border: 1px solid #ccc !important;
+                border-radius: 4px !important;
+                box-shadow: inset 0 1px 1px rgba(0,0,0,.075) !important;    
+                transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s !important;
+            }
+            .ui-autocomplete-input:focus{
+                border-color: #66afe9 !important;
+                outline: 0 !important;    
+                box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6) !important;
+            }
+
+            .form-horizontal .form-group {
+                margin-right: 0px !important;
+                margin-left: 0px !important;
+                padding: 0px !important;
+            }
+
+        </style>
+
+    </h:head>
+
+    <h:body>
+
+        <div class="container-fluid" style="padding: 0px">           
+
+            <ui:include src="/admin/components/menu.xhtml" />
+            <ui:include src="/admin/components/header.xhtml" />   
+
+            <div id="content" class="col-xs-12">
+
+                <div id="content-header" class="col-xs-12">
+                    <span id="content-title">Atracações</span> 
+                    <span id="content-subtitle">executadas</span>
+                </div>
+
+                <div class="col-xs-12 content-card">
+
+                    <div class="card col-xs-12 col-md-12" style="float: left; margin-bottom: 20px; display: flex; flex-flow: wrap;">                            
+
+                        <div class="col-xs-12 col-md-12 title-card">ATRACAÇÕES</div>
+
+                        <div class="col-xs-12 col-md-12">
+
+                            <h:form>
+
+                                <div style="margin-top: 20px">
+
+                                    <div class="form-group col-sm-4" style="padding: 0px !important;">
+                                        <h:outputLabel class="col-sm-12" value="Embarcação"/>
+                                        <div class="col-sm-12">
+                                            <p:autoComplete id="itemTip" 
+                                                            value="#{MooringsBean.embarcacao}" 
+                                                            completeMethod="#{MooringsBean.completeNavios}"
+                                                            var="navio" 
+                                                            itemLabel="#{navio.nomeNavio}" 
+                                                            itemValue="#{navio}" 
+                                                            converter="navioConverter">
+                                                <f:facet name="itemtip">
+                                                    <h:panelGrid columns="2" cellpadding="5">                                        
+                                                        <h:outputText value="IMO:" />
+                                                        <h:outputText value="#{navio.imo}" />
+                                                        <h:outputText value="Navio: " />
+                                                        <h:outputText value="#{navio.nomeNavio}" />
+                                                    </h:panelGrid>
+                                                </f:facet>
+                                            </p:autoComplete>                                    
+                                        </div>
+                                    </div>  
+                                    <div class="form-group col-sm-4" style="padding: 0px !important;">
+                                        <h:outputLabel class="col-sm-12" value="Giaont"/>
+                                        <div class="col-sm-12">
+                                            <h:selectOneMenu class="form-control"
+                                                             value="#{MooringsBean.giaont}"
+                                                             converter="giaontConverter"
+                                                             >  
+                                                <f:selectItem itemValue="#{null}" itemLabel="Selecione"/> 
+                                                <f:selectItems value="#{MooringsBean.listGiaonts}" 
+                                                               var="obj" 
+                                                               itemLabel="#{obj.nomeGiaont}" 
+                                                               itemValue="#{obj}"/>
+                                            </h:selectOneMenu>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-4" style="padding: 0px !important;">
+                                        <h:outputLabel class="col-sm-12" value="Prático"/>
+                                        <div class="col-sm-12">
+                                            <h:selectOneMenu class="form-control"
+                                                             value="#{MooringsBean.pratico}"
+                                                             converter="praticoConverter"
+                                                             >  
+                                                <f:selectItem itemValue="#{null}" itemLabel="Selecione"/> 
+                                                <f:selectItems value="#{MooringsBean.listPraticos}" 
+                                                               var="obj" 
+                                                               itemLabel="#{obj.nomePratico}" 
+                                                               itemValue="#{obj}"/>
+                                            </h:selectOneMenu>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-12">
+                                        <p:commandButton 
+                                            actionListener="#{MooringsBean.filtrar()}"
+                                            style="float: right; margin: 0px !important;"
+                                            value="Pesquisar"
+                                            onclick="PF('statusdialog').show()"
+                                            onsuccess="PF('statusdialog').hide()"
+                                            onerror="PF('statusdialog').hide()"
+                                            update=":tb-list">                                    
+                                        </p:commandButton>                                         
+                                    </div>
+
+                                </div>
+
+                            </h:form>
+
+                            <p:panel id="tb-list">
+
+                                <p:dataTable value="#{MooringsBean.atracacoes}" 
+                                             var="atracacao"                                         
+                                             rows="10"
+                                             paginator="true"                                         
+                                             rowIndexVar="index"
+                                             emptyMessage="Nenhum resultado encontrado"
+                                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             id="table-list-data">
+
+                                    <p:column headerText="Início" style="width: 130px">
+                                        #{UtilBean.getDateTimeClient(atracacao.dataInicio, "dd/MM/yyyy HH:mm")}
+                                    </p:column>
+
+                                    <p:column headerText="Berço" style="width: 230px">
+                                        #{MooringsBean.getNomeBerco(atracacao.codBerco)}
+                                    </p:column>
+
+                                    <p:column headerText="Embarcação" style="width: 210px">
+                                        <span class="#{MooringsBean.getClassNaoInformado(atracacao.codNavio)}">#{MooringsBean.getNomeEmbarcacao(atracacao.codNavio)}</span>
+                                    </p:column>
+
+                                    <p:column headerText="Giaont" style="width: 120px">
+                                        <span class="#{MooringsBean.getClassNaoInformado(atracacao.codGiaont)}">#{MooringsBean.getNomeGiaont(atracacao.codGiaont)}</span>
+                                    </p:column>
+
+                                    <p:column headerText="Prático" style="width: 120px">
+                                        <span class="#{MooringsBean.getClassNaoInformado(atracacao.codPratico)}">#{MooringsBean.getNomePratico(atracacao.codPratico)}</span>
+                                    </p:column>
+
+                                    <p:column headerText="Status" style="width: 120px;">
+                                        <span class="#{MooringsBean.getClassStatus(atracacao.statusOperacao)}">
+                                            #{atracacao.statusOperacao.value}
+                                        </span>
+                                    </p:column>       
+
+                                    <p:column headerText="" style="width: 50px">
+                                        <a href="mooring.xhtml?atracacao=#{atracacao.codAtracacao}"
+                                           style="margin-right: 10px;">
+                                            <i class="glyphicon glyphicon-search" style="color: blue"></i>
+                                        </a> 
+                                    </p:column>
+
+                                </p:dataTable>                           
+
+                            </p:panel>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <ui:include src="/admin/components/footer.xhtml" />   
+        <h:outputScript name="js/menu.js" target="body"/>
+
+        <script>
+            $(function () {
+
+                $(".menu-moorings").addClass("active");
+                $(".menu-moorings-moorings").addClass("active-link");
+
+            });
+        </script>
+
+    </h:body>
+
+</html>

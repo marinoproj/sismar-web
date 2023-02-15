@@ -1,0 +1,374 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>        
+
+        <title>Sismar - Sensores de aproximação</title>
+        <ui:include src="/admin/components/headdefault.xhtml" /> 
+
+        <style>
+            .sensor-nao-instalado{
+                color: white;
+                background: red;
+                margin-right: 5px;
+                border-radius: 3px;
+                padding: 3px;
+                font-size: 12px;
+            }
+
+            .sensor-instalado{
+                color: white;
+                font-size: 12px;
+                background: green;
+                margin-right: 5px;
+                border-radius: 3px;
+                padding: 3px;
+            }
+
+            .sensor-comunicando{
+                font-size: 12px;
+                color: white;
+                background: green;
+                margin-right: 5px;
+                border-radius: 3px;
+                padding: 3px;
+            }
+
+            .sensor-sem-comunicacao{
+                font-size: 12px;
+                color: white;
+                background: orange;
+                margin-right: 5px;
+                border-radius: 3px;
+                padding: 3px;
+            }
+
+            .laser-conectado{
+                color: white;
+                font-size: 12px;
+                background: green;
+                margin-right: 5px;
+                border-radius: 3px;
+                padding: 3px;
+            }
+
+            .laser-desconectado{
+                color: white;
+                font-size: 12px;
+                background: orange;
+                margin-right: 5px;
+                border-radius: 3px;
+                padding: 3px;
+            }
+
+            .pe-inputNumber{
+                display: block !important;
+                width: 100px !important; 
+                height: 34px !important;
+                padding: 6px 12px !important;
+                font-size: 14px !important;
+                line-height: 1.42857143 !important;
+                color: #555 !important;
+                background-color: #fff !important;
+                background-image: none !important;
+                border: 1px solid #ccc !important;
+                border-radius: 4px !important;
+                box-shadow: inset 0 1px 1px rgba(0,0,0,.075) !important;    
+                transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s !important;
+            }
+            .pe-inputNumber:focus{
+                border-color: #66afe9 !important;
+                outline: 0 !important;    
+                box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6) !important;
+            }
+
+            .ui-selectoneradio label {
+                font-weight: normal !important;
+            }
+
+            .ui-selectoneradio tbody {
+                display: flex !important;
+            }
+            
+            .ui-inputfield{
+                width: 100% !important;
+            }
+
+        </style>
+
+    </h:head>
+
+    <h:body>
+
+        <div class="container-fluid" style="padding: 0px">           
+
+            <ui:include src="/admin/components/menu.xhtml" />
+            <ui:include src="/admin/components/header.xhtml" />   
+
+            <div id="content" class="col-xs-12">
+
+                <div id="content-header" class="col-xs-12">
+                    <span id="content-title">Sensores de aproximação</span> 
+                    <span id="content-subtitle">Cadastrados</span>
+                </div>
+
+                <div class="col-xs-12 content-card">
+
+                    <div class="col-xs-12 col-md-12">
+
+                        <c:if test="#{SensorsProximidadeBean.enableAddSensor()}">
+                            <div class="col-sm-12" style="margin-bottom: 25px !important; 
+                                 text-align: center;">                            
+                                <a style="float: initial !important" href="sensor.xhtml" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+                                    <span class="ui-button-text ui-c">Cadastrar sensor</span>
+                                </a>
+                            </div>
+                        </c:if>
+
+                        <h:form id="form-list-data">  
+
+                            <p:panel id="table-list-data">
+
+                                <c:forEach var="sensor" items="#{SensorsProximidadeBean.sensors}">
+
+                                    <div class="col-xs-12 col-md-4" style="margin: 15px">
+
+                                        <div class="row" style="text-align: center; margin-bottom: 10px">
+                                            <h:graphicImage name="img/laser.png" width="100px"/>
+                                        </div>
+
+                                        <div class="row">
+                                            <b>Serial: </b>#{sensor.serial}
+                                        </div>
+
+                                        <div class="row">
+                                            <b>Descrição: </b>#{sensor.descricao}
+                                        </div>
+
+                                        <div class="row">
+                                            <b>IP: </b>#{SensorsProximidadeBean.getIpSensor(sensor)}
+                                        </div>
+
+                                        <div class="row">
+                                            <b>Última leitura: </b>#{SensorsProximidadeBean.getUltimaLeitura(sensor)}
+                                        </div>
+
+                                        <div class="row">
+
+                                            <c:if test="#{SensorsProximidadeBean.isInstalado(sensor)}">
+                                                <c:if test="#{SensorsProximidadeBean.fixo}">
+                                                    <div class="row">
+                                                        <b>Berço: </b>#{SensorsProximidadeBean.getBercoNome(sensor.codBerco)}                                                
+                                                    </div>
+                                                </c:if>
+                                                <span class="sensor-instalado">
+                                                    Instalado
+                                                </span>                                                
+                                            </c:if>
+                                            <c:if test="#{not SensorsProximidadeBean.isInstalado(sensor)}">
+                                                <span class="sensor-nao-instalado">
+                                                    Não instalado
+                                                </span>
+                                            </c:if>
+
+                                            <c:choose>
+                                                <c:when test="#{SensorsProximidadeBean.isComunicando(sensor)}">
+                                                    <span class="sensor-comunicando">
+                                                        PC comunicando
+                                                    </span>                                                
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <span class="sensor-sem-comunicacao">
+                                                        PC sem comunicação
+                                                    </span>
+                                                </c:otherwise>
+                                            </c:choose>
+
+                                            <c:choose>
+                                                <c:when test="#{SensorsProximidadeBean.isLaserComunicando(sensor)}">
+                                                    <span class="laser-conectado">
+                                                        Laser comunicando
+                                                    </span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <span class="laser-desconectado">
+                                                        Laser sem comunicação
+                                                    </span>
+                                                </c:otherwise>
+                                            </c:choose>
+
+                                        </div>
+
+                                        <c:if test="#{SensorsProximidadeBean.master}">
+                                            <div class="row" style="margin-top: 5px">
+                                                <c:if test="#{SensorsProximidadeBean.portatil or SensorsProximidadeBean.master}">
+                                                    <a href="sensor.xhtml?sensor=#{sensor.cod}"
+                                                       style="margin-right: 10px;color: blue">
+                                                        Editar <i class="glyphicon glyphicon-pencil"></i>
+                                                    </a> 
+                                                </c:if>
+
+                                                <c:if test="#{SensorsProximidadeBean.master}">
+                                                    <p:commandLink actionListener="#{SensorsProximidadeBean.setSensorSelectedDelete(sensor)}"
+                                                                   style="color: #f75151; margin-right: 10px;"
+                                                                   onclick="PF('confirmationDialogDelete').show()">
+                                                        Excluir <i class="glyphicon glyphicon-trash"></i>
+                                                    </p:commandLink>
+                                                </c:if>
+
+                                            </div>
+                                        </c:if>
+
+                                    </div>
+
+                                </c:forEach>
+
+                            </p:panel>
+
+                            <p:poll interval="3" update="table-list-data"/>
+
+                        </h:form>
+
+                        <c:if test="#{SensorsProximidadeBean.portatil}">
+
+                            <h:form class="form-horizontal" 
+                                    id="form-event"
+                                    style="margin-top: 30px; padding: 15px">
+
+                                <p:message for="form-event" 
+                                           showDetail="true" 
+                                           showSummary="true"
+                                           redisplay="true"/>
+
+                                <div class="form-group">
+
+                                    <div class="col-sm-12 col-md-8" style="padding: 0px;">
+                                        <h:outputLabel class="col-sm-12" value="Selecione o berço para manobra:"/>
+                                        <div class="col-sm-12">
+                                            <h:selectOneMenu class="form-control"
+                                                             value="#{SensorsProximidadeBean.bercoSelecionado}"
+                                                             disabled="#{SensorsProximidadeBean.iniciado}"
+                                                             converter="bercoConverter">  
+                                                <f:selectItem itemValue="#{null}" itemLabel=""/> 
+                                                <f:selectItems value="#{SensorsProximidadeBean.listBercos}" 
+                                                               var="obj" 
+                                                               itemLabel="#{obj.nome}" 
+                                                               itemValue="#{obj}"/>
+                                                <f:ajax event="change"
+                                                        onevent="PF('statusdialog').show()"                                                        
+                                                        render="@form :form-list-data" 
+                                                        listener="#{SensorsProximidadeBean.loadDistanciaEntreSensores()}"/>
+                                            </h:selectOneMenu>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12 col-md-4" style="padding: 0px;">
+                                        <h:outputLabel class="col-sm-12" value="Distância entre sensores (m):"/>
+                                        <div class="col-sm-12">
+                                            <p:inputNumber value="#{SensorsProximidadeBean.distanciaEntreSensores}"
+                                                           disabled="#{SensorsProximidadeBean.iniciado}"
+                                                           id="txtDistanciaEntreSensores">
+                                            </p:inputNumber>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-sm-12">                                       
+
+                                        <c:if test="#{not SensorsProximidadeBean.iniciado}">
+                                            <h:commandButton 
+                                                value="Iniciar manobra"
+                                                actionListener="#{SensorsProximidadeBean.iniciar()}"
+                                                onclick="PF('statusdialog').show()"
+                                                class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only sismar-bt-primary"
+                                                style="padding: 3px 15px; margin-left: 10px !important; margin-top: 0px !important">
+                                                <f:ajax execute="@form" render="@form :form-list-data" />
+                                            </h:commandButton>
+                                        </c:if>
+
+                                        <c:if test="#{SensorsProximidadeBean.iniciado}">
+                                            <p:commandLink
+                                                value="Encerrar manobra"
+                                                onclick="PF('confirmationDialogEncerrar').show()"
+                                                class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only sismar-bt-primary"
+                                                style="padding: 3px 15px; margin-top: 0px; color: red">
+                                            </p:commandLink>
+                                        </c:if>
+
+                                    </div>
+                                </div>
+
+                            </h:form>
+
+                        </c:if>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <p:confirmDialog widgetVar="confirmationDialogDelete" 
+                         severity="alert" 
+                         message="Deseja realmente excluir o cadastro?" 
+                         header="Excluir cadastro" 
+                         appendTo="@(body)"
+                         id="confirmationDialog">  
+            <h:form>                
+                <p:commandButton value="Sim" 
+                                 actionListener="#{SensorsProximidadeBean.delete}"
+                                 onclick="PF('confirmationDialogDelete').hide();PF('statusdialog').show()"
+                                 onsuccess="PF('statusdialog').hide()"
+                                 onerror="PF('statusdialog').hide()"                                                 
+                                 update=":form-list-data:table-list-data"/>
+                <p:commandButton value="Não" 
+                                 onclick="PF('confirmationDialogDelete').hide()" 
+                                 type="button"/>
+            </h:form>
+        </p:confirmDialog>
+
+        <p:confirmDialog widgetVar="confirmationDialogEncerrar" 
+                         severity="alert" 
+                         message="Deseja realmente encerrar a manobra?" 
+                         header="Encerrar manobra" 
+                         appendTo="@(body)"
+                         id="confirmationDialogEncerrar">  
+            <h:form>                
+                <p:commandButton value="Sim" 
+                                 actionListener="#{SensorsProximidadeBean.encerrar()}"
+                                 onclick="PF('confirmationDialogEncerrar').hide();PF('statusdialog').show()"
+                                 onsuccess="PF('statusdialog').hide()"
+                                 onerror="PF('statusdialog').hide()"                                                 
+                                 update=":form-event :form-list-data:table-list-data"/>
+                <p:commandButton value="Não" 
+                                 onclick="PF('confirmationDialogEncerrar').hide()" 
+                                 type="button"/>
+            </h:form>
+        </p:confirmDialog>
+
+        <ui:include src="/admin/components/footer.xhtml" />   
+        <h:outputScript name="js/menu.js" target="body"/>
+
+        <script>
+            $(function () {
+
+                $(".menu-moorings").addClass("active");
+                $(".menu-moorings-sensors").addClass("active-link");
+
+            });
+        </script>
+
+    </h:body>
+
+</html>

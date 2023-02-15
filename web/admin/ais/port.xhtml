@@ -1,0 +1,473 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <h:head>                
+
+        <title>Sismar - Portos</title>       
+
+        <!-- Importações padrão -->
+        <ui:include src="/admin/components/headdefault.xhtml" />   
+        <h:outputScript library="primefaces-extensions" name="primefaces-extensions.js"/>
+
+        <style>
+
+            .empty{
+                width: 100%;
+                text-align: center;
+                display: block;
+                border-radius: 100px;
+                color: #a5a5a5;
+            }
+
+            .ui-selectcheckboxmenu-header {
+                padding: 0px !important;
+                margin: 0px !important;
+            }
+
+            .ui-selectcheckboxmenu-item label {
+                font-weight: normal;
+            }
+
+            .ui-datatable .ui-datatable-header {
+                text-align: right !important;                
+            }
+
+            tbody {
+                font-size: 12px !important;
+            }
+
+            .ui-button-text-only .ui-button-text {
+                padding: 0.3em 0.4em;
+            }
+
+            .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-header .ui-chkbox {
+                visibility: hidden;
+            }
+
+            .ui-filter-column .ui-column-customfilter .custom-filter {
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .year-spinner input {
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .ui-selectcheckboxmenu-items-wrapper, .ui-selectcheckboxmenu-header, .ui-selectonemenu-items{
+                background: #ffffff !important;
+                border: none !important;
+            }
+
+            .ui-selectmanymenu{
+                width: 100%;
+            }
+
+            .ui-selectmanymenu .ui-selectlistbox-filter {
+                display: block !important;
+                width: 100% !important; 
+                height: 34px !important;
+                padding: 6px 12px !important;
+                font-size: 14px !important;
+                line-height: 1.42857143 !important;
+                color: #555 !important;
+                background-color: #fff !important;
+                background-image: none !important;
+                border: 1px solid #ccc !important;
+                border-radius: 4px !important;
+                box-shadow: inset 0 1px 1px rgba(0,0,0,.075) !important;    
+                transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s !important;
+
+            }
+
+            .ui-selectmanymenu .ui-selectlistbox-filter:focus{
+                border-color: #66afe9 !important;
+                outline: 0 !important;    
+                box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6) !important;
+            }
+
+            .ui-selectmanymenu .ui-selectlistbox-item > td:first-child {
+                width: 30px;
+                padding-left: 10px;
+            }
+
+            .ui-selectmanymenu .ui-state-highlight {
+                background: #dcdcdc !important;
+                color: black !important;
+                text-shadow: none !important;
+            }
+
+            .ui-selectmanymenu .ui-selectlistbox-listcontainer{
+                height: 100px !important;
+            }
+
+            .button-variable-monitor{
+                height: 25px !important;
+                font-size: 12px !important;
+                margin-left: 10px !important;
+                margin-top: 20px !important;
+            }
+
+            .button-rules{
+                padding: 0px;
+                margin: 0px;
+                height: 30px;
+                margin-top: 3px;   
+                margin-left: 5px !important;
+            }
+
+            .button-rules button{
+                padding: 0px;
+                margin: 0px;
+                height: 30px;
+                margin-top: 3px;   
+            }
+
+            .ui-colorpicker button {
+                padding: 0px;
+                margin: 0px;
+            }
+            .label-rule{
+                padding: 5px;
+            }
+
+            .body-hide{
+                display: none;
+            }
+
+            .card-variable-monitor-title{
+                margin-top: 10px;
+                background: #efefef;
+                padding: 10px;
+                font-weight: bold;
+                color: #8a8a8a;
+                border-left: 1px solid #d4d4d4;
+                border-top: 1px solid #d4d4d4;
+                border-right: 1px solid #d4d4d4;
+                display: flex;
+            }
+
+            .card-variable-monitor-body{
+                border-left: 1px solid #d4d4d4;
+                border-bottom: 1px solid #d4d4d4;
+                border-right: 1px solid #d4d4d4;
+                padding-top: 15px;
+                padding-bottom: 15px;
+            }
+
+            .ui-selectoneradio tr {
+                padding-left: 10px;
+            }
+
+            .tags_message{
+                text-align: center;
+                padding-top: 5px;
+            }
+
+            .tag_message{
+                background: #e2e2e2;
+                border-radius: 10px;
+                padding: 3px 5px;
+                font-size: 11px;
+            }
+
+            .pe-inputNumber{
+                display: block !important;
+                width: 100px !important; 
+                height: 34px !important;
+                padding: 6px 12px !important;
+                font-size: 14px !important;
+                line-height: 1.42857143 !important;
+                color: #555 !important;
+                background-color: #fff !important;
+                background-image: none !important;
+                border: 1px solid #ccc !important;
+                border-radius: 4px !important;
+                box-shadow: inset 0 1px 1px rgba(0,0,0,.075) !important;    
+                transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s !important;
+            }
+            .pe-inputNumber:focus{
+                border-color: #66afe9 !important;
+                outline: 0 !important;    
+                box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6) !important;
+            }
+
+            .ui-selectoneradio label {
+                font-weight: normal !important;
+            }
+
+            .ui-selectoneradio tbody {
+                display: flex !important;
+            }
+
+        </style>
+
+    </h:head>
+
+    <h:body>
+
+        <div class="container-fluid" style="padding: 0px">           
+
+            <!-- Importar menu -->
+            <ui:include src="/admin/components/menu.xhtml" />
+
+            <!-- Importar header -->
+            <ui:include src="/admin/components/header.xhtml" />   
+
+            <!-- Corpo do container: conteúdo -->
+            <div id="content" class="col-xs-12">
+
+                <!-- Título do conteúdo -->
+                <div id="content-header" class="col-xs-12" style="margin-bottom: 15px !important;">
+                    <span id="content-title">Porto</span> 
+                </div>
+
+                <!-- Área para exibir a lista de berços cadastrados -->
+                <div>
+
+                    <div class="col-xs-12 col-md-12 col-md-offset-0 col-xs-offset-0"
+                         style="padding: 0px !important;">
+
+                        <div class="card col-xs-12 col-md-12" style="float: left; margin-bottom: 20px; display: flex; flex-flow: wrap;">                            
+
+                            <div class="col-xs-12 col-md-12 title-card">AGORA</div>
+
+                            <div class="col-xs-12 col-md-12 berco-details-content">                                  
+
+                                <h:form>
+
+                                    <div class="col-xs-12 col-md-3">
+                                        <div class="container-filtrodialog-label"
+                                             style="margin-bottom: 0px !important;">
+                                            <label>Porto: </label>
+                                        </div>
+                                        <div style="display: flex;"
+                                             class="container-filtrodialog-input">                            
+                                            <h:selectOneMenu id="area"
+                                                             class="form-control"
+                                                             value="#{PortoBean.agoraArea}"
+                                                             converter="areaConverter">    
+                                                <f:selectItems value="#{PortoBean.areas}" 
+                                                               var="a" 
+                                                               itemLabel="#{a.nome}" 
+                                                               itemValue="#{a}"/>
+                                                <f:ajax event="change"
+                                                        render="berco" 
+                                                        listener="#{PortoBean.agoraUpdateBercos()}"/>
+                                            </h:selectOneMenu>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-12 col-md-2">
+                                        <div class="container-filtrodialog-label"
+                                             style="margin-bottom: 0px !important;">
+                                            <label>Navios fundeados:</label>
+                                        </div>
+                                        <div style="display: flex;"
+                                             class="container-filtrodialog-input">                            
+                                            <h:selectBooleanCheckbox value="#{PortoBean.agoraNaviosFundeados}" />                                            
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-12 col-md-2">
+                                        <div class="container-filtrodialog-label"
+                                             style="margin-bottom: 0px !important;">
+                                            <label>Navios no canal:</label>
+                                        </div>
+                                        <div style="display: flex;"
+                                             class="container-filtrodialog-input">                            
+                                            <h:selectBooleanCheckbox value="#{PortoBean.agoraNaviosCanal}" />                                            
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-12 col-md-2">
+                                        <div class="container-filtrodialog-label"
+                                             style="margin-bottom: 0px !important;">
+                                            <label>Navios atracados:</label>
+                                        </div>
+                                        <div style="display: flex;"
+                                             class="container-filtrodialog-input">                            
+                                            <h:selectBooleanCheckbox value="#{PortoBean.agoraNaviosAtracados}" />                                            
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-12 col-md-3">
+                                        <div class="container-filtrodialog-label"
+                                             style="margin-bottom: 0px !important;">
+                                            <label>Atracado no berço:</label>
+                                        </div>
+                                        <div style="display: flex;"
+                                             class="container-filtrodialog-input">                            
+                                            <h:selectOneMenu id="berco"
+                                                             class="form-control"
+                                                             value="#{PortoBean.agoraBerco}"
+                                                             converter="bercoConverter">  
+                                                <f:selectItem itemValue="" itemLabel="Selecione"/>  
+                                                <f:selectItems value="#{PortoBean.agoraBercos}" 
+                                                               var="b" 
+                                                               itemLabel="#{b.nome}" 
+                                                               itemValue="#{b}"/>  
+                                            </h:selectOneMenu>    
+                                        </div>
+                                    </div>    
+
+                                    <div class="col-xs-12 col-md-12" style="margin-bottom: 15px !important;">                                    
+                                        <div style="margin-bottom: 0px !important; display: block !important;">                                                                    
+                                            <p:commandButton 
+                                                actionListener="#{PortoBean.reloadMovimentacaoPortoAgora(null)}"
+                                                style="float: right; margin: 0px !important;"
+                                                value="Pesquisar"
+                                                onclick="PF('statusdialog').show()"
+                                                onsuccess="PF('statusdialog').hide()"
+                                                onerror="PF('statusdialog').hide()"
+                                                update=":tb-movimentacao-porto-agora">                                    
+                                            </p:commandButton> 
+                                        </div>
+                                    </div>    
+
+                                </h:form>
+
+                                <p:panel id="tb-movimentacao-porto-agora">
+
+                                    <p:dataTable value="#{PortoBean.agoraListMovimentacoesPorto}" 
+                                                 var="obj"
+                                                 rows="10"
+                                                 paginator="true"                                         
+                                                 rowIndexVar="index"
+                                                 emptyMessage="Nenhum resultado encontrado"
+                                                 paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                 id="table-list-movimentacao-porto-agora">
+
+                                        <p:column headerText="Navio">
+                                            <b style="color: #3a86b2">#{obj.nomeNavio}</b><br/>
+                                            <b>Imo:</b> #{obj.imo}<br/>
+                                            <b>Calado:</b> #{obj.calado} m<br/>
+                                            <b>Vel. Máxima:</b> #{obj.maximaVelocidade} kn
+                                        </p:column>
+
+                                        <p:column headerText="Fundeio">
+                                            <b>Chegada:</b> #{PortoBean.getDatetimeToString(obj.dataFundeio)}<br/>
+                                            <b>Partida:</b> #{PortoBean.getDatetimeToString(obj.dataSaidaFundeio)}<br/>
+                                            <b>Duração:</b> #{PortoBean.getTimeDuration(obj.dataFundeio, obj.dataSaidaFundeio)}
+                                        </p:column>
+
+                                        <p:column headerText="Canal">
+                                            <ui:fragment rendered="#{PortoBean.containsData(obj.dataEntradaCanal)}">
+                                                <b>Chegada:</b> #{PortoBean.getDatetimeToString(obj.dataEntradaCanal)}<br/>
+                                                <b>Partida:</b> #{PortoBean.getDatetimeToString(obj.dataSaidaCanal)}<br/>
+                                                <b>Duração:</b> #{PortoBean.getTimeDuration(obj.dataEntradaCanal, obj.dataSaidaCanal)}
+                                            </ui:fragment>
+                                            <ui:fragment rendered="#{PortoBean.notContainsData(obj.dataEntradaCanal)}">
+                                                <span class="empty">Não está no canal</span>
+                                            </ui:fragment>
+                                        </p:column>
+
+                                        <p:column headerText="Berço 1">
+                                            <ui:fragment rendered="#{PortoBean.containsData(obj.dataEntradaPoinAtracacao1)}">
+                                                <b>Berço:</b> #{PortoBean.getNameBerco(obj.codPoinAtracacao1)}<br/>
+                                                <b>Chegada:</b> #{PortoBean.getDatetimeToString(obj.dataEntradaPoinAtracacao1)}<br/>
+                                                <b>Partida:</b> #{PortoBean.getDatetimeToString(obj.dataSaidaPoinAtracacao1)}<br/>
+                                                <b>Duração:</b> #{PortoBean.getTimeDuration(obj.dataEntradaPoinAtracacao1, obj.dataSaidaPoinAtracacao1)}
+                                            </ui:fragment>
+                                            <ui:fragment rendered="#{PortoBean.notContainsData(obj.dataEntradaPoinAtracacao1)}">
+                                                <span class="empty">Sem atracação</span>
+                                            </ui:fragment>
+                                        </p:column>
+
+                                        <p:column headerText="Berço 2">
+                                            <ui:fragment rendered="#{PortoBean.containsData(obj.dataEntradaPoinAtracacao2)}">
+                                                Berço: #{PortoBean.getNameBerco(obj.codPoinAtracacao2)}<br/>
+                                                Chegada: #{PortoBean.getDatetimeToString(obj.dataEntradaPoinAtracacao2)}<br/>
+                                                Partida: #{PortoBean.getDatetimeToString(obj.dataSaidaPoinAtracacao2)}<br/>
+                                                Duração: #{PortoBean.getTimeDuration(obj.dataEntradaPoinAtracacao2, obj.dataSaidaPoinAtracacao2)}
+                                            </ui:fragment>
+                                            <ui:fragment rendered="#{PortoBean.notContainsData(obj.dataEntradaPoinAtracacao2)}">
+                                                <span class="empty">Sem atracação</span>
+                                            </ui:fragment>
+                                        </p:column>
+
+                                        <p:column headerText="Berço 3">
+                                            <ui:fragment rendered="#{PortoBean.containsData(obj.dataEntradaPoinAtracacao3)}">
+                                                Berço: #{PortoBean.getNameBerco(obj.codPoinAtracacao3)}<br/>
+                                                Chegada: #{PortoBean.getDatetimeToString(obj.dataEntradaPoinAtracacao3)}<br/>
+                                                Partida: #{PortoBean.getDatetimeToString(obj.dataSaidaPoinAtracacao3)}<br/>
+                                                Duração: #{PortoBean.getTimeDuration(obj.dataEntradaPoinAtracacao3, obj.dataSaidaPoinAtracacao3)}
+                                            </ui:fragment>
+                                            <ui:fragment rendered="#{PortoBean.notContainsData(obj.dataEntradaPoinAtracacao3)}">
+                                                <span class="empty">Sem atracação</span>
+                                            </ui:fragment>
+                                        </p:column>
+
+                                        <p:column headerText="Berço 4">
+                                            <ui:fragment rendered="#{PortoBean.containsData(obj.dataEntradaPoinAtracacao4)}">
+                                                Berço: #{PortoBean.getNameBerco(obj.codPoinAtracacao4)}<br/>
+                                                Chegada: #{PortoBean.getDatetimeToString(obj.dataEntradaPoinAtracacao4)}<br/>
+                                                Partida: #{PortoBean.getDatetimeToString(obj.dataSaidaPoinAtracacao4)}<br/>
+                                                Duração: #{PortoBean.getTimeDuration(obj.dataEntradaPoinAtracacao4, obj.dataSaidaPoinAtracacao4)}
+                                            </ui:fragment>
+                                            <ui:fragment rendered="#{PortoBean.notContainsData(obj.dataEntradaPoinAtracacao4)}">
+                                                <span class="empty">Sem atracação</span>
+                                            </ui:fragment>
+                                        </p:column>
+
+                                    </p:dataTable>
+
+                                </p:panel>
+
+                            </div>                            
+
+                        </div>
+
+                    </div>
+
+                </div> <!-- Fechamento da área que exibe a lista de berços -->
+
+            </div> <!-- Fechamento do conteúdo -->  
+
+        </div> <!-- Fechamento do container -->                 
+
+        <!-- Importações scripts -->
+        <h:outputScript name="js/menu.js" target="body"/>
+
+        <!-- Importações templates -->        
+        <ui:include src="/admin/components/footer.xhtml" />           
+
+        <script>
+
+            function openInfoMonitor(btn) {
+
+                if ($(btn).hasClass("glyphicon-plus")) {
+                    $(btn).removeClass("glyphicon-plus");
+                    $(btn).addClass("glyphicon-minus");
+                } else {
+                    $(btn).removeClass("glyphicon-minus");
+                    $(btn).addClass("glyphicon-plus");
+                }
+
+                var card_body = $(btn).parent().parent().find(".card-variable-monitor-body");
+
+                if ($(card_body).hasClass("body-hide")) {
+                    $(card_body).removeClass("body-hide");
+                } else {
+                    $(card_body).addClass("body-hide");
+                }
+
+            }
+
+            $(function () {
+                $(".menu-ais").addClass("active");
+                $(".menu-ais-port").addClass("active-link");
+            });
+
+        </script>
+
+    </h:body>
+
+</html>

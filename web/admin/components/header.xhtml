@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets">    
+
+    <h:form>
+
+        <h:outputScript>            
+
+            localStorage.setItem('user_logged_in', '#{LoginBean.userLoggedInByJSON}');
+            
+            function openInfoVesselBySearch(mmsi, obj){
+
+            var path = window.location.pathname;
+            var page = path.split("/").pop();
+
+            if (page === 'realtime'){
+            ais.openInfoVesselBySearch(mmsi, obj);
+
+            }else{                    
+            var host = window.location.protocol + "//" +
+            window.location.hostname + ":" +
+            window.location.port + "/faces/admin/ais/realtime.xhtml?mmsi=" + mmsi;               
+            window.location.href = host;
+
+            }
+
+            };
+
+        </h:outputScript>        
+
+        <!-- Cabeçalho de cada página -->
+        <div id="header">
+
+            <!-- Corpo do cabeçalho -->
+            <div id="header-content">
+
+                <!-- Icone para abrir/fechar menu + título  -->
+                <div class="col-md-4" style="padding: 0px !important;">
+                    <div id="header-icon-menu">
+                        <span class="glyphicon glyphicon-menu-hamburger bt-menu" 
+                              style="margin-right:13px"></span>
+                        <h:link value="SISMAR" outcome="/admin/home" style="text-decoration: none; color: #484848">                           
+                        </h:link>            
+                    </div>
+                </div>
+
+                <!-- Info cliente -->
+                <div class="col-md-4" style="padding: 0px !important;">
+                    <div id="header-client-info">       
+                        <img src="#{HeaderBean.logoClient}"
+                             height="40px"/>
+                        <span id="header-client-info-name">
+                            <h:outputText value="#{LoginBean.client.nome}"/>
+                        </span> 
+                    </div>
+                </div>
+
+                <!-- Opções/Ferramentas -->
+                <div class="col-md-4" style="padding: 0px !important;">
+
+                    <div id="header-tool">
+
+                        <div class="dropdown">
+
+                            <button class="dropdown-toggle" 
+                                    type="button" 
+                                    data-toggle="dropdown"
+                                    style="background: transparent;
+                                    border: none;">
+
+                                <span class="glyphicon glyphicon-user user-loggedin"></span>
+
+                                <div class="header-tool-user">
+                                    <span class="user-name">
+                                        <h:outputText value="#{LoginBean.userLoggedIn.nome}"/>
+                                    </span>
+                                    <span class="glyphicon glyphicon-cog user-tool"></span>  
+                                </div>
+
+                            </button>
+
+                            <ul class="dropdown-menu header-tool-dropdown-menu">
+
+                                <li>
+                                    <h:commandLink action="#{LoginBean.signOut()}">
+                                        <span class="glyphicon glyphicon-log-out"/>
+                                        Sair
+                                    </h:commandLink>                      
+                                </li>
+                            </ul>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </h:form>
+
+</ui:composition>

@@ -1,0 +1,179 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <h:head>              
+
+        <title>Sismar - Histórico de acessos</title>
+
+        <!-- Importações padrão -->
+        <ui:include src="/admin/components/headdefault.xhtml" />
+
+    </h:head>
+
+    <h:body>
+
+        <div class="container-fluid" style="padding: 0px">           
+
+            <!-- Importar menu -->
+            <ui:include src="/admin/components/menu.xhtml" />
+
+            <!-- Importar header -->
+            <ui:include src="/admin/components/header.xhtml" />   
+
+            <!-- Corpo do container: conteúdo -->
+            <div id="content" class="col-xs-12">
+
+                <!-- Título do conteúdo -->
+                <div id="content-header" class="col-xs-12">
+                    <span id="content-title">Histórico de acessos</span> 
+                </div>
+
+                <!-- Área para exibir informações sobre a corrente -->
+                <div class="col-xs-12 content-card" style="margin-top: 30px;">                   
+                    
+                    <c:if test="#{not UserAccessesBean.userExists()}">
+                        <span style="width: 100%; padding: 20px; text-align: center; 
+                              color: #f1d722; font-size: 18px; display: block;">
+                            Nenhum usuário encontrado
+                        </span>
+                    </c:if>                    
+
+                    <c:if test="#{UserAccessesBean.userExists()}">
+
+                         <span style="width: 100%; color: #000000; text-align: center;font-size: 18px;">
+                             Usuário: #{UserAccessesBean.user.nome}
+                        </span>
+                        
+                        <div class="card col-xs-12 col-md-12" style="float: left; margin-top: 20px;  margin-bottom: 20px; display: flex; flex-flow: wrap;">                            
+
+                            <div class="col-xs-12 col-md-12 title-card">CONEXÃO ATUAL</div>
+
+                            <div class="col-xs-12 col-md-12 berco-details-content">                                  
+
+                                <c:if test="#{UserAccessesBean.user.openSession != null}">
+                                    <span style="width: 100%;
+                                          text-align: center;
+                                          display: block;">TEMPO DE SESSÃO</span>
+                                    <span style="width: 100%;
+                                          text-align: center;
+                                          display: block;
+                                          font-size: 40px;
+                                          color: #248e02;">
+                                     #{UserAccessesBean.getTimeDuration(UserAccessesBean.user.openSession.inicio, UserAccessesBean.user.openSession.termino)}
+                                    </span>
+                                </c:if>
+                                
+                                <c:if test="#{UserAccessesBean.user.openSession == null}">
+                                    <span style="width: 100% !important; padding: 20px; text-align: center; 
+                                          color: #f1d722; font-size: 18px;
+                                          display: block;">
+                                        O usuário não se encontra conectado no momento
+                                    </span>
+                                </c:if>
+
+                            </div>
+
+                        </div>
+
+                        <div class="card col-xs-12 col-md-12" style="float: left; margin-bottom: 20px; display: flex; flex-flow: wrap;">                            
+
+                            <div class="col-xs-12 col-md-12 title-card">HISTÓRICO DE ACESSOS</div>
+
+                            <div class="col-xs-12 col-md-12 berco-details-content">                                  
+
+                                <c:if test="#{not UserAccessesBean.userHasAccess()}">
+                                    <span style="width: 100% !important; padding: 20px; text-align: center; 
+                                          color: #f1d722; font-size: 18px; display: block;">
+                                        Nenhuma conexão ao SISMAR com este usuário
+                                    </span>
+                                </c:if>
+
+                                <c:if test="#{UserAccessesBean.userHasAccess()}">
+
+                                    <p:dataTable var="sessao" 
+                                                 value="#{UserAccessesBean.sessionHistory}"                                                     
+                                                 rows="10"
+                                                 paginator="true"
+                                                 rowIndexVar="index"
+                                                 emptyMessage="Nenhum resultado encontrado"
+                                                 paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+                                        <p:column headerText="IP"
+                                                  style="text-align: center">
+                                            <h:outputText value="#{sessao.ip}"/>                                
+                                        </p:column>  
+                                        
+                                        <p:column headerText="Início"
+                                                  style="text-align: center">
+                                            <h:outputText value="#{UserAccessesBean.getDatetimeToString(sessao.inicio)}"/>                                
+                                        </p:column>                            
+
+                                        <p:column headerText="Término"
+                                                  style="text-align: center">
+                                            <h:outputText value="#{UserAccessesBean.getDatetimeToString(sessao.termino)}"/>                                
+                                        </p:column>   
+
+                                        <p:column headerText="Duração"
+                                                  style="text-align: center">
+                                            <span style="background: #a1a2a1;
+                                                  color: #ffffff;
+                                                  font-size: 16px;
+                                                  border-radius: 10px;
+                                                  padding: 2px 10px;
+                                                  font-weight: bold;">
+                                                <h:outputText value="#{UserAccessesBean.getTimeDuration(sessao.inicio, sessao.termino)}"/>     
+                                            </span>
+                                        </p:column>   
+                                        
+                                        <p:column headerText="Páginas acessadas"
+                                                  style="text-align: center">
+                                            <a href="accessed_pages.xhtml?sessionId=#{sessao.codUsuariosWebSessao}"
+                                               style="margin-right: 10px;">
+                                                Visualizar
+                                            </a> 
+                                        </p:column> 
+
+                                    </p:dataTable>
+
+
+                                </c:if>
+
+
+                            </div>
+
+                        </div>
+
+                    </c:if>
+
+
+
+                </div> <!-- Fechamento da área que exibe informações de corrente -->
+
+            </div> <!-- Fechamento do conteúdo -->  
+
+        </div> <!-- Fechamento do container -->  
+
+        <!-- Importar rodapé -->
+        <ui:include src="/admin/components/footer.xhtml" />  
+
+        <h:outputScript name="js/menu.js" target="body"/>        
+
+        <script>
+            $(function () {
+
+                $(".menu-configuration").addClass("active");
+                $(".menu-configuration-users").addClass("active-link");
+
+            });
+        </script>
+
+    </h:body>
+
+</html>

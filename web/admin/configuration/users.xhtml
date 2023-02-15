@@ -1,0 +1,161 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <h:head>        
+
+        <title>Sismar - Usuários</title>
+
+        <!-- Importações padrão -->
+        <ui:include src="/admin/components/headdefault.xhtml" /> 
+
+    </h:head>
+
+    <h:body>
+
+        <div class="container-fluid" style="padding: 0px">           
+
+            <!-- Importar menu -->
+            <ui:include src="/admin/components/menu.xhtml" />
+
+            <!-- Importar header -->
+            <ui:include src="/admin/components/header.xhtml" />   
+
+            <!-- Corpo do container: conteúdo -->
+            <div id="content" class="col-xs-12">
+
+                <!-- Título do conteúdo -->
+                <div id="content-header" class="col-xs-12">
+                    <span id="content-title">Usuários</span> 
+                    <span id="content-subtitle">Cadastrados</span>
+                </div>
+
+                <!-- Área para exibir informações sobre a corrente -->
+                <div class="col-xs-12 content-card">
+
+                    <div class="col-xs-12 col-md-8 col-md-offset-2 col-xs-offset-0">
+
+                        <div class="col-sm-12" style="margin-bottom: 25px !important; 
+                             text-align: center;">                            
+                            <a style="float: initial !important" href="adduser.xhtml" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+                                <span class="ui-button-text ui-c">Cadastrar usuário</span>
+                            </a>
+                        </div>
+
+                        <h:form id="form-list-users">                                                                                                             
+
+                            <p:dataTable value="#{UsersBean.listUsers}" 
+                                         var="user"                                         
+                                         rows="20"
+                                         paginator="true"                                         
+                                         rowIndexVar="index"
+                                         emptyMessage="Nenhum resultado encontrado"
+                                         paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         id="table-list-user">
+
+                                <p:column headerText="Nome">
+                                    #{user.nome}
+                                </p:column>
+
+                                <p:column headerText="Login">
+                                    #{user.login}
+                                </p:column>
+
+                                <p:column headerText="Conectado"
+                                          style="text-align: center">
+
+                                    <p:fragment rendered="#{user.openSession != null}">
+                                        <span style="background: green;
+                                              width: 10px;
+                                              height: 10px;
+                                              border-radius: 15px;
+                                              color: white;
+                                              padding: 2px;
+                                              font-size: 10px;">on</span>
+                                    </p:fragment>
+
+                                    <p:fragment rendered="#{user.openSession == null}">
+                                        <span style="background: #f75151;
+                                              width: 10px;
+                                              height: 10px;
+                                              border-radius: 15px;
+                                              color: white;
+                                              padding: 2px;
+                                              font-size: 10px;">off</span>
+                                    </p:fragment>                                   
+
+                                </p:column>
+
+                                <p:column headerText="">
+
+                                    <a href="edituser.xhtml?user=#{user.login}"
+                                       style="margin-right: 10px;">
+                                        <i class="glyphicon glyphicon-pencil"></i>
+                                    </a> 
+
+                                    <p:commandLink actionListener="#{UsersBean.selectUserDelete(user)}"
+                                                   style="color: #f75151; margin-right: 10px;"
+                                                   onclick="PF('confirmationDialogDelete').show()">
+                                        <i class="glyphicon glyphicon-trash"></i>
+                                    </p:commandLink>
+
+                                    <a href="user_accesses.xhtml?user=#{user.login}"
+                                       style="margin-right: 10px;">
+                                        <i class="glyphicon glyphicon-dashboard"></i>
+                                    </a> 
+
+                                </p:column>
+
+                            </p:dataTable>                           
+
+                        </h:form>
+
+                    </div>
+
+                </div> <!-- Fechamento da área que exibe informações de corrente -->
+
+            </div> <!-- Fechamento do conteúdo -->  
+
+        </div> <!-- Fechamento do container -->  
+
+        <p:confirmDialog widgetVar="confirmationDialogDelete" 
+                         severity="alert" 
+                         message="Deseja realmente excluir o cadastro?" 
+                         header="Excluir cadastro" 
+                         appendTo="@(body)"
+                         id="confirmationDialog">  
+            <h:form>                
+                <p:commandButton value="Sim" 
+                                 actionListener="#{UsersBean.deleteUser}"
+                                 onclick="PF('confirmationDialogDelete').hide();PF('statusdialog').show()"
+                                 onsuccess="PF('statusdialog').hide()"
+                                 onerror="PF('statusdialog').hide()"                                                 
+                                 update=":form-list-users:table-list-user"/>
+                <p:commandButton value="Não" 
+                                 onclick="PF('confirmationDialogDelete').hide()" 
+                                 type="button"/>
+            </h:form>
+        </p:confirmDialog>
+
+        <!-- Importar rodapé -->
+        <ui:include src="/admin/components/footer.xhtml" />   
+
+        <h:outputScript name="js/menu.js" target="body"/>
+
+        <script>
+            $(function () {
+
+                $(".menu-configuration").addClass("active");
+                $(".menu-configuration-users").addClass("active-link");
+
+            });
+        </script>
+
+    </h:body>
+
+</html>

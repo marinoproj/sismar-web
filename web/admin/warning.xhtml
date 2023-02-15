@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:head>        
+
+        <title>Sismar - Em atualização</title>
+
+        <!-- Importações padrão -->
+        <ui:include src="/admin/components/headdefault.xhtml" />   
+
+    </h:head>
+
+    <h:body>
+
+        <div class="container-fluid" style="padding: 0px">           
+
+            <!-- Importar header -->
+            <ui:include src="/admin/components/header.xhtml" />   
+
+            <!-- Corpo do container: conteúdo -->
+            <div id="content" class="col-xs-12 content-no-menu">
+
+                <!-- Título do conteúdo -->
+                <div id="content-header" class="col-xs-12">
+                    <span id="content-title">Atenção</span> 
+                </div>
+
+                <!-- Área para exibir informações sobre a empresa -->
+                <div class="col-xs-12 content-card">
+
+                    <div class="col-xs-12 col-md-8 col-md-offset-2 col-xs-offset-0">
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><b>Atualização de sistema</b></div>
+                            <div class="panel-body">
+                                Atenção, estamos passando por uma atualização. Para mais
+                                informações, entre em contato com o suporte <b>(11) 96778-1955</b> ou                                
+                                visite o nosso site <a target="_blank" href='http://www.marinoprojetos.com.br'>www.marinoprojetos.com.br</a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div> <!-- Fechamento da área que exibe informações da empresa -->
+
+            </div> <!-- Fechamento do conteúdo -->              
+
+        </div> <!-- Fechamento do container -->  
+
+        <!-- Importar rodapé -->
+        <ui:include src="/admin/components/footer.xhtml" />  
+
+        <!-- Importações scripts -->
+        <h:outputScript name="js/menu.js" target="body"/>
+
+        <ui:include src="/admin/components/statusdialog.xhtml" />
+        <ui:include src="/admin/components/filtrobercodialog.xhtml" />  
+        <ui:include src="/admin/components/periodplaybackdialog.xhtml" />                   
+        <ui:include src="/admin/components/periodtrackdialog.xhtml" />          
+        <ui:include src="/admin/components/searchvesselsdialog.xhtml" />
+
+        <script>
+            $(function () {
+                $(".menu-about").addClass("active");
+            });
+        </script>
+
+    </h:body>
+
+</html>

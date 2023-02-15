@@ -1,0 +1,204 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+
+    <h:head>       
+
+        <title>Sismar - Configurações gerais</title>
+
+        <!-- Importações padrão -->
+        <ui:include src="/admin/components/headdefault.xhtml" /> 
+
+        <style>
+
+            .ui-inputfield{
+                display: block !important;
+                width: 100% !important; 
+                height: 34px !important;
+                padding: 6px 12px !important;
+                font-size: 14px !important;
+                line-height: 1.42857143 !important;
+                color: #555 !important;
+                background-color: #fff !important;
+                background-image: none !important;
+                border: 1px solid #ccc !important;
+                border-radius: 4px !important;
+                box-shadow: inset 0 1px 1px rgba(0,0,0,.075) !important;    
+                transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s !important;
+            }
+            .ui-inputfield:focus{
+                border-color: #66afe9 !important;
+                outline: 0 !important;    
+                box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6) !important;
+            }
+
+            .pe-inputNumber{
+                display: block !important;
+                width: 100% !important; 
+                height: 34px !important;
+                padding: 6px 12px !important;
+                font-size: 14px !important;
+                line-height: 1.42857143 !important;
+                color: #555 !important;
+                background-color: #fff !important;
+                background-image: none !important;
+                border: 1px solid #ccc !important;
+                border-radius: 4px !important;
+                box-shadow: inset 0 1px 1px rgba(0,0,0,.075) !important;    
+                transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s !important;
+            }
+            .pe-inputNumber:focus{
+                border-color: #66afe9 !important;
+                outline: 0 !important;    
+                box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6) !important;
+            }
+        </style>
+
+    </h:head>
+
+    <h:body>
+
+        <div class="container-fluid" style="padding: 0px">           
+
+            <!-- Importar menu -->
+            <ui:include src="/admin/components/menu.xhtml" />
+
+            <!-- Importar header -->
+            <ui:include src="/admin/components/header.xhtml" />   
+
+            <!-- Corpo do container: conteúdo -->
+            <div id="content" class="col-xs-12">
+
+                <!-- Título do conteúdo -->
+                <div id="content-header" class="col-xs-12">
+                    <span id="content-title">Configurações</span> 
+                    <span id="content-subtitle">Gerais</span>
+                </div>
+
+                <!-- Área para exibir informações sobre a corrente -->
+                <div class="col-xs-12 content-card" style="margin-top: 30px;">
+
+                    <div class="col-xs-12 col-md-8 col-md-offset-2 col-xs-offset-0">
+
+                        <h:form class="form-horizontal" 
+                                id="form-berco">
+
+                            <h4>Parâmetros - Operações</h4>
+                            <br/>
+
+                            <p:message for="form-berco" 
+                                       showDetail="true" 
+                                       showSummary="true"
+                                       redisplay="true"/>
+
+                            <!--<div class="form-group">
+                                <h:outputLabel class="col-sm-12" value="Tempo de gravação (seg):"/>
+                                <div class="col-sm-12">
+                                    <p:inputNumber value="#{ConfigBean.config.operacaoTmpGravacaoSeg}" 
+                                                   a:placeholder=""
+                                                   decimalPlaces="0">
+                                    </p:inputNumber>
+                                </div>
+                            </div>-->
+
+                            <!--<div class="form-group">
+                                <h:outputLabel class="col-sm-12" value="Tempo de gravação quando atracado (seg):"/>
+                                <div class="col-sm-12">
+                                    <p:inputNumber value="#{ConfigBean.config.operacaoTmpGravacaoDocadoSeg}" 
+                                                   a:placeholder=""
+                                                   decimalPlaces="0">
+                                    </p:inputNumber>
+                                </div>
+                            </div>-->
+
+                            <div class="form-group">
+                                <h:outputLabel class="col-sm-12" value="Distância atracado (cm):"/>
+                                <div class="col-sm-12">
+                                    <p:inputNumber value="#{ConfigBean.config.operacaoDistanciaAtracadoCm}" 
+                                                   a:placeholder="">
+                                    </p:inputNumber>
+                                </div>
+                            </div>                           
+
+                            <div class="form-group">
+                                <h:outputLabel class="col-sm-12" value="Distância deriva (m):"/>
+                                <div class="col-sm-12">
+                                    <p:inputNumber value="#{ConfigBean.config.operacaoDistanciaDerivaMt}" 
+                                                   a:placeholder="">
+                                    </p:inputNumber>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <h:outputLabel class="col-sm-12" value="Tempo com foco para iniciar (seg):"/>
+                                <div class="col-sm-12">
+                                    <p:inputNumber value="#{ConfigBean.config.operacaoTmpFocoInicioSeg}" 
+                                                   a:placeholder=""
+                                                   decimalPlaces="0">
+                                    </p:inputNumber>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <h:outputLabel class="col-sm-12" value="Tempo sem foco para encerrar (seg):"/>
+                                <div class="col-sm-12">
+                                    <p:inputNumber value="#{ConfigBean.config.operacaoTmpSemFocoEncerrarSeg}" 
+                                                   a:placeholder=""
+                                                   decimalPlaces="0">
+                                    </p:inputNumber>                                    
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <h:outputLabel class="col-sm-12" value="Ignorar distâncias menor que (m):"/>
+                                <div class="col-sm-12">
+                                    <p:inputNumber value="#{ConfigBean.config.operacaoIgnorarDistanciaAbaixoDeMt}" 
+                                                   a:placeholder="">
+                                    </p:inputNumber>                                    
+                                </div>
+                            </div>                           
+
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <h:commandButton 
+                                        value="Salvar"
+                                        actionListener="#{ConfigBean.save}"
+                                        onclick="PF('statusdialog').show()"
+                                        class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only sismar-bt-primary"
+                                        style="padding: 3px 15px;">
+                                        <f:ajax execute="@form" render="@form" />
+                                    </h:commandButton>                                    
+                                </div>
+                            </div>
+
+                        </h:form>
+
+                    </div>
+
+                </div> <!-- Fechamento da área que exibe informações de corrente -->
+
+            </div> <!-- Fechamento do conteúdo -->               
+
+        </div> <!-- Fechamento do container -->  
+
+        <!-- Importar rodapé -->
+        <ui:include src="/admin/components/footer.xhtml" />  
+
+        <h:outputScript name="js/menu.js" target="body"/>        
+
+        <script>
+            $(function () {
+                $(".menu-administration").addClass("active");
+                $(".menu-administration-configgerais").addClass("active-link");
+            });
+        </script>
+
+    </h:body>
+
+</html>

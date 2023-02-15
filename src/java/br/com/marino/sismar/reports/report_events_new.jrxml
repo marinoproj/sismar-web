@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report_events_new" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="bcbbe828-60aa-4cb4-987b-f9fd3cb1e8dd">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="net.sf.jasperreports.export.pdf.force.linebreak.policy" value="true"/>
+	<parameter name="LOCAL_IMAGEM_MARINO" class="java.lang.String"/>
+	<parameter name="PERIODO" class="java.lang.String"/>
+	<field name="data" class="java.lang.String"/>
+	<field name="poin" class="java.lang.String"/>
+	<field name="variable" class="java.lang.String"/>
+	<field name="priority" class="java.lang.String"/>
+	<field name="vessel_name" class="java.lang.String"/>
+	<field name="vessel_imo" class="java.lang.String"/>
+	<field name="vessel_type" class="java.lang.String"/>
+	<field name="message" class="java.lang.String"/>
+	<field name="color_line" class="java.lang.String"/>
+	<group name="Group1"/>
+	<group name="Group2"/>
+	<group name="Group3"/>
+	<group name="Group4"/>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="105">
+			<frame>
+				<reportElement mode="Transparent" x="-22" y="6" width="844" height="97" backcolor="#333333" uuid="0e967c51-76ec-4a57-9d0b-791899ba3c72"/>
+				<staticText>
+					<reportElement x="295" y="5" width="390" height="24" forecolor="#000000" uuid="65149400-3f26-44a5-bbea-e078b64c5840"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="14" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[SISMAR]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="364" y="69" width="100" height="20" forecolor="#000000" uuid="69a5e688-08ed-4457-bfba-927e74548bac"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="11" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Emitido em:]]></text>
+				</staticText>
+				<textField pattern="dd/MM/yyyy HH:mm:ss">
+					<reportElement x="468" y="69" width="147" height="20" forecolor="#000000" uuid="6e66e8d8-2660-4e1d-94ec-196180a19cfd"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+				<image hAlign="Right">
+					<reportElement x="222" y="15" width="135" height="75" uuid="83dd73d4-f470-40fe-9972-bbd98bef6a0f"/>
+					<imageExpression><![CDATA[$P{LOCAL_IMAGEM_MARINO}]]></imageExpression>
+				</image>
+				<staticText>
+					<reportElement x="295" y="27" width="390" height="24" forecolor="#000000" uuid="0a892b5c-bb39-4fd5-8920-e07f74bba5f6"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[Relatório de Eventos]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="364" y="49" width="251" height="20" uuid="433d5dc7-e1d3-48eb-946e-59e5c5b28ba6"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$P{PERIODO}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="40">
+			<staticText>
+				<reportElement x="494" y="4" width="308" height="31" isPrintWhenDetailOverflows="true" uuid="b2811342-91b0-4877-b526-d2710e8c7ff9"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="11" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Mensagem]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="178" y="5" width="91" height="30" isPrintWhenDetailOverflows="true" uuid="bd7e9fcf-4fd2-4e24-a4c2-f96009055592"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="11" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Variável]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="64" y="5" width="110" height="30" isPrintWhenDetailOverflows="true" uuid="eddf74f6-839e-40c8-bab0-ad5193d06932"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="11" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Poin]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="272" y="4" width="71" height="31" isPrintWhenDetailOverflows="true" uuid="f5c9a18b-4615-4079-b52c-b64e47129926"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="11" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Prioridade]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="346" y="4" width="145" height="31" isPrintWhenDetailOverflows="true" uuid="b2acd29b-3218-49d2-a3e3-ffb11ad0de65"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="11" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Embarcação]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="5" width="58" height="30" isPrintWhenDetailOverflows="true" uuid="181b4a2a-f116-4a81-a0ea-ccfe53dfd1d5"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="11" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Data]]></text>
+			</staticText>
+			<line>
+				<reportElement x="1" y="37" width="802" height="1" uuid="c14b753f-42d8-4ac9-a87a-f88c12c80718"/>
+				<graphicElement>
+					<pen lineWidth="0.75" lineColor="#666666"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="69">
+			<textField isStretchWithOverflow="true">
+				<reportElement x="3" y="3" width="58" height="20" uuid="67c88245-6e6c-449c-a769-a03aee0e137c"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="styled"/>
+				<textFieldExpression><![CDATA["<style forecolor='"+$F{color_line}+"'>" + $F{data} + "</style>"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="349" y="3" width="143" height="20" uuid="ddcdf42e-f519-470e-b52f-1d8376ffa36a"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="styled"/>
+				<textFieldExpression><![CDATA["<style forecolor='"+$F{color_line}+"'>" + $F{vessel_name} + "</style>"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="179" y="2" width="91" height="20" uuid="c6158d2c-e827-4441-9d6e-c8fbe6ecb72a"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="styled"/>
+				<textFieldExpression><![CDATA["<style forecolor='"+$F{color_line}+"'>" + $F{variable} + "</style>"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="349" y="20" width="143" height="20" uuid="9cccdfc7-6aef-4519-bc11-1ae8cefe8e8a"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="styled"/>
+				<textFieldExpression><![CDATA["<style forecolor='"+$F{color_line}+"'>" + "IMO: " + $F{vessel_imo} + "</style>"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="349" y="38" width="143" height="20" uuid="a5209924-1b3f-476c-bdb6-e4a045f6c5c4"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="styled"/>
+				<textFieldExpression><![CDATA["<style forecolor='"+$F{color_line}+"'>" + "TIPO: " + $F{vessel_type} + "</style>"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="64" y="2" width="110" height="20" uuid="7b842638-33ff-41c4-a784-00418ad00648"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="styled"/>
+				<textFieldExpression><![CDATA["<style forecolor='"+$F{color_line}+"'>" + $F{poin} + "</style>"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="273" y="2" width="73" height="20" uuid="40ee7c93-5401-4b4b-86f3-3878f0a08fae"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="styled"/>
+				<textFieldExpression><![CDATA["<style forecolor='"+$F{color_line}+"'>" + $F{priority} + "</style>"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="495" y="2" width="305" height="20" uuid="dd941f13-cbc7-4d80-96a6-bbd5a154729a"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="styled"/>
+				<textFieldExpression><![CDATA["<style forecolor='"+$F{color_line}+"'>" + $F{message} + "</style>"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="1" y="66" width="802" height="1" uuid="c07b7f04-cbc3-40cf-aa9f-a338c3bc94c9"/>
+				<graphicElement>
+					<pen lineWidth="0.75" lineColor="#CCCCCC"/>
+				</graphicElement>
+			</line>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="20">
+			<textField>
+				<reportElement mode="Transparent" x="250" y="3" width="511" height="13" backcolor="#E6E6E6" uuid="62edf57e-9ed6-4aa2-8ed4-30bc352fe031"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Página "+ $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement mode="Transparent" x="761" y="3" width="40" height="13" backcolor="#E6E6E6" uuid="68891290-ca26-47ab-9615-65a47e960b91"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

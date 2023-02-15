@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <h:head>       
+
+        <c:if test="#{EventBean.actionNew}">
+            <title>Sismar - Cadastrar evento</title>
+        </c:if>   
+
+        <c:if test="#{not EventBean.actionNew}">
+            <title>Sismar - Editar evento</title>
+        </c:if>
+
+        <ui:include src="/admin/components/headdefault.xhtml" /> 
+
+    </h:head>
+
+    <h:body>
+
+        <div class="container-fluid" style="padding: 0px">           
+
+            <ui:include src="/admin/components/menu.xhtml" />
+            <ui:include src="/admin/components/header.xhtml" />   
+
+            <div id="content" class="col-xs-12">
+
+                <div id="content-header" class="col-xs-12">
+                    <span id="content-title">Evento</span> 
+                    <c:if test="#{EventBean.actionNew}">
+                        <span id="content-subtitle">Cadastrar</span>
+                    </c:if>   
+                    <c:if test="#{not EventBean.actionNew}">
+                        <span id="content-subtitle">Editar</span>
+                    </c:if>
+                </div>
+
+                <div class="col-xs-12 content-card" style="margin-top: 30px;">
+
+                    <div class="col-xs-12 col-md-8 col-md-offset-2 col-xs-offset-0">
+
+                        <h:form class="form-horizontal" id="form-event">
+
+                            <p:message for="form-event" 
+                                       showDetail="true" 
+                                       showSummary="true"
+                                       redisplay="true"/>
+
+                            <div class="form-group">
+                                <h:outputLabel class="col-sm-12" value="Nome:*"/>
+                                <div class="col-sm-12">
+                                    <h:inputText value="#{EventBean.event.nome}" 
+                                                 class="form-control" 
+                                                 a:autofocus="true" 
+                                                 a:placeholder="Informe o nome"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <p:commandButton 
+                                        value="Salvar"
+                                        actionListener="#{EventBean.save}"
+                                        onclick="PF('statusdialog').show()"
+                                        onsuccess="PF('statusdialog').hide()"
+                                        onerror="PF('statusdialog').hide()"      
+                                        update="@form"
+                                        class="sismar-bt-primary"/>
+
+                                    <c:if test="#{not EventBean.actionNew}">
+                                        <p:commandButton 
+                                            value="Excluir"
+                                            actionListener="#{EventBean.delete}"
+                                            onclick="PF('statusdialog').show()"
+                                            onsuccess="PF('statusdialog').hide()"
+                                            onerror="PF('statusdialog').hide()"      
+                                            update="@form"
+                                            style="margin-right: 10px !important;"
+                                            class="sismar-bt-primary"/>
+                                    </c:if>
+
+                                    <p:commandButton 
+                                        value="Voltar"
+                                        class="sismar-bt-primary"
+                                        action="events?faces-redirect=true"
+                                        style="margin-right: 10px !important;"/>
+
+                                </div>
+                            </div>
+
+                        </h:form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <ui:include src="/admin/components/footer.xhtml" />  
+        <h:outputScript name="js/menu.js" target="body"/>        
+
+        <script>
+            $(function () {
+                $(".menu-operations").addClass("active");
+                $(".menu-operations-events").addClass("active-link");
+            });
+        </script>
+
+    </h:body>
+
+</html>

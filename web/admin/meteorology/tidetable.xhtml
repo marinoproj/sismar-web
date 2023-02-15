@@ -1,0 +1,270 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async="true" src="https://www.googletagmanager.com/gtag/js?id=UA-140836383-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag('js', new Date());
+            gtag('config', 'UA-140836383-1');
+        </script>
+        
+        <title>Sismar - Tabua de maré</title>
+
+        <link rel="shortcut icon" type="image/x-icon" href="#{resource['img/icon.png']}"></link>
+
+        <meta name="viewport" 
+              content="width=device-width, initial-scale=1">
+        </meta>
+
+        <meta name="theme-color" 
+              content="#222d32">                  
+        </meta>
+
+        <meta name="apple-mobile-web-app-status-bar-style" content="#222d32"></meta>
+        <meta name="msapplication-navbutton-color" content="#222d32"></meta>
+
+        <!-- Bootstrap 3.3.7  -->
+        <link rel="stylesheet" 
+              href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
+              integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" 
+              crossorigin="anonymous">
+        </link>
+
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" 
+                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" 
+                crossorigin="anonymous">
+        </script>        
+
+        <!-- Font do google  -->
+        <link href="https://fonts.googleapis.com/css?family=Bree+Serif" 
+              rel="stylesheet">
+        </link>
+
+        <!-- Style local -->
+        <h:outputStylesheet name="font/Sismar-Icon/Sismar-Icon.css" />
+        <h:outputStylesheet name="css/style.css" />
+
+    </h:head>
+
+    <h:body>
+
+        <div class="container-fluid" style="padding: 0px">           
+
+            <!-- Importar menu -->
+            <ui:include src="/admin/components/menu.xhtml" />
+
+            <!-- Importar header -->
+            <ui:include src="/admin/components/header.xhtml" />   
+
+            <!-- Corpo do container: conteúdo -->
+            <div id="content" class="col-xs-12">
+
+                <!-- Título do conteúdo -->
+                <div id="content-header" class="col-xs-12">
+                    <span id="content-title">Maré</span> 
+                    <span id="content-subtitle">Tábua</span>
+                </div>
+
+                <!-- Área para exibir informações sobre o clima -->
+                <div class="col-xs-12 content-card not-padding">
+
+                    <h:form id="form-tide">
+
+                        <!-- Título da área -->
+                        <div class="col-xs-12 content-card-header">
+                            <span class="col-xs-12 content-card-title" style="text-align: center">
+                                <div class="col-xs-12">
+                                    <p:commandLink onclick="PF('filtrodialog').show()">
+                                        <i class="glyphicon glyphicon-map-marker" style="margin-right: 10px;"></i> 
+                                        <h:outputText value="#{TideTableBean.portSelected.name}"/>
+                                    </p:commandLink>
+                                </div>
+                                <div class="col-xs-12">
+                                    <h:outputText value="#{TideTableBean.monthSelected.name}"/>
+                                    de 
+                                    <h:outputText value="#{TideTableBean.yearSelected.year}"/>
+                                </div>
+                                <div class="col-xs-12 description-link">
+                                    Clique sobre o endereço para atualizar
+                                </div>
+                            </span>                         
+                        </div>
+
+                        <!-- Card que exibe informações do clima -->
+                        <div class="col-xs-12 col-md-12 content-card-data content-card-data-weather not-padding">
+
+                            <div class="col-xs-12 col-md-6 col-md-offset-3 col-xs-offset-0 content-card-data-type4" >                             
+
+
+                                <p:dataList value="#{TideTableBean.tideTable.tideDays}" var="tideDay" 
+                                            itemType="none" type="none" rowIndexVar="index">
+
+                                    <div class="col-xs-6 col-md-4 card-tidetable-day">
+                                        <div class="col-xs-12 title-card-tidetable-day">
+                                            #{TideTableBean.getDay(tideDay.day)}
+                                        </div>
+                                        <div class="col-xs-12 content-card-tidetable-day">
+
+                                            <h:dataTable value="#{tideDay.tides}" 
+                                                         var="tide"
+                                                         class="table-card-tidetable-day">
+
+                                                <h:column>
+                                                    <f:facet name="header">Hora</f:facet>
+                                                        #{TideTableBean.getHour(tide.hour)}
+                                                </h:column>
+
+                                                <h:column class="tide-height">
+                                                    <f:facet name="header">Altura</f:facet>
+                                                    <ui:fragment rendered="#{tide.isUp}">
+                                                        <span class="glyphicon glyphicon-arrow-up txt-red"/>
+                                                    </ui:fragment>
+                                                    <ui:fragment rendered="#{!tide.isUp}">
+                                                        <span class="glyphicon glyphicon-arrow-down txt-blue"/>
+                                                    </ui:fragment>                                                        
+                                                    #{tide.height}m
+                                                </h:column>
+
+                                            </h:dataTable>
+
+                                        </div>
+                                    </div>                                    
+
+                                    <ui:fragment rendered="#{TideTableBean.createRowTide(index)}">
+                                        <div class="row"></div>
+                                    </ui:fragment>
+
+                                </p:dataList>
+
+                            </div>
+
+                        </div> <!-- Fechamento do card que exibe informações do pier -->
+
+                    </h:form>
+
+                </div> <!-- Fechamento da área que exibe informações de clima -->
+
+            </div> <!-- Fechamento do conteúdo -->  
+
+        </div> <!-- Fechamento do container -->  
+
+        <!-- Importar rodapé -->
+        <ui:include src="/admin/components/footer.xhtml" />   
+
+        <!-- Importar statusdialog -->
+        <ui:include src="/admin/components/statusdialog.xhtml" />   
+
+        <p:dialog widgetVar="filtrodialog" 
+                  position="center center"
+                  modal="true" 
+                  header="Filtro"
+                  draggable="false"
+                  resizable="false"
+                  appendTo="@(body)">
+
+            <h:form id="form-filtro">
+
+                <p:growl showDetail="true" 
+                         autoUpdate="true" 
+                         globalOnly="true"
+                         life="3000"/>
+
+                <div class="col-xs-12 col-md-12" id="container-filtrodialog">
+
+                    <div class="container-filtrodialog-group">
+                        <div class="container-filtrodialog-label">
+                            <h:outputLabel value="Porto: "/>
+                        </div>
+                        <div class="container-filtrodialog-input">
+
+                            <h:selectOneMenu id="port"
+                                             class="form-control"
+                                             value="#{TideTableBean.portSelected}"
+                                             converter="portConverter"
+                                             >  
+                                <f:selectItems value="#{TideTableBean.listPorts}" 
+                                               var="p" 
+                                               itemLabel="#{p.name}" 
+                                               itemValue="#{p}"/>
+                            </h:selectOneMenu>
+
+
+                        </div>
+                    </div>
+
+                    <div class="container-filtrodialog-group">
+                        <div class="container-filtrodialog-label">
+                            <h:outputLabel value="Mês: "/>
+                        </div>
+                        <div class="container-filtrodialog-input">
+
+                            <h:selectOneMenu id="month"
+                                             class="form-control"
+                                             value="#{TideTableBean.monthSelected}"
+                                             converter="monthConverter">  
+                                <f:selectItems value="#{TideTableBean.listMonth}" 
+                                               var="m" 
+                                               itemLabel="#{m.name}" 
+                                               itemValue="#{m}"/>  
+                            </h:selectOneMenu>                            
+
+                        </div>
+                    </div>
+
+                    <div class="container-filtrodialog-group">
+                        <div class="container-filtrodialog-label">
+                            <h:outputLabel value="Ano: "/>
+                        </div>
+                        <div class="container-filtrodialog-input">
+
+                            <h:selectOneMenu id="year"
+                                             class="form-control"
+                                             value="#{TideTableBean.yearSelected}"
+                                             converter="yearConverter">  
+                                <f:selectItems value="#{TideTableBean.listYear}" 
+                                               var="y" 
+                                               itemLabel="#{y.year}" 
+                                               itemValue="#{y}"/>  
+                            </h:selectOneMenu>                            
+
+                        </div>
+                    </div>
+
+                    <div class="container-filtrodialog-group">
+                        <p:commandButton actionListener="#{TideTableBean.displayTideTable()}" 
+                                         value="Pesquisar" 
+                                         onclick="PF('filtrodialog').hide();PF('statusdialog').show()"
+                                         onsuccess="PF('statusdialog').hide()"
+                                         onerror="PF('statusdialog').hide()"
+                                         class="sismar-bt-primary"
+                                         update=":form-tide :form-filtro"
+                                         />
+
+                    </div>
+
+                </div>
+
+            </h:form>
+
+        </p:dialog>
+
+        <script>
+            $(function () {
+                $(".menu-tidetable").addClass("active");
+            });
+        </script>
+
+    </h:body>
+
+</html>

@@ -1,0 +1,347 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">   
+
+    <h:form>
+        <nav id="menu"> 
+
+            <!-- Corpo do menu: Opções -->
+            <div id="menu-content">                
+
+                <ul id="menu-content-nav"> 
+
+                    <!-- Link do Inicio -->
+                    <li class="menu-home">
+                        <h:link value="Início" 
+                                outcome="/admin/ais/realtime.xhtml" 
+                                class="menu-home">
+                            <span class="glyphicon glyphicon-home icon-menu-nav"></span>
+                        </h:link>
+                    </li>
+
+                    <!-- Link para acessar página de Ais -->
+                    <ui:fragment rendered="#{MenuBean.activeFeatureMenuAis}">
+                        <li class="menu-ais">                            
+                            <a>
+                                <span class="glyphicon glyphicon-map-marker icon-menu-nav"></span>
+                                Ais
+                            </a>
+                            <ul style="display: none">
+                                <ui:fragment rendered="#{MenuBean.isActiveFeature('ais_realtime')}">
+                                    <li>
+                                        <h:link value="Real time" 
+                                                outcome="/admin/ais/realtime.xhtml" 
+                                                class="menu-ais-realtime">
+                                        </h:link>
+                                    </li>
+                                </ui:fragment>
+                                <ui:fragment rendered="#{MenuBean.isActiveFeature('ais_search')}">
+                                    <li>
+                                        <p:commandLink onclick="PF('open-search-vessels').show();">
+                                            Pesquisar
+                                        </p:commandLink>  
+                                    </li>
+                                </ui:fragment>
+                                <ui:fragment rendered="#{MenuBean.isActiveFeature('ais_playback')}">
+                                    <li>
+                                        <p:commandLink onclick="PF('open-period-playback').show();" class="menu-ais-playback">
+                                            Playback
+                                        </p:commandLink>
+                                    </li>
+                                </ui:fragment>
+                                <ui:fragment rendered="#{MenuBean.isActiveFeature('ais_track')}">
+                                    <li>
+                                        <p:commandLink onclick="PF('open-search-vessels').show();" class="menu-ais-track">
+                                            Rastro
+                                        </p:commandLink> 
+                                    </li>
+                                </ui:fragment>
+                                <ui:fragment rendered="#{MenuBean.isActiveFeature('ais_porto')}">
+                                    <li>
+                                        <h:link value="Porto" 
+                                                outcome="/admin/ais/port.xhtml" 
+                                                class="menu-ais-port">
+                                        </h:link>                                
+                                    </li>
+                                </ui:fragment>
+                            </ul>    
+                        </li>
+                    </ui:fragment>
+
+                    <ui:fragment rendered="#{MenuBean.activeFeatureMenuMeteorology}">
+                        <li class="menu-meteorology">                        
+                            <a>
+                                <span class="sismar-icon sismar-icon-wind icon-menu-nav"></span>
+                                Meteorologia
+                            </a>
+                            <ul style="display: none">
+                                <ui:fragment rendered="#{MenuBean.isActiveFeature('meteorology_climatempo')}">
+                                    <li>
+                                        <h:link value="Clima tempo" outcome="/admin/meteorology/weather.xhtml" class="menu-meteorology-weather">
+                                        </h:link>
+                                    </li>
+                                </ui:fragment>
+                                <ui:fragment rendered="#{MenuBean.isActiveFeature('meteorology_windy')}">
+                                    <li>
+                                        <h:link value="Windy" outcome="/admin/meteorology/windy.xhtml" class="menu-meteorology-windy">
+                                        </h:link>
+                                    </li>
+                                </ui:fragment>
+                                <ui:fragment rendered="#{MenuBean.isActiveFeature('meteorology_seacurrent')}">
+                                    <li>
+                                        <h:link value="Corrente" outcome="/admin/meteorology/seacurrent.xhtml" class="menu-meteorology-seacurrent">
+                                        </h:link>
+                                    </li>
+                                </ui:fragment>
+                                <ui:fragment rendered="#{MenuBean.isActiveFeature('meteorology_wind')}">
+                                    <li>
+                                        <h:link value="Vento" outcome="/admin/meteorology/wind.xhtml" class="menu-meteorology-wind">
+                                        </h:link>
+                                    </li>                            
+                                </ui:fragment>
+                                <ui:fragment rendered="#{MenuBean.isActiveFeature('meteorology_all')}">
+                                    <li>
+                                        <h:link value="Vento, Umidade, Temperatura e outros" outcome="/admin/meteorology/meteorology.xhtml" class="menu-meteorology-all">
+                                        </h:link>
+                                    </li>                            
+                                </ui:fragment>
+                            </ul>    
+                        </li>
+                    </ui:fragment>
+
+                    <ui:fragment rendered="#{MenuBean.activeFeatureMenuOperation}">
+                        <li class="menu-operations">                        
+                            <a>
+                                <span class="glyphicon glyphicon-th-list icon-menu-nav"></span>
+                                Operações
+                            </a>
+                            <ul style="display: none">
+                                <ui:fragment rendered="#{MenuBean.isActiveFeature('operations_steps')}">
+                                    <li>
+                                        <h:link value="Etapas" outcome="/admin/operations/steps.xhtml" class="menu-operations-steps">
+                                        </h:link>
+                                    </li>
+                                </ui:fragment>                                
+                                <ui:fragment rendered="#{MenuBean.isActiveFeature('operations_events')}">
+                                    <li>
+                                        <h:link value="Eventos" outcome="/admin/operations/events.xhtml" class="menu-operations-events">
+                                        </h:link>
+                                    </li>
+                                </ui:fragment>   
+                                <ui:fragment rendered="#{MenuBean.isActiveFeature('operations_operations')}">
+                                    <li>
+                                        <h:link value="Operações" outcome="/admin/operations/operations.xhtml" class="menu-operations-operations">
+                                        </h:link>
+                                    </li>
+                                </ui:fragment>   
+                            </ul>    
+                        </li>
+                    </ui:fragment>
+
+                    <ui:fragment rendered="#{MenuBean.activeFeatureMenuMoorings}">
+                        <li class="menu-moorings">                        
+                            <a>
+                                <span class="sismar-icon sismar-icon-mooring icon-menu-nav"></span>
+                                Atracações
+                            </a>
+                            <ul style="display: none">
+                                <ui:fragment rendered="#{MenuBean.isActiveFeature('moorings_sensors')}">
+                                    <li>
+                                        <h:link value="Sensores" outcome="/admin/moorings/sensors.xhtml" class="menu-moorings-sensors">
+                                        </h:link>
+                                    </li>
+                                </ui:fragment>
+                                <ui:fragment rendered="#{MenuBean.isActiveFeature('moorings_search')}">
+                                    <li>
+                                        <h:link value="Consultar" outcome="/admin/moorings/search.xhtml" class="menu-moorings-moorings">
+                                        </h:link>
+                                    </li>
+                                </ui:fragment>                                
+                                <ui:fragment rendered="#{MenuBean.isActiveFeature('moorings_realtime')}">
+                                    <li>
+                                        <p:commandLink actionListener="#{MenuBean.openPageAtracacaoRealtime}" class="menu-moorings-shipsmoored">
+                                            Real time
+                                        </p:commandLink>                      
+                                    </li>   
+                                </ui:fragment>                                
+                                <ui:fragment rendered="#{MenuBean.isActiveFeature('moorings_giaonts')}">
+                                    <li>
+                                        <h:link value="Giaonts" outcome="/admin/moorings/giaonts.xhtml" class="menu-moorings-giaonts">
+                                        </h:link>
+                                    </li>
+                                </ui:fragment>                                
+                                <ui:fragment rendered="#{MenuBean.isActiveFeature('moorings_praticos')}">
+                                    <li>
+                                        <h:link value="Práticos" outcome="/admin/moorings/praticos.xhtml" class="menu-moorings-praticos">
+                                        </h:link>
+                                    </li>
+                                </ui:fragment>                                
+                            </ul>    
+                        </li>
+                    </ui:fragment>
+
+<!-- <ui:fragment rendered="#{MenuBean.activeFeatureMenuManeuvers}">
+    <li class="menu-maneuvers">
+        <a>
+            <span class="sismar-icon sismar-icon-mooring icon-menu-nav"></span>
+            Atracações
+        </a>
+        <ul style="display: none">
+            <li>
+                <p:commandLink onclick="PF('filtropierdialog').show();" class="menu-maneuvers-mooring">
+                    Real time
+                </p:commandLink>                      
+            </li>                          
+        </ul>    
+    </li>
+</ui:fragment>-->
+
+                    <!-- Link para acessar página alarmes -->
+                    <ui:fragment rendered="#{MenuBean.isActiveFeature('events')}">
+                        <li class="menu-alarms">
+                            <h:link value="Eventos" outcome="/admin/events" class="menu-alarms">
+                                <span class="glyphicon glyphicon-bell icon-menu-nav"></span>
+                            </h:link>                           
+                        </li>
+                    </ui:fragment>
+
+                    <ui:fragment rendered="#{MenuBean.activeFeatureMenuConfig}">
+                        <li class="menu-configuration">
+                            <a>
+                                <span class="glyphicon glyphicon-cog icon-menu-nav"></span>
+                                Configurações
+                            </a>
+                            <ul style="display: none">                                                                
+                                <ui:fragment rendered="#{MenuBean.isActiveFeature('config_users')}">
+                                    <li>
+                                        <h:link value="Usuários" outcome="/admin/configuration/users.xhtml" class="menu-configuration-users">
+                                        </h:link>
+                                    </li>
+                                </ui:fragment>
+                                <ui:fragment rendered="#{MenuBean.isActiveFeature('config_users')}">
+                                    <li>
+                                        <h:link value="Cadastrar usuário" outcome="/admin/configuration/adduser.xhtml" class="menu-configuration-adduser">
+                                        </h:link>
+                                    </li>                            
+                                </ui:fragment>
+                                <ui:fragment rendered="#{MenuBean.isActiveFeature('config_api')}">
+                                    <li>
+                                        <h:link value="API" 
+                                                outcome="/admin/configuration/api.xhtml" 
+                                                class="menu-configuration-api">
+                                        </h:link>
+                                    </li>
+                                </ui:fragment>
+                            </ul>    
+                        </li>
+                    </ui:fragment>
+
+                    <ui:fragment rendered="#{MenuBean.activeFeatureMenuAdministration}">
+                        <li class="menu-administration">
+                            <a>
+                                <span class="glyphicon glyphicon-th-large icon-menu-nav"></span>
+                                Administração
+                            </a>
+                            <ul style="display: none">                                
+                                <ui:fragment rendered="#{MenuBean.isActiveFeature('admin_clients')}">
+                                    <li>
+                                        <h:link value="Clientes" outcome="/admin/administration/clients.xhtml" class="menu-administration-clients">
+                                        </h:link>
+                                    </li>
+                                </ui:fragment>                                                                
+                                <ui:fragment rendered="#{MenuBean.isActiveFeature('admin_bercos')}">
+                                    <li>
+                                        <h:link value="Berços" outcome="/admin/administration/bercos.xhtml" class="menu-administration-bercos">
+                                        </h:link>
+                                    </li>
+                                </ui:fragment>                                
+                                <ui:fragment rendered="#{MenuBean.isActiveFeature('admin_configgerais')}">
+                                    <li>
+                                        <h:link value="Configurações Gerais" outcome="/admin/administration/config.xhtml" class="menu-administration-configgerais">
+                                        </h:link>
+                                    </li>
+                                </ui:fragment>
+                            </ul>    
+                        </li>
+                    </ui:fragment>                  
+
+                    <!-- Link para acessar página Sobre -->
+                    <ui:fragment rendered="#{MenuBean.isActiveFeature('about')}">
+                        <li class="menu-about">
+                            <h:link value="Sobre" outcome="/admin/about" class="menu-about">
+                                <span class="sismar-icon sismar-icon-help icon-menu-nav"></span>
+                            </h:link>                           
+                        </li>
+                    </ui:fragment>
+
+                    <!-- Link para sair -->
+                    <li>
+                        <h:commandLink action="#{LoginBean.signOut()}">
+                            <span class="glyphicon glyphicon-log-out icon-menu-nav"/>
+                            Sair
+                        </h:commandLink>
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </nav>
+
+    </h:form>
+
+    <!-- Importações -->
+    <ui:include src="/admin/components/statusdialog.xhtml" />
+    <ui:include src="/admin/components/filtrobercodialog.xhtml" />  
+    <ui:include src="/admin/components/periodplaybackdialog.xhtml" />                   
+    <ui:include src="/admin/components/periodtrackdialog.xhtml" />          
+    <ui:include src="/admin/components/searchvesselsdialog.xhtml" />
+
+    <p:growl showDetail="true" 
+             globalOnly="true"
+             showSummary="false"
+             life="3000">
+        <p:autoUpdate />
+    </p:growl>
+
+    <script>
+
+        $(document).ready(function () {
+
+            function setVisibleMenu(visible) {
+                if (visible) {
+                    $("#menu").fadeIn(300);
+                    if ($(this).width() > 992) {
+                        $("#content").removeClass("content-no-menu");
+                        $("#content-map").removeClass("content-no-menu-map");
+                    }
+                } else {
+                    $("#menu").fadeOut(300);
+                    if ($(this).width() > 992) {
+                        $("#content").addClass("content-no-menu");
+                        $("#content-map").addClass("content-no-menu-map");
+                    }
+                }
+            }
+
+            function clickMenu() {
+                if ($("#menu").is(":visible")) {
+                    setVisibleMenu(false);
+                } else {
+                    setVisibleMenu(true);
+                }
+            }
+
+            $(".bt-menu").click(function () {
+                clickMenu();
+            });
+
+        });
+
+    </script>
+
+</ui:composition>

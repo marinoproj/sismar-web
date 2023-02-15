@@ -1,0 +1,206 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets">    
+
+    <style>
+
+        .data-atualizacao {
+            font-size: 12px;
+            font-weight: 100;
+            color: #ababab;
+        }
+
+        .status-sem-embarcacao{
+            background: #828282 !important;
+        }
+
+        .status-offline{
+            background: #f74646 !important;
+        }
+
+        .status-atracando{
+            background: #f39c12 !important;
+        }
+
+        .status-atracado{ 
+            background: #009551 !important;
+        }
+
+        .status-partindo{               
+            background: #f39c12 !important;
+        }
+
+        .disabled {
+            background: #eee;
+        }        
+
+        select {
+            border: none;
+            border-radius: 10px;
+            padding: 8px;
+            width: 100%;
+            margin-top: 5px;
+            text-align-last:center;
+        }
+
+        .tb-mooring-title{
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+
+        .tb-mooring-value{
+            font-size: 14px;
+        }
+
+        #atracacao-laser{
+            position: fixed;
+            bottom: 70px;
+            left: 50%;                
+            width: 360px;
+            padding-left: 50px;
+            padding-right: 50px;
+            margin-left: -115px;
+            background: #f7f7f7;
+            z-index: 100000000;
+            box-shadow: 0 3px 14px rgba(0,0,0,0.4);
+            border-radius: 12px;
+            font-size: 12px;
+            cursor: move;   
+            display: none;
+        }            
+
+        .com-atracacao-com-embarcacao{                       
+            height: 510px;                        
+        }
+        
+        .com-atracacao-sem-embarcacao{                       
+            height: 320px;                        
+        }
+
+        .sem-atracacao{                       
+            height: 150px;                        
+        }
+
+        #atracacao-laser > .row{
+            margin-top: 5px;
+        }
+
+        @media (max-width: 992px) {
+            #atracacao-laser{
+                position: fixed;
+                left: 0;
+                margin-left: 7%;
+                bottom: 20px;
+                width: 86%;
+            }            
+
+        }
+
+        #info-sem-atracacao{
+            font-size: 17px;
+            padding: 25px 0px;
+            text-align: center;
+            width: 100%;
+            color: #222d32;
+            font-weight: bold;
+        }
+
+    </style>
+
+    <div id="atracacao-laser" class="com-atracacao-com-embarcacao" style="text-align: center">
+
+        <div class="row" style="margin-top: 15px;">
+            <div class="col-xs-12 tb-mooring-title">BERÇO</div>
+            <div class="col-xs-12">
+                <select name="select-berco" id="cb-berco">
+                </select>
+            </div>           
+        </div>
+
+        <span id="info-sem-atracacao" class="col-xs-12">Sem embarcação</span>
+
+        <div class="row" style="text-align: center" id="atracacao-content">
+
+            <!-- ÂNGULO -->
+            <div class="row" style="margin-top: 15px;">
+                <div class="col-xs-12 tb-mooring-title">ÂNGULO</div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 tb-mooring-value">
+                    <span id="angulo"></span>
+                </div>
+            </div>
+
+            <!-- LADOS -->
+            <div class="row tb-mooring-margin" style="margin-top: 15px;">
+                <div class="col-xs-3 tb-mooring-nopadding tb-mooring-title">
+                    ESQUERDA<br/>
+                    <span class="data-atualizacao" id="dt-atualizacao-esq"></span>
+                </div>
+                <div class="col-xs-6 tb-mooring-nopadding"></div>
+                <div class="col-xs-3 tb-mooring-nopadding tb-mooring-title">
+                    DIREITA<br/>
+                    <span class="data-atualizacao" id="dt-atualizacao-dir"></span>
+                </div>
+            </div>
+
+            <!-- DISTÂNCIA -->
+            <div class="row tb-mooring-margin">
+                <div class="col-xs-3 tb-mooring-nopadding tb-mooring-number tb-mooring-value">
+                    <span id="dist-esq"></span>
+                </div>
+                <div class="col-xs-6 tb-mooring-nopadding ">DISTÂNCIA 'm'</div>
+                <div class="col-xs-3 tb-mooring-nopadding tb-mooring-number tb-mooring-value">
+                    <span id="dist-dir"></span>
+                </div>
+            </div>
+
+            <!-- VELOCIDADE -->
+            <div class="row tb-mooring-margin">
+                <div class="col-xs-3 tb-mooring-nopadding tb-mooring-number tb-mooring-value">
+                    <span id="vel-esq"></span>
+                </div>
+                <div class="col-xs-6 tb-mooring-nopadding ">VELOCIDADE 'cm/s'</div>
+                <div class="col-xs-3 tb-mooring-nopadding tb-mooring-number tb-mooring-value">
+                    <span id="vel-dir"></span>
+                </div>
+            </div>
+
+            <!-- EMBARCAÇÃO -->
+            <div class="col-xs-12" id="embarcacao" style="margin-top: 20px;">                                 
+
+                <div class="col-xs-12">                                                                        
+                    <p style="font-size: 12px; font-weight: bold">
+                        <span id="vessel-name"></span>
+                    </p>
+                    <p style="line-height: 0; font-size: 12px; margin-top: 5px">
+                        <b>IMO: </b> <span id="imo"></span>
+                    </p>
+                </div>
+
+                <img id="imagem-embarcacao"
+                     style="border-radius: 5px; margin-top: 10px;"
+                     width="100%"
+                     height="120px"
+                     src="/sismar/faces/javax.faces.resource/img/sem_imagem.png"></img>                        
+
+            </div>
+
+            <!-- STATUS -->
+            <div class="col-xs-12 content-card-data-value-status"
+                 style="margin-top: 15px;
+                 text-align: center;">
+                <span class="status-atracando" id="status"></span>
+            </div>
+
+        </div>
+
+    </div>               
+
+</ui:composition>

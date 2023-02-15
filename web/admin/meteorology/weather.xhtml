@@ -1,0 +1,235 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>                
+
+        <title>Sismar - Clima</title>
+        
+        <!-- Importações padrão -->
+        <ui:include src="/admin/components/headdefault.xhtml" />   
+
+    </h:head>
+
+    <h:body>
+
+        <div class="container-fluid" style="padding: 0px">           
+
+            <!-- Importar menu -->
+            <ui:include src="/admin/components/menu.xhtml" />
+
+            <!-- Importar header -->
+            <ui:include src="/admin/components/header.xhtml" />   
+
+            <!-- Corpo do container: conteúdo -->
+            <div id="content" class="col-xs-12">
+
+                <!-- Título do conteúdo -->
+                <div id="content-header" class="col-xs-12">
+                    <span id="content-title">Clima</span> 
+                    <span id="content-subtitle">Tempo</span>
+                </div>
+
+                <!-- Área para exibir informações sobre o clima -->
+                <div class="col-xs-12 content-card not-padding">
+
+                    <h:form id="form-weather">
+
+                        <!-- Título da área -->
+                        <div class="col-xs-12 content-card-header">
+                            <span class="col-xs-12 content-card-title" style="text-align: center">
+                                <div class="col-xs-12">
+                                    <p:commandLink onclick="PF('filtrodialog').show()">
+                                        <i class="glyphicon glyphicon-map-marker" style="margin-right: 10px;"></i> 
+                                        <h:outputText id="filtro-selected" value="#{WeatherBean.filtroSelected}"/>
+                                    </p:commandLink>
+                                </div>
+                                <div class="col-xs-12 description-link">
+                                    Clique sobre o endereço para atualizar
+                                </div>
+                            </span>                         
+                        </div>
+
+                        <!-- Card que exibe informações do clima -->
+                        <div class="col-xs-12 col-md-12 content-card-data content-card-data-weather not-padding">
+
+                            <div class="col-xs-12 col-md-6 col-md-offset-3 col-xs-offset-0 content-card-data-type4" >                             
+
+                                <ui:fragment rendered="#{WeatherBean.isDisplayWeather()}">
+
+                                    <!-- Informações principais -->
+
+                                    <div class="col-xs-12 info-main-weather not-padding" >  
+                                        <div class="col-xs-5 col-md-6 icon-weather">  
+                                            <h:graphicImage name="#{WeatherBean.icon}"/>
+                                        </div>
+
+                                        <div class="col-xs-7 col-md-6" >  
+                                            <div class="col-xs-12 temperature-weather" >  
+                                                <h:outputText value="#{WeatherBean.temperature}"/>
+                                            </div>
+                                            <div class="col-xs-12 condition-weather" >
+                                                <h:outputText value="#{WeatherBean.condition}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Outras informações -->
+
+                                    <div class="col-xs-12 info-others-weather not-padding" >
+                                        <!-- Sensação térmica -->
+                                        <div class="col-xs-3 not-padding" >  
+                                            <div class="col-xs-12 title-others-weather not-padding" >  
+                                                Sensação
+                                            </div>
+                                            <div class="col-xs-12 value-others-weather not-padding" >  
+                                                <h:outputText value="#{WeatherBean.sensation}"/>
+                                            </div>
+                                        </div>
+
+                                        <!-- Umidade -->
+                                        <div class="col-xs-3 not-padding" >  
+                                            <div class="col-xs-12 title-others-weather not-padding" >  
+                                                Umidade
+                                            </div>
+                                            <div class="col-xs-12 value-others-weather not-padding" > 
+                                                <h:outputText value="#{WeatherBean.humidity}"/>
+                                            </div>
+                                        </div>
+
+                                        <!-- Pressão -->
+                                        <div class="col-xs-3 not-padding" >  
+                                            <div class="col-xs-12 title-others-weather not-padding" >  
+                                                Pressão
+                                            </div>
+                                            <div class="col-xs-12 value-others-weather not-padding" >  
+                                                <h:outputText value="#{WeatherBean.pressure}"/>
+                                            </div>
+                                        </div>
+
+                                        <!-- Vento -->
+                                        <div class="col-xs-3 not-padding" >  
+                                            <div class="col-xs-12 title-others-weather not-padding" >  
+                                                Vento
+                                            </div>
+                                            <div class="col-xs-12 value-others-weather not-padding" >  
+                                                <h:outputText value="#{WeatherBean.wind}"/>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <!-- Ultima atualização -->
+                                    <div class="col-xs-12 date-update-weather not-padding" > 
+                                        <h:outputText value="#{WeatherBean.dateLastUpdate}"/>
+                                    </div>
+
+                                </ui:fragment>
+
+                            </div>
+
+                        </div> <!-- Fechamento do card que exibe informações do pier -->
+
+                    </h:form>
+
+                </div> <!-- Fechamento da área que exibe informações de clima -->
+
+            </div> <!-- Fechamento do conteúdo -->  
+
+        </div> <!-- Fechamento do container -->  
+
+        <!-- Importar rodapé -->
+        <ui:include src="/admin/components/footer.xhtml" />   
+
+        <p:dialog widgetVar="filtrodialog" 
+                  position="center center"
+                  modal="true" 
+                  header="Filtro"
+                  draggable="false"
+                  resizable="false"
+                  appendTo="@(body)">
+
+            <h:form id="form-filtro">
+
+                <div class="col-xs-12 col-md-12" id="container-filtrodialog">
+
+                    <div class="container-filtrodialog-group">
+                        <div class="container-filtrodialog-label">
+                            <h:outputLabel value="Estado: "/>
+                        </div>
+                        <div class="container-filtrodialog-input">
+
+                            <h:selectOneMenu id="state"
+                                             class="form-control"
+                                             value="#{WeatherBean.stateSelected}"
+                                             converter="stateConverter"
+                                             >  
+                                <f:selectItem itemValue="#{null}" itemLabel="Selecione"/>  
+                                <f:selectItems value="#{WeatherBean.states}" 
+                                               var="s" 
+                                               itemLabel="#{s.name}" 
+                                               itemValue="#{s}"/>
+                                <f:ajax event="change"
+                                        render="city" 
+                                        listener="#{WeatherBean.updateCities()}"/>
+                            </h:selectOneMenu>
+
+
+                        </div>
+                    </div>
+
+                    <div class="container-filtrodialog-group">
+                        <div class="container-filtrodialog-label">
+                            <h:outputLabel value="Cidade: "/>
+                        </div>
+                        <div class="container-filtrodialog-input">
+
+                            <h:selectOneMenu id="city"
+                                             class="form-control"
+                                             value="#{WeatherBean.citySelected}"
+                                             converter="cityConverter">  
+                                <f:selectItem itemValue="" itemLabel="Selecione"/>  
+                                <f:selectItems value="#{WeatherBean.cities}" 
+                                               var="c" 
+                                               itemLabel="#{c.name}" 
+                                               itemValue="#{c}"/>  
+                            </h:selectOneMenu>                            
+
+                        </div>
+                    </div>
+
+                    <div class="container-filtrodialog-group">
+                        <p:commandButton actionListener="#{WeatherBean.displayWeather()}" 
+                                         value="Pesquisar" 
+                                         onclick="PF('filtrodialog').hide();PF('statusdialog').show()"
+                                         onsuccess="PF('statusdialog').hide()"
+                                         onerror="PF('statusdialog').hide()"
+                                         class="sismar-bt-primary"
+                                         update=":form-weather :form-filtro"
+                                         />
+
+                    </div>
+
+                </div>
+
+            </h:form>
+
+        </p:dialog>
+
+        <!-- Importações scripts -->
+        <h:outputScript name="js/menu.js" target="body"/>
+
+        <script>
+            $(function () {
+                $(".menu-meteorology").addClass("active");
+                $(".menu-meteorology-weather").addClass("active-link");
+            });
+        </script>
+
+    </h:body>
+
+</html>

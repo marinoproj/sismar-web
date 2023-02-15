@@ -1,0 +1,660 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <h:head>                
+
+        <title>Sismar - Alarmes</title>       
+
+        <!-- Importações padrão -->
+        <ui:include src="/admin/components/headdefault.xhtml" />   
+        <h:outputScript library="primefaces-extensions" name="primefaces-extensions.js"/>
+
+        <style>
+
+            
+            
+            .ui-selectcheckboxmenu-header {
+                padding: 0px !important;
+                margin: 0px !important;
+            }
+            
+            .ui-selectcheckboxmenu-item label {
+                font-weight: normal;
+            }
+            
+            .ui-datatable .ui-datatable-header {
+                text-align: right !important;
+            }
+
+            .ui-button-text-only .ui-button-text {
+                padding: 0.3em 0.4em;
+            }
+
+            .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-header .ui-chkbox {
+                visibility: hidden;
+            }
+
+            .ui-filter-column .ui-column-customfilter .custom-filter {
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .year-spinner input {
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .ui-selectcheckboxmenu-items-wrapper, .ui-selectcheckboxmenu-header, .ui-selectonemenu-items{
+                background: #ffffff !important;
+                border: none !important;
+            }
+
+            .ui-selectmanymenu{
+                width: 100%;
+            }
+
+            .ui-selectmanymenu .ui-selectlistbox-filter {
+                display: block !important;
+                width: 100% !important; 
+                height: 34px !important;
+                padding: 6px 12px !important;
+                font-size: 14px !important;
+                line-height: 1.42857143 !important;
+                color: #555 !important;
+                background-color: #fff !important;
+                background-image: none !important;
+                border: 1px solid #ccc !important;
+                border-radius: 4px !important;
+                box-shadow: inset 0 1px 1px rgba(0,0,0,.075) !important;    
+                transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s !important;
+
+            }
+
+            .ui-selectmanymenu .ui-selectlistbox-filter:focus{
+                border-color: #66afe9 !important;
+                outline: 0 !important;    
+                box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6) !important;
+            }
+
+            .ui-selectmanymenu .ui-selectlistbox-item > td:first-child {
+                width: 30px;
+                padding-left: 10px;
+            }
+
+            .ui-selectmanymenu .ui-state-highlight {
+                background: #dcdcdc !important;
+                color: black !important;
+                text-shadow: none !important;
+            }
+
+            .ui-selectmanymenu .ui-selectlistbox-listcontainer{
+                height: 100px !important;
+            }
+
+            .button-variable-monitor{
+                height: 25px !important;
+                font-size: 12px !important;
+                margin-left: 10px !important;
+                margin-top: 20px !important;
+            }
+
+            .button-rules{
+                padding: 0px;
+                margin: 0px;
+                height: 30px;
+                margin-top: 3px;   
+                margin-left: 5px !important;
+            }
+
+            .button-rules button{
+                padding: 0px;
+                margin: 0px;
+                height: 30px;
+                margin-top: 3px;   
+            }
+
+            .ui-colorpicker button {
+                padding: 0px;
+                margin: 0px;
+            }
+            .label-rule{
+                padding: 5px;
+            }
+
+            .body-hide{
+                display: none;
+            }
+
+            .card-variable-monitor-title{
+                margin-top: 10px;
+                background: #efefef;
+                padding: 10px;
+                font-weight: bold;
+                color: #8a8a8a;
+                border-left: 1px solid #d4d4d4;
+                border-top: 1px solid #d4d4d4;
+                border-right: 1px solid #d4d4d4;
+                display: flex;
+            }
+
+            .card-variable-monitor-body{
+                border-left: 1px solid #d4d4d4;
+                border-bottom: 1px solid #d4d4d4;
+                border-right: 1px solid #d4d4d4;
+                padding-top: 15px;
+                padding-bottom: 15px;
+            }
+
+            .ui-selectoneradio tr {
+                padding-left: 10px;
+            }
+
+            .tags_message{
+                text-align: center;
+                padding-top: 5px;
+            }
+
+            .tag_message{
+                background: #e2e2e2;
+                border-radius: 10px;
+                padding: 3px 5px;
+                font-size: 11px;
+            }
+
+            .pe-inputNumber{
+                display: block !important;
+                width: 100px !important; 
+                height: 34px !important;
+                padding: 6px 12px !important;
+                font-size: 14px !important;
+                line-height: 1.42857143 !important;
+                color: #555 !important;
+                background-color: #fff !important;
+                background-image: none !important;
+                border: 1px solid #ccc !important;
+                border-radius: 4px !important;
+                box-shadow: inset 0 1px 1px rgba(0,0,0,.075) !important;    
+                transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s !important;
+            }
+            .pe-inputNumber:focus{
+                border-color: #66afe9 !important;
+                outline: 0 !important;    
+                box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6) !important;
+            }
+
+            .ui-selectoneradio label {
+                font-weight: normal !important;
+            }
+
+            .ui-selectoneradio tbody {
+                display: flex !important;
+            }
+
+        </style>
+
+    </h:head>
+
+    <h:body>
+
+        <div class="container-fluid" style="padding: 0px">           
+
+            <!-- Importar menu -->
+            <ui:include src="/admin/components/menu.xhtml" />
+
+            <!-- Importar header -->
+            <ui:include src="/admin/components/header.xhtml" />   
+
+            <!-- Corpo do container: conteúdo -->
+            <div id="content" class="col-xs-12">
+
+                <!-- Título do conteúdo -->
+                <div id="content-header" class="col-xs-12">
+                    <span id="content-title">Eventos</span> 
+                </div>
+
+                <!-- Área para exibir a lista de berços cadastrados -->
+                <div>
+
+                    <div class="col-xs-12 col-md-12 col-md-offset-0 col-xs-offset-0"
+                         style="padding: 0px !important;">
+
+                        <div class="col-sm-12" style="margin-bottom: 25px !important; 
+                             text-align: center;">                            
+                            <p:commandLink onclick="PF('dialog-update-variables-monitor').show()">
+                                <i class="glyphicon glyphicon-bell" style="margin-right: 10px;"></i> 
+                                <h:outputText value="O que deseja monitorar?"/>
+                            </p:commandLink>
+                        </div>
+
+                        <div class="card col-xs-12 col-md-12" style="float: left; margin-bottom: 20px; display: flex; flex-flow: wrap;">                            
+
+                            <div class="col-xs-12 col-md-12 title-card">FILTRAR</div>
+
+                            <div class="col-xs-12 col-md-12 berco-details-content">                                  
+
+                                <h:form>
+
+                                    <div class="col-xs-12 col-md-6">
+                                        <div class="container-filtrodialog-label"
+                                             style="margin-bottom: 0px !important;">
+                                            <label>Inicio: </label>
+                                        </div>
+                                        <div style="display: flex;"
+                                             class="container-filtrodialog-input">                            
+                                            <h:inputText  
+                                                a:type="datetime-local"                                 
+                                                value="#{EventsBean.startDateHistoryEvents}"
+                                                class="form-control">  
+                                            </h:inputText>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-12 col-md-6">
+                                        <div class="container-filtrodialog-label"
+                                             style="margin-bottom: 0px !important;">
+                                            <label>Fim: </label>
+                                        </div>
+                                        <div style="display: flex;"
+                                             class="container-filtrodialog-input">                            
+                                            <h:inputText  
+                                                a:type="datetime-local"                                 
+                                                value="#{EventsBean.endDateHistoryEvents}"
+                                                class="form-control">  
+                                            </h:inputText> 
+                                        </div>
+                                    </div>    
+
+                                    <div class="col-xs-12 col-md-12">                                    
+                                        <div style="margin-bottom: 0px !important; display: block !important;">                                                                    
+                                            <p:commandButton 
+                                                actionListener="#{EventsBean.searchHistory()}"
+                                                style="float: right; margin: 0px !important;"
+                                                value="Exibir"
+                                                onclick="PF('statusdialog').show()"
+                                                onsuccess="PF('statusdialog').hide()"
+                                                onerror="PF('statusdialog').hide()"
+                                                update=":tb-events"
+                                                >                                    
+                                            </p:commandButton> 
+                                        </div>
+                                    </div>    
+
+                                </h:form>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="card col-xs-12 col-md-12" style="float: left; margin-bottom: 20px; display: flex; flex-flow: wrap;">                            
+
+                            <div class="col-xs-12 col-md-12 title-card">EVENTOS</div>
+
+                            <div class="col-xs-12 col-md-12 berco-details-content">                                  
+
+                                <p:panel id="tb-events">
+
+                                    <h:form>
+
+                                        <p:dataTable var="event" 
+                                                     scrollable="true"
+                                                     value="#{EventsBean.events}"
+                                                     filteredValue="#{EventsBean.filteredEvents}"
+                                                     rows="50"
+                                                     paginator="true"
+                                                     widgetVar="eventsTable"
+                                                     rowIndexVar="index"
+                                                     emptyMessage="Nenhum resultado encontrado"
+                                                     paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+                                            <p:column headerText="Data"
+                                                      style="width:100px;text-align: center">
+                                                <h:outputText value="#{EventsBean.getDateTime(event.datetime)}"
+                                                              style="color:#{EventsBean.getColorRule(event.rule)}"/>                                
+                                            </p:column>                            
+
+                                            <p:column headerText="Poin"
+                                                      style="width:280px;text-align: center">
+                                                <h:outputText value="#{event.poin.nome}"
+                                                              style="color:#{EventsBean.getColorRule(event.rule)}"/>                                
+                                            </p:column>
+
+                                            <p:column filterBy="#{event.variableMonitor.typeMonitor}"
+                                                      headerText="Variável"
+                                                      filterMatchMode="exact"
+                                                      style="width:270px;text-align: center">                                            
+                                                <f:facet name="filter">
+                                                    <p:selectOneMenu onchange="PF('eventsTable').filter()" styleClass="custom-filter">
+                                                        <f:selectItem itemLabel="Selecione" itemValue="#{null}" noSelectionOption="true" />
+                                                        <f:selectItems value="#{EventsBean.listVariablesMonitorToString}" />
+                                                    </p:selectOneMenu>
+                                                </f:facet>
+                                                <h:outputText value="#{event.variableMonitor.typeMonitor}" 
+                                                              style="color:#{EventsBean.getColorRule(event.rule)}"/>                                
+                                            </p:column>
+
+                                            <p:column headerText="Prioridade"  
+                                                      filterBy="#{EventsBean.getPriority(event.rule)}"
+                                                      filterMatchMode="exact"
+                                                      style="width:140px;text-align: center">                                                   
+                                                <f:facet name="filter">
+                                                    <p:selectOneMenu onchange="PF('eventsTable').filter()" styleClass="custom-filter">
+                                                        <f:selectItem itemLabel="Selecione" itemValue="#{null}" noSelectionOption="true" />
+                                                        <f:selectItems value="#{EventsBean.listPrioritys}" />
+                                                    </p:selectOneMenu>
+                                                </f:facet>                                                
+                                                <h:outputText value="#{EventsBean.getPriority(event.rule)}"
+                                                              style="color:#{EventsBean.getColorRule(event.rule)}"/>                                
+                                            </p:column>
+
+                                            <p:column headerText="Embarcação"
+                                                      style="width:280px;text-align: center"                                                  >
+                                                <h:outputText value="#{EventsBean.getVesselName(event.vessel)}"
+                                                              style="color:#{EventsBean.getColorRule(event.rule)}"/>                                
+                                            </p:column>
+
+
+                                            <p:column headerText="Tipo"  
+                                                      filterBy="#{event.typeVessel}"
+                                                      filterMatchMode="in"
+                                                      style="width:140px;text-align: center">                                                   
+                                                <f:facet name="filter">
+                                                    <p:selectCheckboxMenu label="Tipos" onchange="PF('eventsTable').filter()" 
+                                                                          scrollHeight="150" 
+                                                                          styleClass="custom-filter"
+                                                                          >
+                                                        <f:selectItems value="#{EventsBean.listTypesVessels}"/>
+                                                    </p:selectCheckboxMenu>
+                                                </f:facet>                                                
+                                                <h:outputText value="#{event.typeVessel}"
+                                                              style="color:#{EventsBean.getColorRule(event.rule)}"/>                                
+                                            </p:column>
+
+
+                                            <p:column headerText="Mensagem"
+                                                      style="width:600px; text-align: left">
+                                                <h:outputText value="#{event.message}"
+                                                              style="color:#{EventsBean.getColorRule(event.rule)}"/>                                
+                                            </p:column>                           
+
+                                        </p:dataTable>
+
+                                        <div class="col-xs-12 col-md-12">                                    
+                                        <div style="margin-bottom: 0px !important; display: block !important;">                                                                    
+                                            <p:commandButton 
+                                                actionListener="#{EventsBean.exportReport()}"
+                                                style="float: right; margin: 0px !important;"
+                                                value="Exportar relatório"
+                                                ajax="false"
+                                                >                                    
+                                            </p:commandButton> 
+                                        </div>
+                                    </div>
+                                        
+                                    </h:form>
+
+                                </p:panel>
+
+                            </div>
+
+                        </div>                                                                        
+
+                    </div>
+
+                </div> <!-- Fechamento da área que exibe a lista de berços -->
+
+            </div> <!-- Fechamento do conteúdo -->  
+
+        </div> <!-- Fechamento do container -->                 
+
+
+        <p:dialog widgetVar="dialog-update-variables-monitor" 
+                  position="center center"
+                  modal="true" 
+                  id="dialog-update-variables-monitor"
+                  header="Variáveis para monitorar"
+                  draggable="true"
+                  resizable="false"
+                  appendTo="@(body)">
+
+            <div class="col-xs-12 col-md-12" style="overflow-x: auto; height: 500px" >
+
+                <p:panel id="list-variables-monitor">
+
+                    <c:forEach  items="${EventsBean.listVariablesMonitors}" 
+                                var="monitor"
+                                varStatus="loopMonitor">
+
+                        <div class="card-variable-monitor">
+
+                            <h:form id="form-update-#{monitor.codMonitorar}">
+
+                                <div class="card-variable-monitor-title col-xs-12 col-md-12">
+                                    <p:panel id="card-variable-monitor-title#{monitor.codMonitorar}" style="width: 100%;">
+                                        ##{monitor.typeMonitor}
+                                    </p:panel>
+                                    <span class="glyphicon glyphicon-plus card-action" onclick="openInfoMonitor(this)"></span>
+                                </div>
+
+                                <div class="card-variable-monitor-body col-xs-12 col-md-12 body-hide">
+
+                                    <p:panel id="card-variable-monitor-body#{monitor.codMonitorar}">                                                                           
+
+                                        <div class="form-group">
+                                            <span class="col-sm-12"
+                                                  style="font-size: 12px;color: #5b5bea;margin-bottom: 15px;">
+                                                Os campos com * são obrigatórios!
+                                            </span>                                        
+                                        </div>
+
+                                        <div class="form-group">
+                                            <h:outputLabel class="col-sm-12" value="Variável*:"/>
+                                            <div class="col-sm-12">
+                                                <p:selectOneRadio value="#{monitor.variavel}" layout="pageDirection">
+                                                    <f:selectItem itemLabel="Chegada de embarcação" itemValue="1" itemDisabled="#{EventsBean.containsVariableMonitor(1, monitor.codMonitorar)}" />
+                                                    <f:selectItem itemLabel="Saída de embarcação" itemValue="2" itemDisabled="#{EventsBean.containsVariableMonitor(2, monitor.codMonitorar)}" />
+                                                    <f:selectItem itemLabel="Tempo de permanência (h)" itemValue="3" itemDisabled="#{EventsBean.containsVariableMonitor(3, monitor.codMonitorar)}" />
+                                                    <f:selectItem itemLabel="Velocidade de navegação (kn)" itemValue="4" itemDisabled="#{EventsBean.containsVariableMonitor(4, monitor.codMonitorar)}" />                                    
+                                                    <p:ajax partialSubmit="true"
+                                                            listener="#{EventsBean.selectVariableType(monitor)}"
+                                                            update="rules-#{monitor.codMonitorar}"/>
+                                                </p:selectOneRadio>
+                                            </div>
+                                        </div>
+
+                                        <p:panel id="rules-#{monitor.codMonitorar}">
+
+                                            <ui:fragment rendered="#{monitor.variavel > 2}">
+
+                                                <c:forEach  items="#{monitor.monitorarRegraList}" 
+                                                            var="rule"
+                                                            varStatus="loopRule">
+
+                                                    <div class="form-group">
+                                                        <div class="col-sm-12" style="display: flex; margin-top: 5px;">
+                                                            <span class="label-rule">Prioridade*:</span>
+                                                            <h:inputText value="#{rule.nome}" 
+                                                                         class="form-control"/>
+                                                            <span class="label-rule">Condição*:</span>
+                                                            <h:selectOneMenu class="form-control" value="#{rule.condicao}">  
+                                                                <f:selectItem itemValue="#{null}" itemLabel="Selecione"/>
+                                                                <f:selectItem itemValue="maior" itemLabel="Maior"/>                                                 
+                                                                <f:selectItem itemValue="maior ou igual" itemLabel="Maior ou igual"/>                                                 
+                                                                <f:selectItem itemValue="menor" itemLabel="Menor"/>                                                 
+                                                                <f:selectItem itemValue="menor ou igual" itemLabel="Menor ou igual"/>                                                 
+                                                            </h:selectOneMenu>
+                                                            <span class="label-rule">Valor*: </span>
+
+                                                            <ui:fragment rendered="#{monitor.variavel == 3}">
+                                                                <p:inputNumber value="#{rule.valor}" minValue="0" decimalPlaces="0"/>
+                                                            </ui:fragment>
+
+                                                            <ui:fragment rendered="#{monitor.variavel == 4}">
+                                                                <p:inputNumber value="#{rule.valor}" minValue="0" decimalPlaces="1"/>
+                                                            </ui:fragment>
+
+                                                            <span class="label-rule">Cor*:</span>
+                                                            <p:colorPicker value="#{rule.cor}" class="button-rules" /> 
+                                                            <ui:fragment rendered="#{monitor.monitorarRegraList.size() > 1}">
+                                                                <p:commandButton 
+                                                                    actionListener="#{EventsBean.removeRuleFromVariableMonitor(monitor, loopRule.index)}"                                              
+                                                                    update="rules-#{monitor.codMonitorar}"
+                                                                    partialSubmit="true"
+                                                                    icon="fa fa-trash-o"
+                                                                    class="button-rules"
+                                                                    style="color: red; width: 25px !important;"/>
+                                                            </ui:fragment>
+                                                            <p:commandButton 
+                                                                actionListener="#{EventsBean.addRuleFromVariableMonitor(monitor)}"                                              
+                                                                update="rules-#{monitor.codMonitorar}"
+                                                                partialSubmit="true"
+                                                                icon="fa fa-plus"
+                                                                class="button-rules"
+                                                                style="color: green; width: 25px !important;"/>
+                                                        </div>
+                                                    </div>
+
+                                                </c:forEach>
+
+                                            </ui:fragment>
+
+                                        </p:panel>
+
+                                        <div class="form-group">
+                                            <h:outputLabel class="col-sm-12" value="Poins:" style="margin-top: 30px !important;"/>
+                                            <div class="col-sm-12">
+                                                <p:selectManyMenu id="advanced" value="#{monitor.poinList}" converter="poinConverter"
+                                                                  var="t" filter="true" filterMatchMode="contains" showCheckbox="true">
+                                                    <f:selectItems value="#{EventsBean.listPoin}" var="obj" itemLabel="#{obj.nome}" itemValue="#{obj}" />
+                                                    <p:column>
+                                                        <h:outputText value="#{t.nome}" />
+                                                    </p:column>
+                                                </p:selectManyMenu>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <h:outputLabel class="col-sm-12" value="Mensagem*:" style="margin-top: 30px !important;"/>
+                                            <div class="col-sm-12">
+                                                <h:inputText value="#{monitor.mensagem}" 
+                                                             class="form-control"/>
+                                                <div class="tags_message">
+                                                    <span class="tag_message">{name_vessel}</span>
+                                                    <span class="tag_message">{imo_vessel}</span>
+                                                    <span class="tag_message">{arrival_date}</span>
+                                                    <span class="tag_message">{departure_date}</span>                                                    
+                                                    <span class="tag_message">{speed_vessel}</span>
+                                                    <span class="tag_message">{permanence_time}</span>
+                                                    <span class="tag_message">{name_poin}</span>
+                                                    <span class="tag_message">{rule_value}</span>                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12">
+                                            <p:commandButton 
+                                                value="Salvar"
+                                                actionListener="#{EventsBean.updateVariableMonitor(monitor)}"                                              
+                                                update=":list-variables-monitor"
+                                                icon="fa fa-check"
+                                                style="color: green;"
+                                                class="sismar-bt-primary button-variable-monitor"/>
+                                            <p:commandButton 
+                                                value="Remover"
+                                                style="color: #ef6161;"
+                                                icon="fa fa-trash-o"
+                                                actionListener="#{EventsBean.deleteVariableMonitor(loopMonitor.index)}"                                              
+                                                update=":list-variables-monitor"
+                                                class="sismar-bt-primary button-variable-monitor"/>
+                                        </div>
+
+                                    </p:panel>
+
+                                </div>
+
+                            </h:form>
+
+                        </div>
+
+
+                    </c:forEach>
+
+                    <ui:fragment rendered="#{EventsBean.showButtonAddVariableMonitor()}">
+                        <p:commandButton value="Adicionar variável"
+                                         actionListener="#{EventsBean.addVariableMonitor()}"                                              
+                                         update=":list-variables-monitor"
+                                         icon="fa fa-plus"
+                                         style="color: #6c6cf1"
+                                         class="sismar-bt-primary"/>
+                    </ui:fragment>
+
+                </p:panel>
+
+            </div>
+
+        </p:dialog>
+
+
+        <!-- Importações scripts -->
+        <h:outputScript name="js/menu.js" target="body"/>
+
+        <!-- Importações templates -->        
+        <ui:include src="/admin/components/footer.xhtml" />           
+
+        <script>
+
+            function openInfoMonitor(btn) {
+
+                if ($(btn).hasClass("glyphicon-plus")) {
+                    $(btn).removeClass("glyphicon-plus");
+                    $(btn).addClass("glyphicon-minus");
+                } else {
+                    $(btn).removeClass("glyphicon-minus");
+                    $(btn).addClass("glyphicon-plus");
+                }
+
+                var card_body = $(btn).parent().parent().find(".card-variable-monitor-body");
+
+                if ($(card_body).hasClass("body-hide")) {
+                    $(card_body).removeClass("body-hide");
+                } else {
+                    $(card_body).addClass("body-hide");
+                }
+
+            }
+
+            /*$(".card-action").click(function (e) {
+             
+             if ($(this).hasClass("glyphicon-plus")) {
+             $(this).removeClass("glyphicon-plus");
+             $(this).addClass("glyphicon-minus");
+             } else {
+             $(this).removeClass("glyphicon-minus");
+             $(this).addClass("glyphicon-plus");
+             }
+             
+             var card_body = $(this).parent().parent().find(".card-variable-monitor-body");
+             
+             if ($(card_body).hasClass("body-hide")) {
+             $(card_body).removeClass("body-hide");
+             } else {
+             $(card_body).addClass("body-hide");
+             }
+             
+             });*/
+
+            $(function () {
+                $(".menu-alarms").addClass("active");
+            });
+        </script>
+
+    </h:body>
+
+</html>

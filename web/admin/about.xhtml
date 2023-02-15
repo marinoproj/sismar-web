@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:head>        
+
+        <title>Sismar - Sobre</title>
+
+        <!-- Importações padrão -->
+        <ui:include src="/admin/components/headdefault.xhtml" />   
+
+    </h:head>
+
+    <h:body>
+
+        <div class="container-fluid" style="padding: 0px">           
+
+            <!-- Importar menu -->
+            <ui:include src="/admin/components/menu.xhtml" />
+
+            <!-- Importar header -->
+            <ui:include src="/admin/components/header.xhtml" />   
+
+            <!-- Corpo do container: conteúdo -->
+            <div id="content" class="col-xs-12">
+
+                <!-- Título do conteúdo -->
+                <div id="content-header" class="col-xs-12">
+                    <span id="content-title">Sobre</span> 
+                    <span id="content-subtitle">nós</span>
+                </div>
+
+                <!-- Área para exibir informações sobre a empresa -->
+                <div class="col-xs-12 content-card">
+
+                    <div class="col-xs-12 col-md-8 col-md-offset-2 col-xs-offset-0">
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><b>A Marino</b></div>
+                            <div class="panel-body">
+                                No mercado há 34 anos, 
+                                somos uma empresa que trouxe uma nova perspectiva 
+                                para a construção de softwares na área de automação 
+                                industrial, bem como, na instalação e manutenção 
+                                de sistemas automatizados. Utilizamos metodologias 
+                                capazes de diminuir os erros de desenvolvimento, 
+                                implantação e manutenção em nossos projetos, 
+                                tornando o sucesso uma realidade capaz de ser 
+                                atingida dentro das expectativas do cliente. 
+                                Para mais informações, 
+                                visite o nosso site <a target="_blank" href='http://www.marinoprojetos.com.br'>www.marinoprojetos.com.br</a>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><b>O Sismar</b></div>
+                            <div class="panel-body">
+                                O Sistema de Atracação de Navios e Monitoramento 
+                                Ambiental é um produto que monitora as distâncias,
+                                velocidades, angulação de proa e popa da embarcação
+                                em relação a linha de defensas, 
+                                velocidade de toque nas mesmas, bem como as
+                                condições meteorológicas (velocidade e direção do vento,
+                                da corrente marinha etc.).
+                                <br/>
+                                <br/>
+                                Siga as instruções do <a target="_blank" href="#{resource['files/manual.pdf']}">manual</a> para a utilização do Sismar.<br/>
+                                Segue o <a target="_blank" href="#{resource['files/inpi.pdf']}">certificado de registro</a> do Sismar - INPI.<br/>
+                                Segue a <a target="_blank" href="#{resource['files/documentacao_sismar_api_v1.pdf']}">documentação da API</a> para começar utiliza-lá.
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div> <!-- Fechamento da área que exibe informações da empresa -->
+
+            </div> <!-- Fechamento do conteúdo -->              
+
+        </div> <!-- Fechamento do container -->  
+
+        <!-- Importar rodapé -->
+        <ui:include src="/admin/components/footer.xhtml" />  
+        
+        <!-- Importações scripts -->
+        <h:outputScript name="js/menu.js" target="body"/>
+
+        <script>
+            $(function () {
+                $(".menu-about").addClass("active");
+            });
+        </script>
+
+    </h:body>
+
+</html>

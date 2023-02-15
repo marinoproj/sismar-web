@@ -1,0 +1,208 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <h:head>              
+
+        <title>Sismar - Atualizar cadastro do usuário</title>
+
+        <!-- Importações padrão -->
+        <ui:include src="/admin/components/headdefault.xhtml" />
+
+    </h:head>
+
+    <h:body>
+
+        <div class="container-fluid" style="padding: 0px">           
+
+            <!-- Importar menu -->
+            <ui:include src="/admin/components/menu.xhtml" />
+
+            <!-- Importar header -->
+            <ui:include src="/admin/components/header.xhtml" />   
+
+            <!-- Corpo do container: conteúdo -->
+            <div id="content" class="col-xs-12">
+
+                <!-- Título do conteúdo -->
+                <div id="content-header" class="col-xs-12">
+                    <span id="content-title">Usuário</span> 
+                    <span id="content-subtitle">Atualizar cadastro</span>
+                </div>
+
+                <!-- Área para exibir informações sobre a corrente -->
+                <div class="col-xs-12 content-card" style="margin-top: 30px;">
+
+                    <div class="col-xs-12 col-md-8 col-md-offset-2 col-xs-offset-0">
+
+                        <h:form class="form-horizontal" id="form-edit-user">
+
+                            <p:message for="form-edit-user" 
+                                       showDetail="true" 
+                                       showSummary="true"
+                                       redisplay="true"
+                                       />
+
+                            <div class="form-group">
+                                <h:outputLabel class="col-sm-12" value="Nome:*"/>
+                                <div class="col-sm-12">
+                                    <h:inputText value="#{UserEditBean.userEdit.nome}" class="form-control" a:autofocus="true" a:placeholder="Informe o nome"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <h:outputLabel class="col-sm-12" value="Login:*"/>
+                                <div class="col-sm-12">
+                                    <h:inputText value="#{UserEditBean.userEdit.login}" class="form-control" a:placeholder="Informe o login"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <h:outputLabel class="col-sm-12" value="Redefinir senha:"/>
+                                <div class="col-sm-12">
+                                    <h:inputSecret value="#{UserEditBean.password}" class="form-control" a:placeholder="Informe a senha"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <h:outputLabel class="col-sm-12" value="Tempo de atualização (em segundos):*"/>
+                                <div class="col-sm-12">
+                                    <h:inputText a:type="number" value="#{UserEditBean.userEdit.tempoAtualizacao}" class="form-control" a:placeholder="Tempo de atualização (em segundos)"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <h:outputLabel class="col-sm-12" value="Tempo de inatividade (em minutos):"/>
+                                <div class="col-sm-12">
+                                    <h:inputText a:type="number" value="#{UserEditBean.userEdit.tempoInatividade}" class="form-control" a:placeholder="Tempo de inatividade (em minutos)"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <h:outputLabel class="col-sm-12" value="Tempo máx playback (em minutos):"/>
+                                <div class="col-sm-12">
+                                    <h:inputText a:type="number" value="#{UserEditBean.userEdit.tempoMaxPlayback}" class="form-control" a:placeholder="Tempo máx playback (em minutos)"/>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <h:outputLabel class="col-sm-12" value="Página inicial:"/>
+                                <div class="col-sm-12">
+                                    <h:inputText value="#{UserEditBean.userEdit.paginaInicial}" class="form-control" a:placeholder="Página inicial"/>
+                                </div>
+                            </div>
+
+                            <ui:fragment rendered="#{UserEditBean.currentUserMaster}">
+                                <div class="form-group">
+                                    <h:outputLabel class="col-sm-12" value="Master:"/>
+                                    <div class="col-sm-12">
+                                        <p:selectBooleanCheckbox value="#{UserEditBean.userEdit.master}" itemLabel=""/>                                    
+                                    </div>
+                                </div>
+                            </ui:fragment>
+
+                            <div class="form-group">
+                                <h:outputLabel class="col-sm-12" value="Fuso horário:"/>
+                                <div class="col-sm-12">
+                                    <h:selectOneMenu class="form-control"
+                                                     value="#{UserEditBean.userEdit.timeZone}">
+                                        <f:selectItems value="#{UserEditBean.listTimeZones}" 
+                                                       var="obj" 
+                                                       itemLabel="#{obj}" 
+                                                       itemValue="#{obj}"/>
+                                    </h:selectOneMenu>
+                                </div>
+                            </div> 
+
+                            <div class="form-group">
+                                <h:outputLabel class="col-sm-12" value="Funcionalidades:"/>
+                                <div class="col-sm-12">
+                                    <h:selectManyCheckbox value="#{UserEditBean.telasHabilitadasArray}" class="tb-features">                                        
+
+                                        <f:selectItem itemValue="ais_realtime" itemLabel="Ais - Real time" />
+                                        <f:selectItem itemValue="ais_search" itemLabel="Ais - Pesquisar" />
+                                        <f:selectItem itemValue="ais_playback" itemLabel="Ais - Playback" />
+                                        <f:selectItem itemValue="ais_track" itemLabel="Ais - Rastro" />
+                                        <f:selectItem itemValue="ais_porto" itemLabel="Ais - Porto" />
+
+                                        <f:selectItem itemValue="meteorology_climatempo" itemLabel="Meteorologia - Clima tempo" />
+                                        <f:selectItem itemValue="meteorology_windy" itemLabel="Meteorologia - Windy" />
+                                        <f:selectItem itemValue="meteorology_all" itemLabel="Meteorologia - Vento, Umidade, Temperatura e outros" />
+
+                                        <f:selectItem itemValue="config_users" itemLabel="Configurações - Usuários" />                                                                                
+                                        <f:selectItem itemValue="config_api" itemLabel="Configurações - API" />
+
+                                        <f:selectItem itemValue="operations_steps" itemLabel="Operações - Etapas" />
+                                        <f:selectItem itemValue="operations_events" itemLabel="Operações - Eventos" />
+                                        <f:selectItem itemValue="operations_operations" itemLabel="Operações - Operações" />
+                                        
+                                        <f:selectItem itemValue="moorings_sensors" itemLabel="Atracações - Sensores" />
+                                        <f:selectItem itemValue="moorings_search" itemLabel="Atracações - Consultar" />
+                                        <f:selectItem itemValue="moorings_realtime" itemLabel="Atracações - Real time" />
+                                        <f:selectItem itemValue="moorings_giaonts" itemLabel="Atracações - Giaonts" />
+                                        <f:selectItem itemValue="moorings_praticos" itemLabel="Atracações - Praticos" />
+                                        
+                                        <c:if test="#{UserEditBean.currentUserMaster}">
+                                            <f:selectItem itemValue="admin_configgerais" itemLabel="Administração - Configurações Gerais" />
+                                            <f:selectItem itemValue="admin_clients" itemLabel="Administração - Clientes" />
+                                            <f:selectItem itemValue="admin_bercos" itemLabel="Administração - Berços" />
+                                        </c:if>
+
+                                        <f:selectItem itemValue="events" itemLabel="Eventos" />
+                                        <f:selectItem itemValue="about" itemLabel="Sobre nós" />
+
+                                    </h:selectManyCheckbox>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <p:commandButton 
+                                        value="Atualizar"
+                                        actionListener="#{UserEditBean.editUser()}"
+                                        onclick="PF('statusdialog').show()"
+                                        onsuccess="PF('statusdialog').hide()"
+                                        onerror="PF('statusdialog').hide()"      
+                                        update="@form"
+                                        class="sismar-bt-primary"/>
+                                    <p:commandButton 
+                                        value="Voltar"
+                                        class="sismar-bt-primary"
+                                        action="users?faces-redirect=true"
+                                        style="margin-right: 10px !important;"/>
+                                </div>
+                            </div>
+
+                        </h:form>
+
+                    </div>
+
+                </div> <!-- Fechamento da área que exibe informações de corrente -->
+
+            </div> <!-- Fechamento do conteúdo -->  
+
+        </div> <!-- Fechamento do container -->  
+
+        <!-- Importar rodapé -->
+        <ui:include src="/admin/components/footer.xhtml" />  
+
+        <h:outputScript name="js/menu.js" target="body"/>        
+
+        <script>
+            $(function () {
+
+                $(".menu-configuration").addClass("active");
+                $(".menu-configuration-users").addClass("active-link");
+
+            });
+        </script>
+
+    </h:body>
+
+</html>

@@ -1,0 +1,571 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+
+    <h:head>       
+
+        <title>Sismar - Operação</title>
+
+        <ui:include src="/admin/components/headdefault.xhtml" /> 
+
+        <style>
+
+            .ui-inputfield{
+                display: block !important;
+                width: 100% !important; 
+                height: 34px !important;
+                padding: 6px 12px !important;
+                font-size: 14px !important;
+                line-height: 1.42857143 !important;
+                color: #555 !important;
+                background-color: #fff !important;
+                background-image: none !important;
+                border: 1px solid #ccc !important;
+                border-radius: 4px !important;
+                box-shadow: inset 0 1px 1px rgba(0,0,0,.075) !important;    
+                transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s !important;
+            }
+            .ui-inputfield:focus{
+                border-color: #66afe9 !important;
+                outline: 0 !important;    
+                box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6) !important;
+            }
+
+            .p-datepicker{
+                width: 100%;
+            }
+
+            .data-vessel-row {
+                border-bottom: 1px solid #dedede;
+                padding: 10px;
+            }
+
+            .data-vessel-row-last {
+                padding: 10px;
+            }
+
+        </style>
+
+    </h:head>
+
+    <h:body>
+
+        <div class="container-fluid" style="padding: 0px">           
+
+            <ui:include src="/admin/components/menu.xhtml" />
+            <ui:include src="/admin/components/header.xhtml" />   
+
+            <div id="content" class="col-xs-12">
+
+                <div id="content-header" class="col-xs-12">
+                    <span id="content-title">#{OperationStepsBean.operation.codNavio.nomeNavio}</span> 
+                    <span id="content-subtitle">Etapas</span>                    
+                </div>
+
+                <div class="col-xs-12 content-card" style="margin-top: 30px; margin-bottom: 100px;">
+
+                    <div class="row" style="margin-top: 20px; margin-left: 15px; margin-right: 15px; margin-bottom: 15px;">
+
+                        <div class="col-xs-12 col-md-3" style="margin-bottom: 15px;">
+                            <img style="border-radius:8px;" 
+                                 width="100%"
+                                 src="${OperationStepsBean.getImageVessel()}"/>
+                        </div>
+
+                        <div class="col-xs-12 col-md-9">
+
+                            <div class="row data-vessel-row">
+                                <div class="col-xs-12 col-md-2">
+                                    <b>IMO</b>
+                                </div>
+                                <div class="col-xs-12 col-md-10">
+                                    #{OperationStepsBean.operation.codNavio.imo}
+                                </div>
+                            </div>
+
+                            <div class="row data-vessel-row">
+                                <div class="col-xs-12 col-md-2">
+                                    <b>NAVIO</b>
+                                </div>
+                                <div class="col-xs-12 col-md-10">
+                                    #{OperationStepsBean.operation.codNavio.nomeNavio}
+                                </div>
+                            </div>
+
+                            <div class="row data-vessel-row">
+                                <div class="col-xs-12 col-md-2">
+                                    <b>TIPO</b>
+                                </div>
+                                <div class="col-xs-12 col-md-10">
+                                    #{OperationStepsBean.vesselType}
+                                </div>
+                            </div>
+
+                            <div class="row data-vessel-row-last">
+                                <div class="col-xs-12 col-md-2">
+                                    <b>DIMENSÃO</b>
+                                </div>
+                                <div class="col-xs-12 col-md-10">
+                                    #{OperationStepsBean.vesselDimensao}
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin-top: 10px;">
+                                <div class="panel-group" id="accordion">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
+                                                    <b>Detalhes sobre a operação</b>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapse1" class="panel-collapse collapse">
+                                            <div class="panel-body">
+                                                <h:form class="form-horizontal" id="form-close">
+                                                    <div class="col-xs-12 col-md-12">
+                                                        <div class="row data-vessel-row">
+                                                            <div class="col-xs-12 col-md-3">
+                                                                <b>INÍCIO</b>
+                                                            </div>
+                                                            <div class="col-xs-12 col-md-9">
+                                                                #{UtilBean.getDateTimeClient(OperationStepsBean.operation.dataInicio)}           
+                                                            </div>
+                                                        </div>
+                                                        <div class="row data-vessel-row">
+                                                            <div class="col-xs-12 col-md-3">
+                                                                <b>INICIADO POR</b>
+                                                            </div>
+                                                            <div class="col-xs-12 col-md-9">
+                                                                #{OperationStepsBean.operation.codUsuario.nome}           
+                                                            </div>
+                                                        </div>
+                                                        <div class="row data-vessel-row">
+                                                            <div class="col-xs-12 col-md-3">
+                                                                <b>TÉRMINO</b>
+                                                            </div>
+                                                            <div class="col-xs-12 col-md-9" style="display: inline-flex;">
+                                                                <c:if test="#{OperationStepsBean.emAndamento}">
+                                                                    <span style="margin-right: 10px; color: #5cb85c">
+                                                                        <b>Em andamento</b>
+                                                                    </span>
+                                                                    <p:commandButton 
+                                                                        value="Finalizar"
+                                                                        actionListener="#{OperationStepsBean.close()}"
+                                                                        onclick="PF('statusdialog').show()"
+                                                                        onsuccess="PF('statusdialog').hide()"
+                                                                        onerror="PF('statusdialog').hide()"      
+                                                                        update="form-close"
+                                                                        style="margin: 0px !important;"/>
+                                                                </c:if>
+                                                                <c:if test="#{not OperationStepsBean.emAndamento}">
+                                                                    #{UtilBean.getDateTimeClient(OperationStepsBean.operation.dataTermino)}           
+                                                                </c:if>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="row data-vessel-row">
+                                                            <div class="col-xs-12 col-md-3">
+                                                                <b>DURAÇÃO</b>
+                                                            </div>
+                                                            <div class="col-xs-12 col-md-9">
+                                                                #{OperationStepsBean.duracaoOperacao}
+                                                            </div>
+                                                        </div>
+                                                        <div class="row data-vessel-row-last">
+                                                            <div class="col-xs-12 col-md-3">
+                                                                <b>TEMPO PARALIZADO</b>
+                                                            </div>
+                                                            <div class="col-xs-12 col-md-9">
+                                                                #{OperationStepsBean.operation.decorridoTimeParalizacao}
+                                                            </div>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                </h:form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>                  
+
+                    <div class="col-xs-12 col-md-12 col-md-offset-0 col-xs-offset-0"
+                         style="margin-top: 30px; margin-bottom: 60px;">
+
+                        <div style="width: 100%;">
+                            <div class="col-xs-12 content-card-header">
+                                <span class="content-card-title" style="margin-bottom: 20px;">Linha do tempo</span>                                 
+                            </div>                            
+                        </div>
+
+                        <p:timeline id="timeline" value="#{OperationStepsBean.modelTimeline}" height="250px"
+                                    selectable="#{OperationStepsBean.selectable}"
+                                    zoomable="#{OperationStepsBean.zoomable}"
+                                    moveable="#{OperationStepsBean.moveable}"
+                                    stackEvents="#{OperationStepsBean.stackEvents}"
+                                    axisOnTop="#{OperationStepsBean.axisOnTop}"
+                                    eventStyle="#{OperationStepsBean.eventStyle}"
+                                    showCurrentTime="#{OperationStepsBean.showCurrentTime}"
+                                    locale="pt"
+                                    style="margin-left: 15px; margin-right: 15px">                            
+                            <p:ajax event="select" listener="#{OperationStepsBean.onSelectStep}"/>
+                        </p:timeline>
+
+                    </div>
+
+                    <div class="col-xs-12 col-md-12 col-md-offset-0 col-xs-offset-0">
+
+                        <div style="width: 100%;">
+                            <div class="col-xs-12 content-card-header">
+                                <span class="content-card-title">Etapas</span> 
+                                <c:if test="#{OperationStepsBean.emAndamento}">
+                                    <p:commandLink onclick="PF('dialog-add-step').show()" 
+                                                   class="content-card-description-chart"
+                                                   style="float: right; margin-left: 10px;">
+                                        Adicionar etapa
+                                        <i class="glyphicon glyphicon-plus"></i>
+                                    </p:commandLink>
+                                </c:if>
+                            </div>                            
+                        </div>
+
+                        <h:form id="form-list-data">                                                                                                             
+
+                            <p:dataTable value="#{OperationStepsBean.etapasOperacao}" 
+                                         var="operationStep"                                         
+                                         rows="20"
+                                         paginator="true"                                         
+                                         rowIndexVar="index"
+                                         emptyMessage="Nenhuma etapa adicionada"
+                                         paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         id="table-list-data">
+
+                                <p:column headerText="Etapa" style="text-align: center">
+                                    #{operationStep.codEtapa.nome}
+                                </p:column>
+
+                                <p:column headerText="Início" style="width:150px;text-align: center">
+                                    #{UtilBean.getDateTimeClient(operationStep.dataInicio)}                                    
+                                </p:column>
+
+                                <p:column headerText="Término" style="width:150px;text-align: center">
+                                    #{UtilBean.getDateTimeClient(operationStep.dataTermino)}                                    
+                                </p:column>
+
+                                <p:column headerText="Status" style="width:150px;text-align: center">
+                                    <span style="color: #{operationStep.colorStatus}">
+                                        <b>#{operationStep.statusString}</b>
+                                    </span>
+                                </p:column>
+
+                                <p:column headerText="Estimado" style="width:180px;text-align: center">
+                                    <b>Tempo estimado: </b><br/>#{OperationStepsBean.getTempoEstimado(operationStep)}<br/>
+                                    <b>Término estimado: </b><br/>#{OperationStepsBean.getTerminoEstimado(operationStep)}                               
+                                </p:column>
+
+                                <p:column headerText="Executado" style="width:150px;text-align: center">
+                                    <span style="color: #{operationStep.colorDecorridoTime}">
+                                        <b>#{operationStep.decorridoTime}</b>
+                                    </span>
+                                    <br/>
+                                    <div class="progress" style="height: 10px !important;">
+                                        <div class="progress-bar #{operationStep.classPctDecorridoTime}" 
+                                             role="progressbar" 
+                                             aria-valuenow="#{operationStep.pctDecorridoTime}" 
+                                             aria-valuemin="0" 
+                                             aria-valuemax="100" 
+                                             style="width: #{operationStep.pctDecorridoTime}%;">
+                                        </div>                                        
+                                    </div>
+                                </p:column>                                                                
+
+                                <p:column headerText="" style="width:120px;text-align: center">
+
+                                    <p:commandLink actionListener="#{OperationStepsBean.setEtapaOperacaoEditar(operationStep)}"
+                                                   rendered="#{operationStep.finalizado eq false}"
+                                                   style="margin-right: 10px;"
+                                                   oncomplete="PF('dialog-edit-step').show()"
+                                                   update="dialod-edit-step-form">
+                                        <i class="glyphicon glyphicon-pencil"></i>
+                                    </p:commandLink>
+
+                                    <a href="operation_step.xhtml?operation_step=#{operationStep.cod}"
+                                       style="margin-right: 10px;">
+                                        <i class="glyphicon glyphicon-search"></i>
+                                    </a> 
+
+                                    <p:commandLink actionListener="#{OperationStepsBean.setEtapaOperacaoDelete(operationStep)}"
+                                                   style="color: #f75151; margin-right: 10px;"
+                                                   onclick="PF('confirmationDialogDelete').show()">
+                                        <i class="glyphicon glyphicon-trash"></i>
+                                    </p:commandLink>
+
+                                </p:column>
+
+                            </p:dataTable>                           
+
+                        </h:form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <p:confirmDialog widgetVar="confirmationDialogDelete" 
+                         severity="alert" 
+                         message="Deseja realmente excluir a etapa?" 
+                         header="Excluir etapa" 
+                         appendTo="@(body)"
+                         id="confirmationDialog">  
+            <h:form>                
+                <p:commandButton value="Sim" 
+                                 actionListener="#{OperationStepsBean.delete}"
+                                 onclick="PF('confirmationDialogDelete').hide();PF('statusdialog').show()"
+                                 onsuccess="PF('statusdialog').hide()"
+                                 onerror="PF('statusdialog').hide()"                                                 
+                                 update=":form-list-data:table-list-data timeline"/>
+                <p:commandButton value="Não" 
+                                 onclick="PF('confirmationDialogDelete').hide()" 
+                                 type="button"/>
+            </h:form>
+        </p:confirmDialog>
+
+
+        <!-- DIALOG PARA ADICIONAR ETAPA -->
+        <p:dialog widgetVar="dialog-add-step" 
+                  position="center center"
+                  modal="true" 
+                  header="Adicionar etapa"
+                  draggable="false"
+                  resizable="false"
+                  appendTo="@(body)">
+
+            <h:form>
+
+                <h:inputText
+                    style="display: none"
+                    class="add_step_lat" 
+                    value="#{OperationStepsBean.etapaOperacaoAdicionar.latitude}"
+                    converter="doubleConverter">                               
+                </h:inputText>
+
+                <h:inputText 
+                    style="display: none"
+                    class="add_step_long" 
+                    value="#{OperationStepsBean.etapaOperacaoAdicionar.longitude}"
+                    converter="doubleConverter">
+                </h:inputText>
+
+                <div class="col-xs-12 col-md-12" id="container-filtrodialog">
+
+                    <div class="container-filtrodialog-group">
+                        <div class="container-filtrodialog-label">
+                            <h:outputLabel value="Etapa: "/>
+                        </div>
+                        <div class="container-filtrodialog-input">
+                            <h:selectOneMenu class="form-control"
+                                             value="#{OperationStepsBean.etapaOperacaoAdicionar.codEtapa}"
+                                             converter="etapaConverter"
+                                             >  
+                                <f:selectItem itemValue="#{null}" itemLabel="Selecione"/> 
+                                <f:selectItems value="#{OperationStepsBean.etapas}" 
+                                               var="obj" 
+                                               itemLabel="#{obj.nome}" 
+                                               itemValue="#{obj}"/>
+                            </h:selectOneMenu>
+                        </div>
+                    </div>
+
+                    <div class="container-filtrodialog-group">
+                        <div class="container-filtrodialog-label">
+                            <h:outputLabel value="Mobilização: "/>
+                        </div>
+                        <div class="container-filtrodialog-input">                           
+                            <h:inputText  
+                                a:type="datetime-local" 
+                                value="#{OperationStepsBean.etapaOperacaoAdicionar.dataMobilizacao}"
+                                class="form-control"
+                                converter="dateTimeConverter">  
+                            </h:inputText>                            
+                        </div>
+                    </div>
+
+                    <div class="container-filtrodialog-group">
+                        <div class="container-filtrodialog-label">
+                            <h:outputLabel value="Chegada: "/>
+                        </div>
+                        <div class="container-filtrodialog-input">                           
+                            <h:inputText  
+                                a:type="datetime-local" 
+                                value="#{OperationStepsBean.etapaOperacaoAdicionar.dataChegada}"
+                                class="form-control"
+                                converter="dateTimeConverter">  
+                            </h:inputText>                            
+                        </div>
+                    </div>
+
+                    <div class="container-filtrodialog-group">
+                        <div class="container-filtrodialog-label">
+                            <h:outputLabel value="Início: "/>
+                        </div>
+                        <div class="container-filtrodialog-input">                                                       
+                            <h:inputText  
+                                a:type="datetime-local" 
+                                value="#{OperationStepsBean.etapaOperacaoAdicionar.dataInicio}"
+                                class="form-control"
+                                converter="dateTimeConverter">  
+                            </h:inputText>                                                        
+                            <span style="color: blue">Deixe em branco para usar a data/hora atual.</span>
+                        </div>
+                    </div>
+
+                    <div class="container-filtrodialog-group">
+                        <p:commandButton actionListener="#{OperationStepsBean.addStep()}" 
+                                         value="Adicionar" 
+                                         onclick="PF('statusdialog').show()"
+                                         onsuccess="PF('statusdialog').hide()"
+                                         onerror="PF('statusdialog').hide()"
+                                         class="sismar-bt-primary"
+                                         update=":form-list-data:table-list-data @form timeline"/>
+
+                    </div>
+
+                </div>
+
+            </h:form>
+
+        </p:dialog>
+
+
+        <!-- DIALOG PARA EDITAR ETAPA -->
+        <p:dialog widgetVar="dialog-edit-step" 
+                  position="center center"
+                  modal="true" 
+                  header="Editar etapa"
+                  draggable="false"
+                  resizable="false"
+                  appendTo="@(body)">
+
+            <h:form id="dialod-edit-step-form">
+
+                <div class="col-xs-12 col-md-12 open-dialog-step-content">
+
+                    <div class="container-filtrodialog-group">
+                        <div class="container-filtrodialog-label">
+                            <h:outputLabel value="Mobilização: "/>
+                        </div>
+                        <div class="container-filtrodialog-input">                           
+                            <h:inputText  
+                                a:type="datetime-local" 
+                                value="#{OperationStepsBean.etapaOperacaoEditar.dataMobilizacao}"
+                                class="form-control"
+                                converter="dateTimeConverter">  
+                            </h:inputText>                            
+                        </div>
+                    </div>
+
+                    <div class="container-filtrodialog-group">
+                        <div class="container-filtrodialog-label">
+                            <h:outputLabel value="Chegada: "/>
+                        </div>
+                        <div class="container-filtrodialog-input">                           
+                            <h:inputText  
+                                a:type="datetime-local" 
+                                value="#{OperationStepsBean.etapaOperacaoEditar.dataChegada}"
+                                class="form-control"
+                                converter="dateTimeConverter">  
+                            </h:inputText>                            
+                        </div>
+                    </div>
+
+                    <div class="container-filtrodialog-group">
+                        <div class="container-filtrodialog-label">
+                            <h:outputLabel value="Início: "/>
+                        </div>
+                        <div class="container-filtrodialog-input">       
+                            <h:inputText  
+                                a:type="datetime-local" 
+                                value="#{OperationStepsBean.etapaOperacaoEditar.dataInicio}"
+                                class="form-control"
+                                converter="dateTimeConverter">  
+                            </h:inputText>                                            
+                        </div>
+                    </div>
+
+                    <div class="container-filtrodialog-group">
+                        <div class="container-filtrodialog-label">
+                            <h:outputLabel value="Término: "/>
+                        </div>
+                        <div class="container-filtrodialog-input">                           
+                            <h:inputText  
+                                a:type="datetime-local" 
+                                value="#{OperationStepsBean.etapaOperacaoEditar.dataTermino}"
+                                class="form-control"
+                                converter="dateTimeConverter">  
+                            </h:inputText>                
+                        </div>
+                    </div>
+
+                    <div class="container-filtrodialog-group">
+                        <p:commandButton actionListener="#{OperationStepsBean.editStep()}" 
+                                         value="Atualizar" 
+                                         onclick="PF('statusdialog').show()"
+                                         onsuccess="PF('statusdialog').hide()"
+                                         onerror="PF('statusdialog').hide()"
+                                         class="sismar-bt-primary"
+                                         update=":form-list-data:table-list-data @form timeline form-close"/>
+
+                    </div>
+
+                </div>
+
+            </h:form>
+
+        </p:dialog>
+
+        <ui:include src="/admin/components/footer.xhtml" />  
+        <h:outputScript name="js/menu.js" target="body"/>        
+        <h:outputScript name="js/locale_pt_br.js" target="body"/>        
+
+        <script>
+            $(function () {
+
+                $(".menu-operations").addClass("active");
+                $(".menu-operations-operations").addClass("active-link");
+
+            });
+
+            getLocation();
+
+            function getLocation() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(showPosition);
+                } else {
+                    console.log("erro");
+                }
+            }
+
+            function showPosition(position) {
+                $(".add_step_lat").val(position.coords.latitude);
+                $(".add_step_long").val(position.coords.longitude);
+            }
+
+        </script>
+
+    </h:body>
+
+</html>

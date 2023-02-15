@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RelatorioAmbiental" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="10" uuid="6753bb44-75d3-44b3-b934-34774c27795a">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="LOCAL_IMAGEM_MARINO" class="java.lang.String"/>
+	<parameter name="PERIOD" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="data" class="java.lang.String"/>
+	<field name="poin" class="java.lang.String"/>
+	<field name="variable" class="java.lang.String"/>
+	<field name="priority" class="java.lang.String"/>
+	<field name="vessel_name" class="java.lang.String"/>
+	<field name="vessel_imo" class="java.lang.String"/>
+	<field name="vessel_type" class="java.lang.String"/>
+	<field name="line_color" class="java.lang.String"/>
+	<field name="message" class="java.lang.String"/>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="95">
+			<frame>
+				<reportElement mode="Transparent" x="-20" y="-20" width="844" height="115" backcolor="#333333" uuid="ba652652-d053-43f9-8a69-1c3cf309c05d"/>
+				<staticText>
+					<reportElement x="299" y="23" width="372" height="24" forecolor="#000000" uuid="64c16ab8-1b39-4f86-aabf-5e74ac1b5178"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="14" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[SISMAR]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="368" y="91" width="100" height="20" forecolor="#000000" uuid="0e413917-8c50-4846-9c6b-7459e0f194c3"/>
+					<textElement textAlignment="Right">
+						<font size="11" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Emitido em:]]></text>
+				</staticText>
+				<textField pattern="dd/MM/yyyy HH:mm:ss">
+					<reportElement x="472" y="91" width="147" height="20" forecolor="#000000" uuid="0055ef9b-4e4b-4bea-a4f7-6de5d9a8de32"/>
+					<textElement>
+						<font size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+				<image>
+					<reportElement x="154" y="25" width="135" height="75" uuid="9b875766-5c2c-4daa-b6a9-877f408a35a0"/>
+					<imageExpression><![CDATA[$P{LOCAL_IMAGEM_MARINO}]]></imageExpression>
+				</image>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="299" y="48" width="372" height="20" uuid="587733ca-9403-4501-a10c-91c82a1bf24a"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="12" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[Relatório de Eventos]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="299" y="68" width="372" height="20" uuid="7a76b6df-3eb6-4b0d-a0ff-44aa1e0495db"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$P{PERIOD}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="40">
+			<staticText>
+				<reportElement x="83" y="6" width="93" height="30" isPrintWhenDetailOverflows="true" uuid="6606dd98-ec4e-42f3-a643-e4189fd001ec"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="11" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Poin]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="178" y="6" width="91" height="30" isPrintWhenDetailOverflows="true" uuid="9894469f-dd47-4d1d-9bf5-12733a181fc9"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="11" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Variável]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="272" y="5" width="71" height="31" isPrintWhenDetailOverflows="true" uuid="8be5c855-9ad5-415c-94dd-c002a57a9a74"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="11" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Prioridade]]></text>
+			</staticText>
+			<line>
+				<reportElement x="1" y="38" width="802" height="1" uuid="b921d56a-6d73-447b-b72e-1631acab519c"/>
+				<graphicElement>
+					<pen lineWidth="0.75" lineColor="#666666"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="3" y="6" width="78" height="30" isPrintWhenDetailOverflows="true" uuid="32891a9a-906e-411a-8dd9-abd4b97fc8e9"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="11" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Data]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="346" y="5" width="145" height="31" isPrintWhenDetailOverflows="true" uuid="c0334dd9-b72e-407c-9c6f-ff2061b77692"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="11" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Embarcação]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="494" y="5" width="308" height="31" isPrintWhenDetailOverflows="true" uuid="23d45e47-f5b8-4397-8b4b-090e739b2731"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="11" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Mensagem]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="66">
+			<line>
+				<reportElement x="0" y="64" width="802" height="1" uuid="bc1252a0-6dec-46da-b8a3-36e3738ea4fe"/>
+				<graphicElement>
+					<pen lineWidth="0.75" lineColor="#CCCCCC"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement x="4" y="3" width="77" height="20" uuid="8e35e68e-a6fa-4655-af8a-237e3f32dab0"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{data}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="83" y="2" width="93" height="20" uuid="5813218d-d561-43e4-a287-164a6b92829b"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{poin}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="178" y="2" width="91" height="20" uuid="46fe1b3c-d52f-4237-a2a3-76b675d4c74e"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{variable}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="272" y="2" width="73" height="20" uuid="c8449baf-b95e-45c6-9bc7-5195db3f58ad"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{priority}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="494" y="2" width="305" height="20" uuid="847beca1-0ab5-44d8-84d6-95e74723371d"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{message}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="348" y="3" width="143" height="20" uuid="addd7774-34fb-4f4d-a14c-1a4fb2013632"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{vessel_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="348" y="23" width="143" height="20" uuid="10f76038-441a-4db4-b224-851e80f7197e"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{vessel_imo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="348" y="43" width="143" height="20" uuid="4861ff33-3c91-45a8-83da-62c6b86934da"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{vessel_type}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="17">
+			<textField>
+				<reportElement mode="Transparent" x="251" y="4" width="511" height="13" backcolor="#E6E6E6" uuid="f09543ec-09e4-4ebe-b4cc-9039748a7ed3"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Página "+ $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement mode="Transparent" x="762" y="4" width="40" height="13" backcolor="#E6E6E6" uuid="f55acb33-e013-44f1-b0fb-6ba9421c59e0"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

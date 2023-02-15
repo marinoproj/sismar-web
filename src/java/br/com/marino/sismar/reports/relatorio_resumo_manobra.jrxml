@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RelatorioAmbiental" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="10" uuid="6753bb44-75d3-44b3-b934-34774c27795a">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="57"/>
+	<parameter name="LOCAL_IMAGEM_MARINO" class="java.lang.String"/>
+	<parameter name="LOCAL_IMAGEM_TRANSPETRO" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="codAtracacao" class="java.lang.Integer"/>
+	<field name="berco" class="java.lang.String"/>
+	<field name="navio" class="java.lang.String"/>
+	<field name="dataInicio" class="java.lang.String"/>
+	<field name="dataPartida" class="java.lang.String"/>
+	<field name="dataDocagem" class="java.lang.String"/>
+	<field name="dataFinal" class="java.lang.String"/>
+	<field name="tmpManobra" class="java.lang.String"/>
+	<field name="tmpDocado" class="java.lang.String"/>
+	<field name="comandante" class="java.lang.String"/>
+	<field name="pratico" class="java.lang.String"/>
+	<field name="velMaxDir" class="java.lang.String"/>
+	<field name="velMaxEsq" class="java.lang.String"/>
+	<field name="angMax" class="java.lang.String"/>
+	<field name="velToqDir" class="java.lang.String"/>
+	<field name="velToqEsq" class="java.lang.String"/>
+	<field name="anguloToque" class="java.lang.String"/>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="90">
+			<frame>
+				<reportElement mode="Transparent" x="-20" y="-19" width="595" height="108" backcolor="#333333" uuid="ba652652-d053-43f9-8a69-1c3cf309c05d"/>
+				<staticText>
+					<reportElement x="32" y="9" width="543" height="24" forecolor="#000000" uuid="64c16ab8-1b39-4f86-aabf-5e74ac1b5178"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="14" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[SISMAR]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="181" y="82" width="100" height="20" forecolor="#000000" uuid="0e413917-8c50-4846-9c6b-7459e0f194c3"/>
+					<textElement textAlignment="Right">
+						<font size="11" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Emitido em:]]></text>
+				</staticText>
+				<textField pattern="dd/MM/yyyy HH:mm:ss">
+					<reportElement x="286" y="82" width="147" height="20" forecolor="#000000" uuid="0055ef9b-4e4b-4bea-a4f7-6de5d9a8de32"/>
+					<textElement>
+						<font size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+				<image>
+					<reportElement x="477" y="31" width="108" height="71" uuid="cf0ad496-f790-4b94-93da-68085760bf29"/>
+					<imageExpression><![CDATA[new java.io.ByteArrayInputStream(org.apache.commons.codec.binary.Base64.decodeBase64($P{LOCAL_IMAGEM_TRANSPETRO}.getBytes()))]]></imageExpression>
+				</image>
+				<image>
+					<reportElement x="12" y="33" width="135" height="75" uuid="9b875766-5c2c-4daa-b6a9-877f408a35a0"/>
+					<imageExpression><![CDATA[$P{LOCAL_IMAGEM_MARINO}]]></imageExpression>
+				</image>
+				<staticText>
+					<reportElement x="147" y="47" width="319" height="20" forecolor="#000000" uuid="b9080f0d-1e2e-45f8-a66e-7f7bb4f4aeab"/>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[Relatório Resumo da Atracação]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</title>
+	<detail>
+		<band height="346">
+			<rectangle radius="5">
+				<reportElement x="0" y="3" width="555" height="84" backcolor="#F2F0F0" uuid="de0edceb-c139-47d9-a241-0452f0b79f13"/>
+				<graphicElement>
+					<pen lineColor="#BEBDBD"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="12" y="17" width="149" height="20" uuid="9d05a9a2-76ea-419c-a2a0-7e291322ea33"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" markup="html">
+					<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Código Atracação:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="171" y="17" width="60" height="20" uuid="66210063-b255-4748-a552-001cd5832219"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codAtracacao}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="259" y="17" width="58" height="20" uuid="1cc9627a-0a66-401f-90b8-33ec1d15c771"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Berço:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="329" y="17" width="213" height="20" uuid="5b5f5bf6-db74-44b1-b235-a47655f676c5"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{berco}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="12" y="50" width="149" height="20" uuid="0c860b4b-fc26-4c14-b076-8ada4e29ffe5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Embarcação:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="171" y="50" width="367" height="20" uuid="1bfe78f4-6626-43f5-aa62-582f6684ab98"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{navio}]]></textFieldExpression>
+			</textField>
+			<rectangle radius="5">
+				<reportElement x="0" y="87" width="555" height="93" backcolor="#FFFFFF" uuid="1261e91a-911e-4242-bddc-1d1df30b6624"/>
+				<graphicElement>
+					<pen lineColor="#BEBDBD"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle radius="5">
+				<reportElement x="0" y="180" width="555" height="51" backcolor="#F2F0F0" uuid="f67c3611-9e19-4561-b2ad-4783dfba838a"/>
+				<graphicElement>
+					<pen lineColor="#BEBDBD"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="7" y="98" width="117" height="20" uuid="587087d7-3c75-496f-897c-5a44dccb8656"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Data de Início:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="7" y="126" width="117" height="20" uuid="db64f0ae-1311-445e-86dc-0b81fb59d534"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Data Atracado:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="295" y="98" width="118" height="20" uuid="b9a3e5e0-b85d-4347-a832-b91f59358d9b"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Data da Partida:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="295" y="126" width="118" height="20" uuid="b7cfb650-bcda-4c65-84f8-647b9fe67b3b"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Data Final:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="143" y="98" width="140" height="20" uuid="164f1537-c6e0-4dfe-9838-be1b69f87cc3"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dataInicio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="143" y="126" width="140" height="20" uuid="f5c31200-f67c-4e46-9551-5ee9ccd8ef92"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dataDocagem}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="425" y="98" width="118" height="20" uuid="6ef247a7-49eb-48a6-a181-8864e7cc019f"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dataPartida}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="425" y="126" width="117" height="20" uuid="2061fe05-b5a8-42d8-994d-49f58b80e51e"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dataFinal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="7" y="196" width="116" height="20" uuid="1e98aaff-766c-426b-9781-83956cc26253"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Comandante:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="143" y="196" width="174" height="20" uuid="4657c685-dcf1-4320-b732-e6356f64235d"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{comandante}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="329" y="196" width="63" height="20" uuid="73b6bbc3-f1b6-4d74-8848-553278066d67"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Prático:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="413" y="196" width="135" height="20" uuid="1971ccbb-f418-4e07-9b6b-b378590ea744"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pratico}]]></textFieldExpression>
+			</textField>
+			<rectangle radius="5">
+				<reportElement x="0" y="231" width="555" height="98" backcolor="#FFFFFF" uuid="02d4fac1-2f7a-47ab-88c6-52c5062d9143"/>
+				<graphicElement>
+					<pen lineColor="#BEBDBD"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="7" y="243" width="136" height="20" uuid="8afac6ae-ca3d-4bd9-a8a1-687f75e51716"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Vel. Máx. Direita:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="7" y="270" width="136" height="20" uuid="e7317a9e-919b-4828-bf19-151999331c21"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Vel. Máx. Esquerda:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="283" y="243" width="135" height="20" uuid="4b0bf69b-72d1-4bd0-81ed-7152edd27d31"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Vel. Toque Direita:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="267" y="270" width="151" height="20" uuid="21a61816-6bb7-440d-8e91-2e030bf8445b"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Vel. Toque Esquerda:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="161" y="243" width="108" height="20" uuid="73a75fb6-dfdb-48c1-bdea-fbd85632b2d1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{velMaxDir}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="161" y="270" width="87" height="20" uuid="67ce9d31-40a4-4f97-b707-439b6c705b3c"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{velMaxEsq}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="435" y="243" width="107" height="20" uuid="4171dce2-5b1a-41ff-bfe0-be683c6d35b1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{velToqDir}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="435" y="270" width="107" height="20" uuid="3444f0bd-c7fb-4afe-a6cf-3ea277706fb5"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{velToqEsq}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="7" y="297" width="136" height="20" uuid="929296bf-cb3c-4ed5-8cf1-6368f1a0c486"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Ângulo Máximo:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="161" y="297" width="87" height="20" uuid="65e13e9b-9ab7-46c4-921e-cf5f35fdab0d"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{angMax}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="7" y="153" width="118" height="20" uuid="63f73843-f6f9-436c-969c-bc4af2056a19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Tmp. Manobra:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="295" y="153" width="118" height="20" uuid="34f13452-8d17-45a5-bf60-a7937c469b68"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Tmp. Atracado:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="143" y="153" width="140" height="20" uuid="bfb2de38-516a-4a81-9380-ddb1a04e589b"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tmpManobra}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="425" y="153" width="117" height="20" uuid="09d4262a-1048-485a-bd07-9a6acb2d771c"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tmpDocado}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="268" y="297" width="150" height="20" uuid="b1332538-cc26-4ef2-8e58-7b86562a1bae"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="11" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Ângulo de toque:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="435" y="297" width="107" height="20" uuid="47058930-7aa6-4b31-8d05-4b0e19ebb4bf"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{anguloToque}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="334" width="555" height="1" forecolor="#DBDBDB" uuid="6eba33fd-efc4-45b2-abf6-de8df2ea9834"/>
+			</line>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="17">
+			<textField>
+				<reportElement mode="Transparent" x="0" y="4" width="515" height="13" backcolor="#E6E6E6" uuid="f09543ec-09e4-4ebe-b4cc-9039748a7ed3"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Página "+ $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement mode="Transparent" x="515" y="4" width="40" height="13" backcolor="#E6E6E6" uuid="f55acb33-e013-44f1-b0fb-6ba9421c59e0"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

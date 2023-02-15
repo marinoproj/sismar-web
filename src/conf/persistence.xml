@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="sismarPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>br.com.marino.sismar.entity.Correntometro</class>
+    <class>br.com.marino.sismar.entity.Navio</class>
+    <class>br.com.marino.sismar.entity.Manobra</class>
+    <class>br.com.marino.sismar.entity.UsuariosWeb</class>
+    <class>br.com.marino.sismar.entity.AisTabela</class>
+    <class>br.com.marino.sismar.entity.Ais</class>
+    <class>br.com.marino.sismar.entity.NavioUltimaAtualizacao</class>
+    <class>br.com.marino.sismar.entity.Dolphin14</class>
+    <class>br.com.marino.sismar.entity.Aispoin</class>
+    <class>br.com.marino.sismar.entity.Layer</class>
+    <class>br.com.marino.sismar.entity.Cais</class>
+    <class>br.com.marino.sismar.entity.Mercadoria</class>
+    <class>br.com.marino.sismar.entity.Empresa</class>
+    <class>br.com.marino.sismar.entity.Berco</class>
+    <class>br.com.marino.sismar.entity.Area</class>
+    <class>br.com.marino.sismar.entity.Poin</class>
+    <class>br.com.marino.sismar.entity.MonitorarRegra</class>
+    <class>br.com.marino.sismar.entity.Monitorar</class>
+    <class>br.com.marino.sismar.entity.UsuariosWebSessao</class>
+    <class>br.com.marino.sismar.entity.SessaoPagina</class>
+    <class>br.com.marino.sismar.entity.MovimentacaoPortoParametros</class>
+    <class>br.com.marino.sismar.entity.Porto</class>
+    <class>br.com.marino.sismar.entity.MovimentacaoPorto</class>
+    <class>br.com.marino.sismar.entity.Meteorologia</class>
+    <class>br.com.marino.sismar.entity.Equipamentos</class>
+    <class>br.com.marino.sismar.entity.Atracacao</class>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <!--<property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://sismar.ddns.net:1433;databaseName=SISMAR"/>
+            <property name="javax.persistence.jdbc.user" value="sa"/>
+            <property name="javax.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+            <property name="javax.persistence.jdbc.password" value="smA12345"/>-->            
+            <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://localhost:1433;databaseName=SISMAR"/>
+            <property name="javax.persistence.jdbc.user" value="sa"/>
+            <property name="javax.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+            <property name="javax.persistence.jdbc.password" value="MarinO8155"/>
+            
+            <!--<property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://localhost:1433;databaseName=SISMAR"/>
+            <property name="javax.persistence.jdbc.user" value="sa"/>            
+            <property name="javax.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+            <property name="javax.persistence.jdbc.password" value="123"/>-->
+      <!--<property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://167.99.1.51:1433;databaseName=SISMAR"/>
+            <property name="javax.persistence.jdbc.user" value="sa"/>
+            <property name="javax.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+            <property name="javax.persistence.jdbc.password" value="MarinO8155"/>-->
+    </properties>
+  </persistence-unit>
+</persistence>
