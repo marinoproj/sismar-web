@@ -1,0 +1,11 @@
+# NetBeans specific #
+build/
+nbbuild/
+dist/
+nbdist/
+
+# Class Files #
+*.class
+
+# Others
+exe/
