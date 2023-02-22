@@ -35,7 +35,10 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -404,7 +407,7 @@ public class Util {
         }
         return ss.format(date1);
     }
-    
+
     public static String getStringDateLastUpdateComSegundos(Date date1, Date date2) {
         SimpleDateFormat s = new SimpleDateFormat("HH:mm:ss");
         SimpleDateFormat ss = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -420,9 +423,9 @@ public class Util {
         }
         return ss.format(date1);
     }
-    
+
     public static String getStringDateLastUpdateComSegundos(Date date1, Date date2, boolean dataClient) {
-        if (!dataClient){
+        if (!dataClient) {
             return getStringDateLastUpdateComSegundos(date1, date2);
         }
         SimpleDateFormat s = new SimpleDateFormat("HH:mm:ss");
@@ -439,8 +442,8 @@ public class Util {
         }
         return ss.format(Util.getDateTimeClient(date1));
     }
-    
-    public static String getStringDateLastUpdateComSegundos(Date date1, 
+
+    public static String getStringDateLastUpdateComSegundos(Date date1,
             Date date2, String timeZone) {
 
         SimpleDateFormat s = new SimpleDateFormat("HH:mm:ss");
@@ -455,9 +458,9 @@ public class Util {
         if (sss.format(c.getTime()).equals(sss.format(date2))) {
             return "Ontem às " + s.format(Util.getDateTimeClientWithTimeZone(date1, timeZone));
         }
-        
+
         return ss.format(Util.getDateTimeClientWithTimeZone(date1, timeZone));
-        
+
     }
 
     public static Object getValueFromJson(Object value) {
@@ -1319,13 +1322,13 @@ public class Util {
         return (horas < 10 ? "0" + horas : horas) + ":" + (minutos < 10 ? "0" + minutos : minutos)
                 + ":" + (segundos < 10 ? "0" + segundos : segundos);
     }
-    
+
     public static String getTimeDuration(int qtdSegundos) {
         int horas = 0;
         int minutos = 0;
         int segundos = 0;
 
-        try {            
+        try {
             horas = qtdSegundos / 3600;
             minutos = qtdSegundos % 3600 / 60;
             segundos = qtdSegundos % 3600 % 60;
@@ -1349,11 +1352,11 @@ public class Util {
         return token;
 
     }
-    
+
     public static String generateTokenLogged(Integer codUser, Integer codClient) throws JWTCreationException {
 
         Algorithm algorithm = Algorithm.HMAC256(SECRET_API);
-        
+
         Calendar expiresAt = Calendar.getInstance();
         expiresAt.add(Calendar.HOUR_OF_DAY, 24);
 
@@ -1377,17 +1380,17 @@ public class Util {
                 .build();
 
         DecodedJWT jwt = verifier.verify(token);
-        
+
         return true;
 
     }
-    
+
     public static UserLoggedApi getUserLoggedApi(String auth) throws TokenExpiredException, JWTVerificationException {
 
-        String token = auth.replace("Bearer ", "");        
+        String token = auth.replace("Bearer ", "");
         isValidToken(token);
         return new UserLoggedApi(token);
-        
+
     }
 
     public static Date getDateUTC(Date date, TimeZone timeZone) {
@@ -1418,7 +1421,7 @@ public class Util {
         ZoneOffset zo = getOffset(timeZone, date);
         return TimeUnit.SECONDS.toHours(zo.getTotalSeconds());
     }
-    
+
     public static String getDateTimeClient(Date dateUtc, String format) {
         if (dateUtc == null) {
             return "";
@@ -1427,45 +1430,65 @@ public class Util {
                 .format(getDateTimeClient(dateUtc));
 
     }
-    
-    public static Date getDateTimeClient(Date dateUtc){
-    
+
+    public static Date getDateTimeClient(Date dateUtc) {
+
         UsuariosWeb user = SessionContext.getInstance().getUserLoggedIn();
-        
+
         Instant nowUtc = Instant.now();
         ZoneId timeZone = ZoneId.of(user.getTimeZone());
-        ZonedDateTime nowTimeZone = ZonedDateTime.ofInstant(nowUtc, timeZone);        
+        ZonedDateTime nowTimeZone = ZonedDateTime.ofInstant(nowUtc, timeZone);
         long offset = Util.getOffsetHours(TimeZone.getTimeZone(timeZone), Date.from(nowTimeZone.toInstant()));
-        
+
         Calendar d = Calendar.getInstance();
         d.setTime(dateUtc);
         d.add(Calendar.HOUR, (int) offset);
-        
+
         return d.getTime();
-        
-    }
-    
-    public static Date getDateTimeClientWithTimeZone(Date dateUtc, String timeZone){
-    
-        Instant nowUtc = Instant.now();
-        ZoneId tz = ZoneId.of(timeZone);
-        ZonedDateTime nowTimeZone = ZonedDateTime.ofInstant(nowUtc, tz);        
-        long offset = Util.getOffsetHours(TimeZone.getTimeZone(tz), Date.from(nowTimeZone.toInstant()));
-        
-        Calendar d = Calendar.getInstance();
-        d.setTime(dateUtc);
-        d.add(Calendar.HOUR, (int) offset);
-        
-        return d.getTime();
-        
+
     }
 
-    public static List<String> getListTimeZones(){        
+    public static Date getDateTimeClientWithTimeZone(Date dateUtc, String timeZone) {
+
+        Instant nowUtc = Instant.now();
+        ZoneId tz = ZoneId.of(timeZone);
+        ZonedDateTime nowTimeZone = ZonedDateTime.ofInstant(nowUtc, tz);
+        long offset = Util.getOffsetHours(TimeZone.getTimeZone(tz), Date.from(nowTimeZone.toInstant()));
+
+        Calendar d = Calendar.getInstance();
+        d.setTime(dateUtc);
+        d.add(Calendar.HOUR, (int) offset);
+
+        return d.getTime();
+
+    }
+
+    public static List<String> getListTimeZones() {
         return ZoneId
                 .getAvailableZoneIds()
                 .stream()
                 .collect(Collectors.toList());
+
+    }
+
+    public static LocalDateTime convertToLocalDateTimeViaMilisecond(Date dateToConvert) {
+        return Instant.ofEpochMilli(dateToConvert.getTime())
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime();
+    }
+    
+    public static long getTempoPermanenciaEmMinutos(Date start, Date end){
+        
+        LocalDateTime a1 = convertToLocalDateTimeViaMilisecond(start);
+        LocalDateTime a2 = convertToLocalDateTimeViaMilisecond(end);
+        
+        long diferencaMin = Duration.between(a1, a2).toMinutes();
+        return diferencaMin;
         
     }
     
+    public static String convertMinutesToHoursAndMinutes(long t){        
+        return LocalTime.MIN.plus(Duration.ofMinutes(t)).toString();        
+    }
+
 }

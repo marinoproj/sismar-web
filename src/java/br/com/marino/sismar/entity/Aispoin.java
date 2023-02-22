@@ -1,6 +1,9 @@
 package br.com.marino.sismar.entity;
 
+import br.com.marino.sismar.util.Util;
 import java.io.Serializable;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -143,6 +146,10 @@ public class Aispoin implements Serializable {
 
     public void setTempoPermanencia(Integer tempoPermanencia) {
         this.tempoPermanencia = tempoPermanencia;
+    }
+    
+    public long getTempoPermanenciaEmMinutos(){
+        return Util.getTempoPermanenciaEmMinutos(dataEntrada, (dataSaida == null ? new Date() : dataSaida));
     }
 
     public String getTempoPermanenciaByString() {
