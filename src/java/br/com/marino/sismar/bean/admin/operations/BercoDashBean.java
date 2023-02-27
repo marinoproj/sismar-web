@@ -5,6 +5,7 @@ import br.com.marino.sismar.chart.Charts_Valores;
 import br.com.marino.sismar.chart.SeriesChartLine;
 import br.com.marino.sismar.controller.AispoinController;
 import br.com.marino.sismar.controller.BercoClienteController;
+import br.com.marino.sismar.controller.ClientesController;
 import br.com.marino.sismar.entity.Aispoin;
 import br.com.marino.sismar.entity.Berco;
 import br.com.marino.sismar.entity.BercoCliente;
@@ -380,14 +381,12 @@ public class BercoDashBean implements Serializable {
 
             periodSelected = "1";
             
-            Clientes cliente = SessionContext.getInstance().getClientLoggedIn();
-
-            // load bercos
-            List<BercoCliente> listBercoCliente = BercoClienteController.getList(manager, cliente.getCod());
-            listBercos = new ArrayList<>();
-            for (BercoCliente bc : listBercoCliente) {
+            Clientes client = ClientesController.getByCod(manager,
+                    SessionContext.getInstance().getClientLoggedIn().getCod());
+            
+            for (BercoCliente bc : client.getBercosCliente()) {
                 listBercos.add(bc.getCodBerco());
-            }
+            }           
 
             // load berco selecionado
             bercoSelected = listBercos.get(0);
