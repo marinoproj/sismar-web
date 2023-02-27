@@ -80,31 +80,28 @@ public class BercoDashBean implements Serializable {
             end = new Date();
 
             switch (periodSelected) {
-                
-                case "1":
-                    {
-                        Calendar c = Calendar.getInstance();
-                        c.add(Calendar.DAY_OF_MONTH, -7);
-                        start = c.getTime();
-                        break;
-                    }
-                
-                case "2":
-                    {
-                        Calendar c = Calendar.getInstance();
-                        c.add(Calendar.DAY_OF_MONTH, -15);
-                        start = c.getTime();
-                        break;
-                    }
-                
-                case "3":
-                    {
-                        Calendar c = Calendar.getInstance();
-                        c.add(Calendar.DAY_OF_MONTH, -30);
-                        start = c.getTime();
-                        break;
-                    }
-                
+
+                case "1": {
+                    Calendar c = Calendar.getInstance();
+                    c.add(Calendar.DAY_OF_MONTH, -7);
+                    start = c.getTime();
+                    break;
+                }
+
+                case "2": {
+                    Calendar c = Calendar.getInstance();
+                    c.add(Calendar.DAY_OF_MONTH, -15);
+                    start = c.getTime();
+                    break;
+                }
+
+                case "3": {
+                    Calendar c = Calendar.getInstance();
+                    c.add(Calendar.DAY_OF_MONTH, -30);
+                    start = c.getTime();
+                    break;
+                }
+
                 default:
                     break;
             }
@@ -132,7 +129,7 @@ public class BercoDashBean implements Serializable {
 
             tmpOperative = Util.convertMinutesToHoursAndMinutes(totalTmpOperativeMinutes);
             tmpDead = Util.convertMinutesToHoursAndMinutes(totalTmpMinutes - totalTmpOperativeMinutes);
-            tmpOfStay = Util.convertMinutesToHoursAndMinutes((totalTmpOperativeMinutes / totalVessels));
+            tmpOfStay = Util.convertMinutesToHoursAndMinutes(totalVessels == 0 ? 0 : (totalTmpOperativeMinutes / totalVessels));
 
             System.out.println("reloadMetrics primeira linha totalTmpMinutes: " + totalTmpMinutes
                     + " totalTmpFormated: " + Util.convertMinutesToHoursAndMinutes(totalTmpMinutes)
@@ -257,7 +254,7 @@ public class BercoDashBean implements Serializable {
 
         Collections.sort(listTimeStayShipLast5, comparatorDesc);
 
-        long durationMax = 0;
+        long durationMax = Long.MIN_VALUE;
 
         for (TimeStayShip t : listTimeStayShipLast5) {
             if (t.getDurationMinutes() > durationMax) {
@@ -267,7 +264,7 @@ public class BercoDashBean implements Serializable {
 
         for (TimeStayShip t : listTimeStayShipLast5) {
             t.setDurationMaxMinutes(durationMax);
-            long pct = (t.getDurationMinutes() * 100) / t.getDurationMaxMinutes();
+            long pct = durationMax == 0 ? 0 : (t.getDurationMinutes() * 100) / t.getDurationMaxMinutes();
             t.setPct(pct);
         }
 
@@ -344,9 +341,9 @@ public class BercoDashBean implements Serializable {
                 totalShipsExceeded24h += 1;
             }
         }
-        durationMed = durationMed / listTimeStay.size();
+        durationMed = listTimeStay.isEmpty() ? 0 : durationMed / listTimeStay.size();
 
-        double pctExceeded = (totalShipsExceeded24h * 100.0) / listTimeStay.size();
+        double pctExceeded = listTimeStay.isEmpty() ? 0 : (totalShipsExceeded24h * 100.0) / listTimeStay.size();
 
         String ins1 = "Tempo de duração mínima: " + Util.convertMinutesToHoursAndMinutes(durationMin);
         String ins2 = "Tempo de duração média: " + Util.convertMinutesToHoursAndMinutes(durationMed);
@@ -364,12 +361,6 @@ public class BercoDashBean implements Serializable {
 
     }
 
-    public Date gtData(int minusMinutes) {
-        Calendar d = Calendar.getInstance();
-        d.add(Calendar.HOUR_OF_DAY, minusMinutes);
-        return d.getTime();
-    }
-
     public void reloadInit() {
 
         EntityManagerFactory factory = null;
@@ -381,8 +372,8 @@ public class BercoDashBean implements Serializable {
             manager = factory.createEntityManager();
 
             periodSelected = "1";
-            
-            listBercos = BercosController.getListBercos(manager);            
+
+            listBercos = BercosController.getListBercos(manager);
 
             // load berco selecionado
             bercoSelected = listBercos.get(0);
