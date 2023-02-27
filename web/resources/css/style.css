@@ -1077,6 +1077,11 @@ select[name="table-fila_length"] {
         display: none !important;
     }
 
+    .card-dash-details{
+        min-height: auto !important;
+        display: flow-root;
+    }
+
 }
 
 .ui-paginator {
@@ -1104,4 +1109,222 @@ select[name="table-fila_length"] {
 
 th.ui-state-default{
     border: none !important;
+}
+
+.card-col{
+    flex-grow: 1;
+    flex-basis: 0;
+    padding: 0.5rem;
+}
+
+.card-dash{
+    padding: 20px;
+    box-sizing: border-box;
+    box-shadow: 0 10px 40px rgb(41 50 65 / 6%);
+    border-radius: 24px;
+    display: flex;
+}
+
+.card-dash-details{
+    padding: 20px !important;
+    box-sizing: border-box;
+    box-shadow: 0 10px 40px rgb(41 50 65 / 6%);
+    border-radius: 24px;
+    min-height: 530px;
+}
+
+.card-dash-white{
+    background: #FFFFFF;
+    color: rgba(41, 50, 65, 0.8);
+}
+
+.card-dash-details-white{
+    background: #FFFFFF;
+    color: rgba(41, 50, 65, 0.8);
+}
+
+.card-dash-blue{
+    background: #69B7FF;
+    color: #ffffff;
+}
+
+.card-dash-gray{
+    background: rgba(41, 50, 65, 0.8);
+    color: #ffffff;
+}
+
+.card-dash-orange{
+    background: #FFB340;
+    color: #ffffff;
+}
+
+.card-dash-overview-info{
+    width: 100%;
+}
+
+.card-dash-overview-info > h6 {
+    margin: 0 0 5px;
+    font-family: inherit;
+    line-height: 1.2;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.card-dash-overview-info > h1 {
+    margin: 0;
+    font-family: inherit;
+    line-height: 1.2;
+    color: inherit;
+    font-weight: 600;
+}
+
+.card-dash-details-title > h6 {
+    margin: 0px;
+    font-family: inherit;
+    line-height: 1.2;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.card-dash-details-title > span {
+    font-size: 12px;
+}
+
+.card-dash-details-title{
+    padding: 0px !important;
+}
+
+.card-dash-details-content{
+    padding: 0px !important;
+    margin-top: 10px !important;
+}
+
+.card-dash-details-content-row{
+    padding: 0px !important;
+    margin-top: 15px;
+}
+
+.card-dash-content-icon{
+    padding: 0px !important;
+}
+
+.card-dash-content-value{
+    padding: 0px 0px 0px 10px !important;
+    display: grid;
+}
+
+.card-dash-content-value-text{
+    font-weight: bold;   
+    font-size: 13px;
+}
+
+.card-dash-content-value-time{
+    font-size: 11px;
+    color: #ababab;
+}
+
+.customProgress{
+    background: #e5e5e5 !important;
+    height: 12px !important;
+    margin-top: 5px;
+}
+
+.customProgress .ui-progressbar-value {
+    background: #8489FF !important;
+    border: none !important;
+}
+
+.progress-vessel-col1{
+    padding: 0px !important;    
+}
+
+.progress-vessel-col2{
+    padding: 0px 0px 0px 10px !important;
+    font-size: 12px !important;
+    margin-top: -3px !important;
+}
+
+.progress-vessel{
+    margin-top: 5px;
+}
+
+.card-dash-details-content-insights {
+    margin-top: 10px;
+}
+
+.card-dash-details-content-insights > ul {
+    padding-left: 18px !important;
+}
+
+.card-dash-details-content-insights > h6 {
+    margin: 0px;
+    font-family: inherit;
+    line-height: 1.2;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.card-dash-details-content-insights > ul > li {
+    margin-top: 8px !important;
+    font-size: 13px;
+}
+
+.info-vessel{
+    font-size: 13px
+}
+
+.row-dash > .col-md-3{
+    padding: 5px !important;
+}
+
+.row-dash > .col-md-6{
+    padding: 5px !important;
+}
+
+.row{
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+}
+
+.highcharts-figure,
+.highcharts-data-table table {
+    min-width: 320px;
+    max-width: 800px;
+    margin: 1em auto;
+}
+
+.highcharts-data-table table {
+    font-family: Verdana, sans-serif;
+    border-collapse: collapse;
+    border: 1px solid #ebebeb;
+    margin: 10px auto;
+    text-align: center;
+    width: 100%;
+    max-width: 500px;
+}
+
+.highcharts-data-table caption {
+    padding: 1em 0;
+    font-size: 1.2em;
+    color: #555;
+}
+
+.highcharts-data-table th {
+    font-weight: 600;
+    padding: 0.5em;
+}
+
+.highcharts-data-table td,
+.highcharts-data-table th,
+.highcharts-data-table caption {
+    padding: 0.5em;
+}
+
+.highcharts-data-table thead tr,
+.highcharts-data-table tr:nth-child(even) {
+    background: #f8f8f8;
+}
+
+.highcharts-data-table tr:hover {
+    background: #f1f7ff;
 }

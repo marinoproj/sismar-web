@@ -138,6 +138,12 @@
                                         </h:link>
                                     </li>
                                 </ui:fragment>   
+                                <ui:fragment rendered="#{MenuBean.isActiveFeature('operations_berco')}">
+                                    <li>
+                                        <h:link value="Berço" outcome="/admin/operations/berco.xhtml" class="menu-operations-berco">
+                                        </h:link>
+                                    </li>
+                                </ui:fragment>   
                             </ul>    
                         </li>
                     </ui:fragment>

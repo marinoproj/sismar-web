@@ -9,6 +9,11 @@ public class TimelineBerco {
     private String description;
     private String formattedDate;
 
+    @Override
+    public String toString() {
+        return "TimelineBerco{" + "icon=" + icon + ", time=" + time + ", description=" + description + ", formattedDate=" + formattedDate + '}';
+    }
+    
     public TimelineBerco() {
     }
 

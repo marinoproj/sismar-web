@@ -42,6 +42,7 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.zone.ZoneRules;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -390,6 +391,28 @@ public class Util {
             ip = request.getRemoteAddr();
         }
         return ip;
+    }
+
+    public static String getStringDateLastUpdateDash(Date date) {
+        Date now = new Date();
+
+        SimpleDateFormat s = new SimpleDateFormat("HH:mm");
+        SimpleDateFormat ss = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        SimpleDateFormat sss = new SimpleDateFormat("dd/MM/yyyy");
+
+        if (sss.format(date).equals(sss.format(now))) {
+            return "Hoje às " + s.format(date);
+        }
+
+        Calendar c = Calendar.getInstance();
+        c.setTime(now);
+        c.add(Calendar.DAY_OF_MONTH, -1);
+
+        if (sss.format(c.getTime()).equals(sss.format(date))) {
+            return "Ontem às " + s.format(date);
+        }
+
+        return ss.format(date);
     }
 
     public static String getStringDateLastUpdate(Date date1, Date date2) {
@@ -1476,19 +1499,23 @@ public class Util {
                 .atZone(ZoneId.systemDefault())
                 .toLocalDateTime();
     }
-    
-    public static long getTempoPermanenciaEmMinutos(Date start, Date end){
-        
+
+    public static long getTempoPermanenciaEmMinutos(Date start, Date end) {
+
         LocalDateTime a1 = convertToLocalDateTimeViaMilisecond(start);
         LocalDateTime a2 = convertToLocalDateTimeViaMilisecond(end);
-        
+
         long diferencaMin = Duration.between(a1, a2).toMinutes();
         return diferencaMin;
-        
+
     }
-    
-    public static String convertMinutesToHoursAndMinutes(long t){        
-        return LocalTime.MIN.plus(Duration.ofMinutes(t)).toString();        
+
+    public static String convertMinutesToHoursAndMinutes(long t) {
+        long hours = t / 60;
+        long minutes = t % 60;
+        String h = hours < 0 ? "00" : hours < 10 ? ("0" + hours) : (hours + "");
+        String m = minutes < 0 ? "" : minutes < 10 ? ("0" + minutes) : (minutes + "");
+        return h + "h" + m + "m";
     }
 
 }
