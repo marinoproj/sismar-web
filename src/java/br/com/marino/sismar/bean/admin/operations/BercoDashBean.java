@@ -112,7 +112,7 @@ public class BercoDashBean implements Serializable {
 
             // load lista ais poins
             listAisPoin = AispoinController.getListShipAttracationsPeriodFromPoin(manager2,
-                    bercoSelected.getCodPoin().getCodPoin(), start, end, null, true);
+                    bercoSelected.getCodPoin().getCodPoin(), start, end, 20, true);
 
             System.out.println("reloadMetrics listAisPoin.size: " + listAisPoin.size());
             System.out.println("------------");
