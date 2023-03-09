@@ -67,6 +67,10 @@ public class BercoDashBean implements Serializable {
 
     private List<Aispoin> organize(List<Aispoin> list) {
 
+        if (list == null || list.isEmpty()){
+            return new ArrayList<>();
+        }
+        
         int codNavioFlag = 0;
 
         List<List<Aispoin>> newListGroup = new ArrayList<>();
@@ -97,6 +101,10 @@ public class BercoDashBean implements Serializable {
                 newList.add(ap);
             }
 
+        }
+        
+        if (newList != null && !newList.isEmpty()){
+            newListGroup.add(newList);
         }
         
         List<Aispoin> newListFinal = new ArrayList<>();
