@@ -67,73 +67,94 @@ public class BercoDashBean implements Serializable {
 
     private List<Aispoin> organize(List<Aispoin> list) {
 
-        if (list == null || list.isEmpty()){
-            return new ArrayList<>();
-        }
-        
-        int codNavioFlag = 0;
+        try {
 
-        List<List<Aispoin>> newListGroup = new ArrayList<>();
+            if (list == null || list.isEmpty()) {
+                return new ArrayList<>();
+            }
 
-        List<Aispoin> newList = null;
+            int codNavioFlag = 0;
 
-        for (Aispoin ap : list) {
+            List<List<Aispoin>> newListGroup = new ArrayList<>();
 
-            int codNavio = ap.getAisMmsi().getCodNavio().getCodNavio();
+            List<Aispoin> newList = null;
 
-            // inicialmente será diferente
-            if (codNavio != codNavioFlag) {
+            for (Aispoin ap : list) {
 
-                // inicialmente sera nulo
-                if (newList != null && !newList.isEmpty()) {
-                    newListGroup.add(newList);
+                int codNavio = ap.getAisMmsi().getCodNavio().getCodNavio();
+
+                // inicialmente será diferente
+                if (codNavio != codNavioFlag) {
+
+                    // inicialmente sera nulo
+                    if (newList != null && !newList.isEmpty()) {
+                        newListGroup.add(newList);
+                    }
+
+                    newList = new ArrayList<>();
+                    newList.add(ap);
+                    codNavioFlag = codNavio;
+
+                    continue;
+
                 }
 
-                newList = new ArrayList<>();
-                newList.add(ap);
-                codNavioFlag = codNavio;
-
-                continue;
+                if (newList != null) {
+                    newList.add(ap);
+                }
 
             }
 
-            if (newList != null) {
-                newList.add(ap);
+            if (newList != null && !newList.isEmpty()) {
+                newListGroup.add(newList);
             }
 
-        }
-        
-        if (newList != null && !newList.isEmpty()){
-            newListGroup.add(newList);
-        }
-        
-        List<Aispoin> newListFinal = new ArrayList<>();
-        
-        for (List<Aispoin> newListG : newListGroup){
-            
-            Aispoin first = newListG.get(0);
-            
-            if (newListG.size() > 1){                
-                Aispoin last = newListG.get(newListG.size() - 1);               
-                first.setDataSaida(last.getDataSaida()); 
-                first.setVelocidadeSaida(last.getVelocidadeSaida());
-            }
-            
-            newListFinal.add(first);
-            
-        }
-        
-        Comparator<Aispoin> comparatorAsc = (tb1, tb2) -> Long.valueOf(
-                tb1.getDataEntrada().getTime())
-                .compareTo(tb2.getDataEntrada().getTime()
-                );
+            List<Aispoin> newListFinal = new ArrayList<>();
 
-        Collections.sort(newListFinal, comparatorAsc);
-        
-        return newListFinal;
+            for (List<Aispoin> newListG : newListGroup) {
+
+                Aispoin first = newListG.get(0);
+
+                if (newListG.size() > 1) {
+                    Aispoin last = newListG.get(newListG.size() - 1);
+                    first.setDataSaida(last.getDataSaida());
+                    first.setVelocidadeSaida(last.getVelocidadeSaida());
+                }
+
+                newListFinal.add(first);
+
+            }
+
+            Comparator<Aispoin> comparatorAsc = (tb1, tb2) -> Long.valueOf(
+                    tb1.getDataEntrada().getTime())
+                    .compareTo(tb2.getDataEntrada().getTime()
+                    );
+
+            Collections.sort(newListFinal, comparatorAsc);
+
+            return newListFinal;
+
+        } catch (Exception ex) {
+            ex2 = ex;
+            return list;
+        }
 
     }
+    
+    private Exception ex2;
 
+    public Exception getEx2() {
+        if (ex2 == null){
+            ex2 = new Exception();
+        }
+        return ex2;
+    }
+
+    public void setEx2(Exception ex2) {
+        this.ex2 = ex2;
+    }
+    
+    
     public void reloadMetrics(EntityManager manager) throws Exception {
 
         EntityManagerFactory factory = null;
@@ -184,7 +205,7 @@ public class BercoDashBean implements Serializable {
                     bercoSelected.getCodPoin().getCodPoin(), start, end, 20, true);
 
             listAisPoin = organize(listAisPoin);
-            
+
             // organizar
             System.out.println("reloadMetrics listAisPoin.size: " + listAisPoin.size());
             System.out.println("------------");
@@ -227,6 +248,7 @@ public class BercoDashBean implements Serializable {
                     + " start: " + start + " end: " + end);
 
         } catch (Exception ex) {
+            ex.printStackTrace();
             throw ex;
 
         } finally {
