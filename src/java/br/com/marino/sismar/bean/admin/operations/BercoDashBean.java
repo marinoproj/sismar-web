@@ -65,6 +65,67 @@ public class BercoDashBean implements Serializable {
         listAisPoin = null;
     }
 
+    private List<Aispoin> organize(List<Aispoin> list) {
+
+        int codNavioFlag = 0;
+
+        List<List<Aispoin>> newListGroup = new ArrayList<>();
+
+        List<Aispoin> newList = null;
+
+        for (Aispoin ap : list) {
+
+            int codNavio = ap.getAisMmsi().getCodNavio().getCodNavio();
+
+            // inicialmente será diferente
+            if (codNavio != codNavioFlag) {
+
+                // inicialmente sera nulo
+                if (newList != null && !newList.isEmpty()) {
+                    newListGroup.add(newList);
+                }
+
+                newList = new ArrayList<>();
+                newList.add(ap);
+                codNavioFlag = codNavio;
+
+                continue;
+
+            }
+
+            if (newList != null) {
+                newList.add(ap);
+            }
+
+        }
+        
+        List<Aispoin> newListFinal = new ArrayList<>();
+        
+        for (List<Aispoin> newListG : newListGroup){
+            
+            Aispoin first = newListG.get(0);
+            
+            if (newListG.size() > 1){                
+                Aispoin last = newListG.get(newListG.size() - 1);               
+                first.setDataSaida(last.getDataSaida()); 
+                first.setVelocidadeSaida(last.getVelocidadeSaida());
+            }
+            
+            newListFinal.add(first);
+            
+        }
+        
+        Comparator<Aispoin> comparatorAsc = (tb1, tb2) -> Long.valueOf(
+                tb1.getDataEntrada().getTime())
+                .compareTo(tb2.getDataEntrada().getTime()
+                );
+
+        Collections.sort(newListFinal, comparatorAsc);
+        
+        return newListFinal;
+
+    }
+
     public void reloadMetrics(EntityManager manager) throws Exception {
 
         EntityManagerFactory factory = null;
@@ -114,6 +175,9 @@ public class BercoDashBean implements Serializable {
             listAisPoin = AispoinController.getListShipAttracationsPeriodFromPoin(manager2,
                     bercoSelected.getCodPoin().getCodPoin(), start, end, 20, true);
 
+            listAisPoin = organize(listAisPoin);
+            
+            // organizar
             System.out.println("reloadMetrics listAisPoin.size: " + listAisPoin.size());
             System.out.println("------------");
 
