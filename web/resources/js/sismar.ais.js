@@ -740,8 +740,6 @@ Sismar.ais = function () {
                 [[-23.648298, -45.521851]], {interactive: true, draggable: true});
         nauticalCharts = [{name: "Santos", layer: nauticalChartSantos},
                           {name: "Proximidades do porto - São Sebastião", layer: proxPortoSaoSebastiao}];
-        var draggable = new L.Draggable(proxPortoSaoSebastiao._image);
-        draggable.enable();
     };
 
     loadTypeVessels = function () {
