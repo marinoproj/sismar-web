@@ -736,7 +736,10 @@ Sismar.ais = function () {
     loadNauticalCharts = function () {
         var nauticalChartSantos = new L.ImageOverlay('/sismar/faces/javax.faces.resource/img/new_santos-min.png',
                 [[-23.95000000, -46.39305556], [-24.08416667, -46.27750000]]);
-        nauticalCharts = [{name: "Santos", layer: nauticalChartSantos}];
+        var proxPortoSaoSebastiao = new L.ImageOverlay('/sismar/faces/javax.faces.resource/img/proximidades_porto_sao_sebastiao.png',
+                [[-23.95000000, -46.39305556], [-24.08416667, -46.27750000]], {interactive: true});
+        nauticalCharts = [{name: "Santos", layer: nauticalChartSantos},
+                          {name: "Proximidades do porto - São Sebastião", layer: proxPortoSaoSebastiao}];
     };
 
     loadTypeVessels = function () {
