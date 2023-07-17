@@ -734,11 +734,17 @@ Sismar.ais = function () {
     };
 
     loadNauticalCharts = function () {
-        var nauticalChartSantos = new L.ImageOverlay('/sismar/faces/javax.faces.resource/img/porto_santos_parte_sul.png',
+        var portoSantosParteSul = new L.ImageOverlay('/sismar/faces/javax.faces.resource/img/porto_santos_parte_sul.png',
                 [[-23.95000000, -46.39305556], [-24.08416667, -46.27750000]]);
+                
+        var portoSantosParteNorte = new L.ImageOverlay('/sismar/faces/javax.faces.resource/img/porto_santos_parte_norte.png',
+                [[-23.863234, -46.398869], [-23.966803, -46.269093]], {opacity: 0.6});
+                
         var proxPortoSaoSebastiao = new L.ImageOverlay('/sismar/faces/javax.faces.resource/img/proximidades_porto_sao_sebastiao.png',
                 [[-23.621249, -45.753250], [-24.120435, -44.971161]], {opacity: 1.0});
-        nauticalCharts = [{name: "Parte sul - Porto de Santos", layer: nauticalChartSantos},
+        
+        nauticalCharts = [{name: "Parte Sul - Porto de Santos", layer: portoSantosParteSul},
+                          {name: "Parte Norte - Porto de Santos", layer: portoSantosParteNorte},
                           {name: "Proximidades - Porto de São Sebastião", layer: proxPortoSaoSebastiao}];
     };
 
