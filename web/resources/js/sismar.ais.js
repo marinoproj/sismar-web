@@ -738,7 +738,7 @@ Sismar.ais = function () {
                 [[-23.95000000, -46.39305556], [-24.08416667, -46.27750000]]);
                 
         var portoSantosParteNorte = new L.ImageOverlay('/sismar/faces/javax.faces.resource/img/porto_santos_parte_norte.png',
-                [[-23.863234, -46.398869], [-23.966803, -46.269093]], {opacity: 0.6});
+                [[-23.866452, -46.398697], [-23.966490, -46.267204]], {opacity: 0.6});
                 
         var proxPortoSaoSebastiao = new L.ImageOverlay('/sismar/faces/javax.faces.resource/img/proximidades_porto_sao_sebastiao.png',
                 [[-23.621249, -45.753250], [-24.120435, -44.971161]], {opacity: 1.0});
