@@ -189,6 +189,23 @@
                             </ul>    
                         </li>
                     </ui:fragment>
+                    
+                    <ui:fragment rendered="#{MenuBean.activeFeatureSensors}">
+                        <li class="menu-sensors">                        
+                            <a>
+                                <span class="glyphicon glyphicon-signal icon-menu-nav"></span>
+                                Sensores
+                            </a>
+                            <ul style="display: none">
+                                <ui:fragment rendered="#{MenuBean.isActiveFeature('sensors_hydrocarbon')}">
+                                    <li>
+                                        <h:link value="Hidrocarboneto" outcome="/admin/sensors/hydrocarbon.xhtml" class="menu-sensors-hydrocarbon">
+                                        </h:link>
+                                    </li>
+                                </ui:fragment>                                
+                            </ul>    
+                        </li>
+                    </ui:fragment>
 
 <!-- <ui:fragment rendered="#{MenuBean.activeFeatureMenuManeuvers}">
     <li class="menu-maneuvers">

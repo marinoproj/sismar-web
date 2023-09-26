@@ -62,6 +62,10 @@ public class MenuBean implements Serializable {
                 || isActiveFeature("moorings_search")
                 || isActiveFeature("moorings_realtime");
     }
+    
+    public boolean isActiveFeatureSensors() {
+        return isActiveFeature("sensors_hydrocarbon");
+    }
 
     public boolean isActiveFeatureMenuManeuvers() {
         return false;
