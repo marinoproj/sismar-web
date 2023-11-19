@@ -10,6 +10,28 @@ import javax.persistence.criteria.Root;
 
 public class CorrentometroController {
     
+    public static Correntometro getCorrentometroLastByCodEquipamento(EntityManager manager, Integer codEquipamento) {
+
+        try {
+
+            Query query = manager.createNativeQuery("SELECT TOP 1 * FROM correntometro WHERE "
+                    + "codEquipamento = " + codEquipamento + " ORDER BY dataHora DESC",
+                    Correntometro.class);            
+
+            Object obj = query.getSingleResult();
+
+            if (obj == null) {
+                return null;
+            }
+
+            return (Correntometro) obj;
+
+        } catch (NoResultException ex) {
+            return null;
+        }
+
+    }
+    
     public static Correntometro getCorrentometroLast(EntityManager manager) {
 
         try {

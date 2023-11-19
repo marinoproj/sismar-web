@@ -4,8 +4,7 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <h:head>
 
@@ -40,255 +39,202 @@
                 <!-- Título do conteúdo -->
                 <div id="content-header" class="col-xs-12">
                     <span id="content-title">Meteorologia</span> 
-                    <span id="content-subtitle">Informações metereológicas</span>
+                    <span id="content-subtitle">Informações de vento e corrente</span>
                 </div>
 
                 <h:form>
 
-                    <!-- Mensagem status -->
-                    <h:panelGroup id="message-status" layout="block" style="color: #878787 !important;" class="col-xs-12 message-status">
-                        <h:outputText value="#{MeteorologyBean.dateLastUpdate}"/>
-                    </h:panelGroup>
+                    <p:panel id="list-vento">
 
-                    <div style="padding-top: 100px; width: 100%; padding-left: 25px; padding-right: 25px; margin-bottom: 20px;">
-                        <h:selectOneMenu id="equipamento"
-                                         class="form-control"
-                                         style="width: 100%; border-radius: 20px"
-                                         value="#{MeteorologyBean.equipamento}"
-                                         converter="equipamentoConverter">    
-                            <f:selectItems value="#{MeteorologyBean.equipamentos}" 
-                                           var="e" 
-                                           itemLabel="#{e.nome}" 
-                                           itemValue="#{e}"/>
-                            <f:ajax event="change"
-                                    render="wind-vel wind-raj wind-dir message-status temperature-celsius air-humidity" 
-                                    listener="#{MeteorologyBean.reloadWind()}"/>
-                        </h:selectOneMenu>
-                    </div>
+                        <c:forEach var="equipamentoVento" items="#{MeteorologyBean.equipamentosVento}">
 
-                    <!-- VENTO -->
-                    <div class="col-xs-12 content-card">                        
+                            <div class="row">
 
-                        <div class="col-xs-12 content-card-header">
-                            <span class="content-card-title">Vento</span> 
-                        </div>                        
+                                <!-- VENTO -->
+                                <div class="col-xs-12 content-card">                        
 
-                        <!-- Card que exibe as informações de velocidade -->
-                        <div class="col-xs-12 col-md-4 content-card-data">
+                                    <div class="col-xs-12 content-card-header">
+                                        <span class="content-card-title">#{equipamentoVento.nome} - Vento</span> 
+                                        <h:panelGroup layout="block" class="message-status" style="margin-top: 5px; margin-left: 10px;">
+                                            <span class="message-status-#{MeteorologyBean.getWindMessageStatus(equipamentoVento.codEquipamento)}">#{MeteorologyBean.getWindMessageStatus(equipamentoVento.codEquipamento)}</span>
+                                        </h:panelGroup>
+                                    </div>                        
 
-                            <div class="col-xs-12 content-card-data-type1">
+                                    <!-- Card que exibe as informações de velocidade -->
+                                    <div class="col-xs-12 col-md-4 content-card-data">
 
-                                <!-- titulo -->
-                                <div class="col-xs-12 content-card-data-title">
-                                    <span class="content-card-data-title">Velocidade</span>
-                                </div>
+                                        <div class="col-xs-12 content-card-data-type1">
 
-                                <!-- Valor -->
-                                <div class="col-xs-8 content-card-data-value">
-                                    <span class="content-card-data-value-number">
-                                        <h:outputText class="value-unique" id="wind-vel" value="#{MeteorologyBean.windVel}"/>                                        
-                                    </span>                                      
-                                </div>
+                                            <!-- titulo -->
+                                            <div class="col-xs-12 content-card-data-title">
+                                                <span class="content-card-data-title">Velocidade</span>
+                                            </div>
 
-                                <!-- Icone de representação -->
-                                <div class="col-xs-4 content-card-data-icon">
-                                    <span class="sismar-icon sismar-icon-speed"></span>
-                                </div>
+                                            <!-- Valor -->
+                                            <div class="col-xs-8 content-card-data-value">
+                                                <span class="content-card-data-value-number">
+                                                    <h:outputText class="value-unique" value="#{MeteorologyBean.getWindVelNos(equipamentoVento.codEquipamento)}"/>                                        
+                                                </span>                                      
+                                            </div>
 
-                            </div>
+                                            <!-- Icone de representação -->
+                                            <div class="col-xs-4 content-card-data-icon">
+                                                <span class="sismar-icon sismar-icon-speed"></span>
+                                            </div>
 
-                        </div> <!-- Fechamento do card -->
+                                        </div>
 
-                        <!-- Card que exibe as informações de rajada -->
-                        <div class="col-xs-12 col-md-4 content-card-data">
+                                    </div> <!-- Fechamento do card -->
 
-                            <div class="col-xs-12 content-card-data-type2">
+                                    <!-- Card que exibe as informações de rajada -->
+                                    <div class="col-xs-12 col-md-4 content-card-data">
 
-                                <!-- titulo -->
-                                <div class="col-xs-12 content-card-data-title">
-                                    <span class="content-card-data-title">Rajada</span>
-                                </div>
+                                        <div class="col-xs-12 content-card-data-type2">
 
-                                <!-- Valor -->
-                                <div class="col-xs-8 content-card-data-value">
-                                    <span class="content-card-data-value-number">
-                                        <h:outputText class="value-unique" id="wind-raj" value="#{MeteorologyBean.windRaj}"/>                                        
-                                    </span>                                
-                                </div>
+                                            <!-- titulo -->
+                                            <div class="col-xs-12 content-card-data-title">
+                                                <span class="content-card-data-title">Rajada</span>
+                                            </div>
 
-                                <!-- Icone de representação -->
-                                <div class="col-xs-4 content-card-data-icon">
-                                    <span class="sismar-icon sismar-icon-speed"></span>
-                                </div>
+                                            <!-- Valor -->
+                                            <div class="col-xs-8 content-card-data-value">
+                                                <span class="content-card-data-value-number">
+                                                    <h:outputText class="value-unique" value="#{MeteorologyBean.getWindRajNos(equipamentoVento.codEquipamento)}"/>                                        
+                                                </span>                                
+                                            </div>
 
-                            </div> 
+                                            <!-- Icone de representação -->
+                                            <div class="col-xs-4 content-card-data-icon">
+                                                <span class="sismar-icon sismar-icon-speed"></span>
+                                            </div>
 
-                        </div> <!-- Fechamento do card -->
+                                        </div> 
 
-                        <!-- Card que exibe as informações de direção -->
-                        <div class="col-xs-12 col-md-4 content-card-data">
+                                    </div> <!-- Fechamento do card -->
 
-                            <div class="col-xs-12 content-card-data-type3">
+                                    <!-- Card que exibe as informações de direção -->
+                                    <div class="col-xs-12 col-md-4 content-card-data">
 
-                                <!-- titulo -->
-                                <div class="col-xs-12 content-card-data-title">
-                                    <span class="content-card-data-title">Direção</span>
-                                </div>
+                                        <div class="col-xs-12 content-card-data-type3">
 
-                                <!-- Valor -->
-                                <div class="col-xs-8 content-card-data-value">
-                                    <span class="content-card-data-value-number">
-                                        <h:outputText class="value-unique" id="wind-dir" value="#{MeteorologyBean.windDir}"/>
-                                    </span>                                
-                                </div>
+                                            <!-- titulo -->
+                                            <div class="col-xs-12 content-card-data-title">
+                                                <span class="content-card-data-title">Direção</span>
+                                            </div>
 
-                                <!-- Icone de representação -->
-                                <div class="col-xs-4 content-card-data-icon">
-                                    <span class="sismar-icon sismar-icon-direction"></span>
-                                </div>
+                                            <!-- Valor -->
+                                            <div class="col-xs-8 content-card-data-value">
+                                                <span class="content-card-data-value-number">
+                                                    <h:outputText class="value-unique" value="#{MeteorologyBean.getWindDir(equipamentoVento.codEquipamento)}"/>
+                                                </span>                                
+                                            </div>
 
-                            </div>    
+                                            <!-- Icone de representação -->
+                                            <div class="col-xs-4 content-card-data-icon">
+                                                <span class="sismar-icon sismar-icon-direction"></span>
+                                            </div>
 
-                        </div> <!-- Fechamento do card -->                                                
+                                        </div>    
 
-                        <!-- Título da área -->
-                        <div class="col-xs-12 content-card-header">
-                            <span class="col-xs-12 content-card-title" style="text-align: center">
-                                Gráfico
-                                <p:commandLink onclick="PF('filtrodialog').show()" class="content-card-description-chart">
-                                    Selecionar período
-                                    <i class="glyphicon glyphicon-search"></i>
-                                </p:commandLink>
-                            </span>                         
-                        </div>
+                                    </div> <!-- Fechamento do card -->                                                
 
-                        <!-- Card que exibe informações do pier -->
-                        <div class="col-xs-12 col-md-12 content-card-data">
-                            <div class="col-xs-12 content-card-data-type4" > 
-                                <div id="chart" style="margin: 0 auto">
-                                    <span class="col-xs-12 chart-data-info" style="text-align: center">
-                                        <i class="glyphicon glyphicon-exclamation-sign"></i>
-                                        Selecione o período para visualizar o grafico
-                                    </span>
-                                </div>
-                            </div>
-                        </div> <!-- Fechamento do card que exibe informações do pier -->
-
-                    </div> <!-- Fechamento da área que exibe informações de vento -->   
-
-                    <!-- TEMPERATURA -->
-                    <div class="col-xs-12 content-card">
-
-                        <div class="col-xs-12 content-card-header">
-                            <span class="content-card-title">Temperatura</span> 
-                        </div>
-
-                        <!-- Card que exibe as informações de velocidade -->
-                        <div class="col-xs-12 col-md-4 content-card-data">
-
-                            <div class="col-xs-12 content-card-data-type1">
-
-                                <!-- titulo -->
-                                <div class="col-xs-12 content-card-data-title">
-                                    <span class="content-card-data-title">Temperatura</span>
-                                </div>
-
-                                <!-- Valor -->
-                                <div class="col-xs-8 content-card-data-value">
-                                    <span class="content-card-data-value-number">
-                                        <h:outputText class="value-unique" id="temperature-celsius" value="#{MeteorologyBean.temperature}"/>                                        
-                                    </span>                                      
-                                </div>
-
-                                <!-- Icone de representação -->
-                                <div class="col-xs-4 content-card-data-icon">                                    
-                                    <span class="fas fa-temperature-low"></span>
-                                </div>
+                                </div> <!-- Fechamento da área que exibe informações de vento --> 
 
                             </div>
 
-                        </div> <!-- Fechamento do card -->
+                        </c:forEach>    
 
-                        <!-- Título da área -->
-                        <div class="col-xs-12 content-card-header">
-                            <span class="col-xs-12 content-card-title" style="text-align: center">
-                                Gráfico
-                                <p:commandLink onclick="PF('filtrodialog-temp').show()" class="content-card-description-chart">
-                                    Selecionar período
-                                    <i class="glyphicon glyphicon-search"></i>
-                                </p:commandLink>
-                            </span>                         
-                        </div>
+                    </p:panel>
 
-                        <!-- Card que exibe informações do pier -->
-                        <div class="col-xs-12 col-md-12 content-card-data">
-                            <div class="col-xs-12 content-card-data-type4" > 
-                                <div id="chart-temp" style="margin: 0 auto">
-                                    <span class="col-xs-12 chart-data-info" style="text-align: center">
-                                        <i class="glyphicon glyphicon-exclamation-sign"></i>
-                                        Selecione o período para visualizar o grafico
-                                    </span>
-                                </div>
-                            </div>
-                        </div> <!-- Fechamento do card que exibe informações do pier -->
-
-                    </div> <!-- Fechamento da área que exibe informações sobre as embarcações atracadas -->
-
-                    <!-- UMIDADE RELATIVA DO AR -->
-                    <div class="col-xs-12 content-card">
-
-                        <div class="col-xs-12 content-card-header">
-                            <span class="content-card-title">Umidade Relativa do Ar</span> 
-                        </div>
-
-                        <div class="col-xs-12 col-md-4 content-card-data">
-
-                            <div class="col-xs-12 content-card-data-type1">
-                                <div class="col-xs-12 content-card-data-title">
-                                    <span class="content-card-data-title">Umidade</span>
-                                </div>
-                                <div class="col-xs-8 content-card-data-value">
-                                    <span class="content-card-data-value-number">
-                                        <h:outputText class="value-unique" id="air-humidity" value="#{MeteorologyBean.airUmidity}"/>                                        
-                                    </span>                                      
-                                </div>
-                                <div class="col-xs-4 content-card-data-icon">                                    
-                                    <span class="fas fa-humidity"></span>
-                                </div>
-                            </div>
-
-                        </div> <!-- Fechamento do card -->
-
-                        <!-- Título da área -->
-                        <div class="col-xs-12 content-card-header">
-                            <span class="col-xs-12 content-card-title" style="text-align: center">
-                                Gráfico
-                                <p:commandLink onclick="PF('filtrodialog-umidity').show()" class="content-card-description-chart">
-                                    Selecionar período
-                                    <i class="glyphicon glyphicon-search"></i>
-                                </p:commandLink>
-                            </span>                         
-                        </div>
-
-                        <!-- Card que exibe informações do pier -->
-                        <div class="col-xs-12 col-md-12 content-card-data">
-                            <div class="col-xs-12 content-card-data-type4" > 
-                                <div id="chart-umidity" style="margin: 0 auto">
-                                    <span class="col-xs-12 chart-data-info" style="text-align: center">
-                                        <i class="glyphicon glyphicon-exclamation-sign"></i>
-                                        Selecione o período para visualizar o grafico
-                                    </span>
-                                </div>
-                            </div>
-                        </div> <!-- Fechamento do card que exibe informações do pier -->
-
-                    </div> <!-- Fechamento da área que exibe informações sobre as embarcações atracadas -->
-
-                    <p:poll interval="10" 
-                            listener="#{MeteorologyBean.reloadWind()}" 
-                            update="wind-vel wind-raj wind-dir message-status temperature-celsius air-humidity"/>
+                    <p:poll interval="20" 
+                            listener="#{MeteorologyBean.reloadVento(null)}" 
+                            update="list-vento"/>
 
                 </h:form>            
+
+                <h:form>
+
+                    <p:panel id="list-corrente">
+
+                        <c:forEach var="equipamentoCorrente" items="#{MeteorologyBean.equipamentosCorrente}">
+
+                            <div class="row">
+
+                                <!-- VENTO -->
+                                <div class="col-xs-12 content-card">                        
+
+                                    <div class="col-xs-12 content-card-header">
+                                        <span class="content-card-title">#{equipamentoCorrente.nome}</span> 
+                                        <h:panelGroup layout="block" class="message-status" style="margin-top: 5px; margin-left: 10px;">
+                                            <span class="message-status-#{MeteorologyBean.getSeaCurrentMessageStatus(equipamentoCorrente.codEquipamento)}">#{MeteorologyBean.getSeaCurrentMessageStatus(equipamentoCorrente.codEquipamento)}</span>
+                                        </h:panelGroup>
+                                    </div>                        
+
+                                    <!-- Card que exibe as informações de velocidade -->
+                                    <div class="col-xs-12 col-md-4 content-card-data">
+
+                                        <div class="col-xs-12 content-card-data-type1">
+
+                                            <!-- titulo -->
+                                            <div class="col-xs-12 content-card-data-title">
+                                                <span class="content-card-data-title">Velocidade</span>
+                                            </div>
+
+                                            <!-- Valor -->
+                                            <div class="col-xs-8 content-card-data-value">
+                                                <span class="content-card-data-value-number">
+                                                    <h:outputText class="value-unique" value="#{MeteorologyBean.getSeaCurrentSpeed(equipamentoCorrente.codEquipamento)}"/>                                        
+                                                </span>                                      
+                                            </div>
+
+                                            <!-- Icone de representação -->
+                                            <div class="col-xs-4 content-card-data-icon">
+                                                <span class="sismar-icon sismar-icon-speed"></span>
+                                            </div>
+
+                                        </div>
+
+                                    </div> <!-- Fechamento do card -->                                    
+
+                                    <!-- Card que exibe as informações de direção -->
+                                    <div class="col-xs-12 col-md-4 content-card-data">
+
+                                        <div class="col-xs-12 content-card-data-type3">
+
+                                            <!-- titulo -->
+                                            <div class="col-xs-12 content-card-data-title">
+                                                <span class="content-card-data-title">Direção</span>
+                                            </div>
+
+                                            <!-- Valor -->
+                                            <div class="col-xs-8 content-card-data-value">
+                                                <span class="content-card-data-value-number">
+                                                    <h:outputText class="value-unique" value="#{MeteorologyBean.getSeaCurrentDir(equipamentoCorrente.codEquipamento)}"/>
+                                                </span>                                
+                                            </div>
+
+                                            <!-- Icone de representação -->
+                                            <div class="col-xs-4 content-card-data-icon">
+                                                <span class="sismar-icon sismar-icon-direction"></span>
+                                            </div>
+
+                                        </div>    
+
+                                    </div> <!-- Fechamento do card -->                                                
+
+                                </div> <!-- Fechamento da área que exibe informações de vento --> 
+
+                            </div>
+
+                        </c:forEach>    
+
+                    </p:panel>
+
+                    <p:poll interval="30" 
+                            listener="#{MeteorologyBean.reloadCorrente(null)}" 
+                            update="list-corrente"/>
+
+                </h:form>     
 
             </div> <!-- Fechamento do conteúdo -->  
 
@@ -297,173 +243,9 @@
         <!-- Importar rodapé -->
         <ui:include src="/admin/components/footer.xhtml" />         
 
-        <p:dialog widgetVar="filtrodialog" 
-                  position="center center"
-                  modal="true" 
-                  header="Filtro"
-                  draggable="false"
-                  resizable="false"
-                  appendTo="@(body)">
-
-            <h:form>
-
-                <div class="col-xs-12 col-md-12" id="container-filtrodialog">
-
-                    <div class="container-filtrodialog-group">
-                        <div class="container-filtrodialog-label">
-                            <h:outputLabel value="Inicio: "/>
-                        </div>
-                        <div class="container-filtrodialog-input">
-                            <h:inputText  
-                                a:type="datetime-local" 
-                                value="#{MeteorologyBean.startDate}"
-                                class="form-control">  
-                            </h:inputText>
-                        </div>
-                    </div>
-
-                    <div class="container-filtrodialog-group">
-                        <div class="container-filtrodialog-label">
-                            <h:outputLabel value="Fim: "/>
-                        </div>
-                        <div class="container-filtrodialog-input">
-                            <h:inputText  
-                                a:type="datetime-local" 
-                                value="#{MeteorologyBean.endDate}"
-                                class="form-control">  
-                            </h:inputText>
-                        </div>
-                    </div>
-
-                    <div class="container-filtrodialog-group">
-                        <p:commandButton actionListener="#{MeteorologyBean.reloadChart}" 
-                                         value="Pesquisar" 
-                                         onclick="PF('filtrodialog').hide();PF('statusdialog').show()"
-                                         onsuccess="PF('statusdialog').hide()"
-                                         onerror="PF('statusdialog').hide()"
-                                         class="sismar-bt-primary"/>
-
-                    </div>
-
-                </div>
-
-            </h:form>
-
-        </p:dialog>
-
-        <!-- FILTRO TEMPERATURA -->
-        <p:dialog widgetVar="filtrodialog-temp" 
-                  position="center center"
-                  modal="true" 
-                  header="Filtro"
-                  draggable="false"
-                  resizable="false"
-                  appendTo="@(body)">
-
-            <h:form>
-
-                <div class="col-xs-12 col-md-12" id="container-filtrodialog">
-
-                    <div class="container-filtrodialog-group">
-                        <div class="container-filtrodialog-label">
-                            <h:outputLabel value="Inicio: "/>
-                        </div>
-                        <div class="container-filtrodialog-input">
-                            <h:inputText  
-                                a:type="datetime-local" 
-                                value="#{MeteorologyBean.startDateTemp}"
-                                class="form-control">  
-                            </h:inputText>
-                        </div>
-                    </div>
-
-                    <div class="container-filtrodialog-group">
-                        <div class="container-filtrodialog-label">
-                            <h:outputLabel value="Fim: "/>
-                        </div>
-                        <div class="container-filtrodialog-input">
-                            <h:inputText  
-                                a:type="datetime-local" 
-                                value="#{MeteorologyBean.endDateTemp}"
-                                class="form-control">  
-                            </h:inputText>
-                        </div>
-                    </div>
-
-                    <div class="container-filtrodialog-group">
-                        <p:commandButton actionListener="#{MeteorologyBean.reloadChartTemp}" 
-                                         value="Pesquisar" 
-                                         onclick="PF('filtrodialog-temp').hide();PF('statusdialog').show()"
-                                         onsuccess="PF('statusdialog').hide()"
-                                         onerror="PF('statusdialog').hide()"
-                                         class="sismar-bt-primary"/>
-
-                    </div>
-
-                </div>
-
-            </h:form>
-
-        </p:dialog>
-
-        <!-- FILTRO UMIDADE -->
-        <p:dialog widgetVar="filtrodialog-umidity" 
-                  position="center center"
-                  modal="true" 
-                  header="Filtro"
-                  draggable="false"
-                  resizable="false"
-                  appendTo="@(body)">
-
-            <h:form>
-
-                <div class="col-xs-12 col-md-12" id="container-filtrodialog">
-
-                    <div class="container-filtrodialog-group">
-                        <div class="container-filtrodialog-label">
-                            <h:outputLabel value="Inicio: "/>
-                        </div>
-                        <div class="container-filtrodialog-input">
-                            <h:inputText  
-                                a:type="datetime-local" 
-                                value="#{MeteorologyBean.startDateUmidity}"
-                                class="form-control">  
-                            </h:inputText>
-                        </div>
-                    </div>
-
-                    <div class="container-filtrodialog-group">
-                        <div class="container-filtrodialog-label">
-                            <h:outputLabel value="Fim: "/>
-                        </div>
-                        <div class="container-filtrodialog-input">
-                            <h:inputText  
-                                a:type="datetime-local" 
-                                value="#{MeteorologyBean.endDateUmidity}"
-                                class="form-control">  
-                            </h:inputText>
-                        </div>
-                    </div>
-
-                    <div class="container-filtrodialog-group">
-                        <p:commandButton actionListener="#{MeteorologyBean.reloadChartUmidity}" 
-                                         value="Pesquisar" 
-                                         onclick="PF('filtrodialog-umidity').hide();PF('statusdialog').show()"
-                                         onsuccess="PF('statusdialog').hide()"
-                                         onerror="PF('statusdialog').hide()"
-                                         class="sismar-bt-primary"/>
-
-                    </div>
-
-                </div>
-
-            </h:form>
-
-        </p:dialog>
-
         <!-- Importações scripts -->
         <h:outputScript name="js/menu.js" target="body"/>
-        
+
         <script>
             $(function () {
                 $(".menu-meteorology").addClass("active");

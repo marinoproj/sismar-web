@@ -105,7 +105,7 @@
                                 </ui:fragment>
                                 <ui:fragment rendered="#{MenuBean.isActiveFeature('meteorology_all')}">
                                     <li>
-                                        <h:link value="Vento, Umidade, Temperatura e outros" outcome="/admin/meteorology/meteorology.xhtml" class="menu-meteorology-all">
+                                        <h:link value="Vento e Corrente" outcome="/admin/meteorology/meteorology.xhtml" class="menu-meteorology-all">
                                         </h:link>
                                     </li>                            
                                 </ui:fragment>
@@ -183,6 +183,23 @@
                                 <ui:fragment rendered="#{MenuBean.isActiveFeature('moorings_praticos')}">
                                     <li>
                                         <h:link value="Práticos" outcome="/admin/moorings/praticos.xhtml" class="menu-moorings-praticos">
+                                        </h:link>
+                                    </li>
+                                </ui:fragment>                                
+                            </ul>    
+                        </li>
+                    </ui:fragment>
+                    
+                    <ui:fragment rendered="#{MenuBean.activeFeatureSensors}">
+                        <li class="menu-sensors">                        
+                            <a>
+                                <span class="glyphicon glyphicon-signal icon-menu-nav"></span>
+                                Sensores
+                            </a>
+                            <ul style="display: none">
+                                <ui:fragment rendered="#{MenuBean.isActiveFeature('sensors_hydrocarbon')}">
+                                    <li>
+                                        <h:link value="Hidrocarboneto" outcome="/admin/sensors/hydrocarbon.xhtml" class="menu-sensors-hydrocarbon">
                                         </h:link>
                                     </li>
                                 </ui:fragment>                                

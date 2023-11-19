@@ -2,6 +2,7 @@ package br.com.marino.sismar.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +12,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
@@ -22,6 +24,12 @@ public class Correntometro implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "codCorrentometro")
+    private Integer cod;
+    
     @Id
     @Basic(optional = false)
     @Column(name = "dataHora")
@@ -108,7 +116,8 @@ public class Correntometro implements Serializable {
     @Column(name = "direcao10")
     private double direcao10;
     
-
+    private Integer codEquipamento;
+    
     public Correntometro() {
     }
 
@@ -280,37 +289,50 @@ public class Correntometro implements Serializable {
         this.direcao10 = direcao10;
     }
 
+    public Integer getCod() {
+        return cod;
+    }
+
+    public void setCod(Integer cod) {
+        this.cod = cod;
+    }
+
+    public Integer getCodEquipamento() {
+        return codEquipamento;
+    }
+
+    public void setCodEquipamento(Integer codEquipamento) {
+        this.codEquipamento = codEquipamento;
+    }
+
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (dataHora != null ? dataHora.hashCode() : 0);
+        int hash = 5;
+        hash = 17 * hash + Objects.hashCode(this.cod);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        if (!(object instanceof Correntometro)) {
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
             return false;
         }
-        Correntometro other = (Correntometro) object;
-        return !((this.dataHora == null && other.dataHora != null) || (this.dataHora != null && !this.dataHora.equals(other.dataHora)));
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Correntometro other = (Correntometro) obj;
+        if (!Objects.equals(this.cod, other.cod)) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public String toString() {
-        return "Correntometro{" + "dataHora=" + dataHora + 
-                ", intensidade=" + intensidade + 
-                ", direcao=" + direcao + ", intensidade2=" + 
-                intensidade2 + ", direcao2=" + direcao2 + 
-                ", intensidade3=" + intensidade3 + ", direcao3=" + 
-                direcao3 + ", intensidade4=" + intensidade4 + 
-                ", direcao4=" + direcao4 + ", intensidade5=" + 
-                intensidade5 + ", direcao5=" + direcao5 + ", intensidade6=" + 
-                intensidade6 + ", direcao6=" + direcao6 + ", intensidade7=" +
-                intensidade7 + ", direcao7=" + direcao7 + ", intensidade8=" + 
-                intensidade8 + ", direcao8=" + direcao8 + ", intensidade9=" + 
-                intensidade9 + ", direcao9=" + direcao9 + ", intensidade10=" + 
-                intensidade10 + ", direcao10=" + direcao10 + '}';
+        return "Correntometro{" + "cod=" + cod + ", dataHora=" + dataHora + ", intensidade=" + intensidade + ", direcao=" + direcao + ", intensidade2=" + intensidade2 + ", direcao2=" + direcao2 + ", intensidade3=" + intensidade3 + ", direcao3=" + direcao3 + ", intensidade4=" + intensidade4 + ", direcao4=" + direcao4 + ", intensidade5=" + intensidade5 + ", direcao5=" + direcao5 + ", intensidade6=" + intensidade6 + ", direcao6=" + direcao6 + ", intensidade7=" + intensidade7 + ", direcao7=" + direcao7 + ", intensidade8=" + intensidade8 + ", direcao8=" + direcao8 + ", intensidade9=" + intensidade9 + ", direcao9=" + direcao9 + ", intensidade10=" + intensidade10 + ", direcao10=" + direcao10 + ", codEquipamento=" + codEquipamento + '}';
     }
     
 }

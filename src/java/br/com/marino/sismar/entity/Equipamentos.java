@@ -35,16 +35,22 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Equipamentos implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "codEquipamento")
     private Integer codEquipamento;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 500)
     @Column(name = "nome")
     private String nome;
+    
+    @Column(name = "tipo")
+    @Basic(optional = true)
+    private String tipo;
 
     public Equipamentos() {
     }
@@ -73,6 +79,14 @@ public class Equipamentos implements Serializable {
     public void setNome(String nome) {
         this.nome = nome;
     }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }    
 
     @Override
     public int hashCode() {

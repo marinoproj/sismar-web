@@ -1328,3 +1328,23 @@ th.ui-state-default{
 .highcharts-data-table tr:hover {
     background: #f1f7ff;
 }
+
+.data-device-green{
+    background: #37df00;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #686868;
+    display: inline-block;
+    text-align: right;
+    width: 10px;
+}
+
+.data-device-red{
+    background: #ff7a7a;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #686868;
+    display: inline-block;
+    text-align: right;
+    width: 10px;
+}

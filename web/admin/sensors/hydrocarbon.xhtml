@@ -1,0 +1,196 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+
+        <title>Sismar - Hidrocarboneto</title>
+
+        <!-- Importações padrão -->
+        <ui:include src="/admin/components/headdefault.xhtml" />           
+
+        <!-- HighCharts -->
+        <script src="https://code.highcharts.com/highcharts.js"></script>
+        <script src="https://code.highcharts.com/modules/series-label.js"></script>
+        <script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+    </h:head>
+
+    <h:body>
+
+        <div class="container-fluid" style="padding: 0px">           
+
+            <!-- Importar menu -->
+            <ui:include src="/admin/components/menu.xhtml" />
+
+            <!-- Importar header -->
+            <ui:include src="/admin/components/header.xhtml" />   
+
+            <!-- Corpo do container: conteúdo -->
+            <div id="content" class="col-xs-12">
+
+                <!-- Título do conteúdo -->
+                <div id="content-header" class="col-xs-12" style="margin-bottom: 20px">
+                    <span id="content-title">Hidrocarboneto</span> 
+                    <span id="content-subtitle">Medições e Alarmes</span>
+                </div>
+
+                <h:form>                   
+
+                    <div class="row" style="margin-bottom: 15px !important">
+
+                        <div class="col-xs-12 col-md-12 form-group" style="padding: 0px !important;">
+                            <h:outputLabel class="col-sm-12" value="Sensor:"/>
+                            <div class="col-sm-12">
+                                <h:selectOneMenu class="form-control"
+                                                 value="#{HydrocarbonBean.deviceSelected}"
+                                                 converter="deviceConverter"
+                                                 >   
+                                    <f:selectItems value="#{HydrocarbonBean.devices}" 
+                                                   var="obj" 
+                                                   itemLabel="#{HydrocarbonBean.getSensorName(obj)}" 
+                                                   itemValue="#{obj}"/>
+                                    <f:ajax event="change"
+                                            render="jDataAnalog jDataDigital jDataTriggerDigital" 
+                                            listener="#{HydrocarbonBean.reloadMetrics(null)}"/>
+                                </h:selectOneMenu>
+                            </div>
+                        </div>                        
+
+                    </div>
+
+                    <div class="row row-dash">
+
+                        <!-- entradas analógicas -->
+                        <div class="col-xs-12 col-md-3">
+                            <div class="card-dash-details card-dash-details-white">
+                                <div class="col-xs-12 card-dash-details-title">
+                                    <h6>Entradas analógicas</h6>
+                                    <span></span>
+                                </div>
+
+                                <div class="col-xs-12 card-dash-details-content">
+
+                                    <p:panel id="jDataAnalog">
+                                        <p:repeat value="#{HydrocarbonBean.dataAnalog}" var="dataDevice">
+
+                                            <div class="col-xs-12 card-dash-details-content-row" style="border-bottom: 1px solid #d7d7d7;padding-bottom: 15px !important; display: flex;">
+                                                <span style="width: 100%">#{HydrocarbonBean.getDataName(dataDevice)}</span>
+
+                                                <ui:fragment rendered="#{HydrocarbonBean.isBooleanValue(dataDevice)}">                                                                                                        
+                                                    <span class="#{HydrocarbonBean.getBooleanValueClass(dataDevice)}"></span>
+                                                </ui:fragment>
+                                                
+                                                <ui:fragment rendered="#{HydrocarbonBean.isFloatValue(dataDevice)}">                                                    
+                                                    <span style="border: 1px solid #ababab;border-radius: 5px;padding: 5px 20px;margin-left: 10px;font-weight: bold;display: inline-block;text-align: right;">#{HydrocarbonBean.getFloatValue(dataDevice)}</span>
+                                                </ui:fragment>   
+
+                                            </div>
+                                            
+                                        </p:repeat>
+                                    </p:panel>
+
+                                </div>
+                            </div>
+                        </div>
+                        
+                        
+                        <!-- entradas digitais -->
+                        <div class="col-xs-12 col-md-6">
+                            <div class="card-dash-details card-dash-details-white">
+                                <div class="col-xs-12 card-dash-details-title">
+                                    <h6>Entradas digitais</h6>
+                                    <span></span>
+                                </div>
+
+                                <div class="col-xs-12 card-dash-details-content">
+
+                                    <p:panel id="jDataDigital">
+                                        <p:repeat value="#{HydrocarbonBean.dataDigital}" var="dataDevice">
+
+                                            <div class="col-xs-12 col-md-6 card-dash-details-content-row" style="border-bottom: 1px solid #d7d7d7;padding-bottom: 10px !important;display: flex; padding-left: 10px !important; padding-right: 10px !important">
+                                                <span style="width: 100%;">#{HydrocarbonBean.getDataName(dataDevice)}</span>
+
+                                                <ui:fragment rendered="#{HydrocarbonBean.isBooleanValue(dataDevice)}">                                                                                                        
+                                                    <span class="#{HydrocarbonBean.getBooleanValueClass(dataDevice)}"></span>
+                                                </ui:fragment>   
+                                                
+                                                <ui:fragment rendered="#{HydrocarbonBean.isFloatValue(dataDevice)}">                                                    
+                                                    <span style="border: 1px solid #ababab;border-radius: 5px;padding: 5px 20px;margin-left: 10px;font-weight: bold;display: inline-block;text-align: right;">#{HydrocarbonBean.getFloatValue(dataDevice)}</span>
+                                                </ui:fragment>   
+
+                                            </div>
+                                            
+                                        </p:repeat>
+                                    </p:panel>
+
+                                </div>
+                            </div>
+                        </div>
+                        
+                        
+                        <!-- entradas digitais -->
+                        <div class="col-xs-12 col-md-3">
+                            <div class="card-dash-details card-dash-details-white">
+                                <div class="col-xs-12 card-dash-details-title">
+                                    <h6>Saídas digitais</h6>
+                                    <span></span>
+                                </div>
+
+                                <div class="col-xs-12 card-dash-details-content">
+
+                                    <p:panel id="jDataTriggerDigital">
+                                        <p:repeat value="#{HydrocarbonBean.dataTriggerDigital}" var="dataDevice">
+
+                                            <div class="col-xs-12 card-dash-details-content-row" style="border-bottom: 1px solid #d7d7d7;padding-bottom: 10px !important;display: flex;">
+                                                <span style="width: 100%;">#{HydrocarbonBean.getDataName(dataDevice)}</span>
+
+                                                <ui:fragment rendered="#{HydrocarbonBean.isBooleanValue(dataDevice)}">                                                                                                        
+                                                    <span class="#{HydrocarbonBean.getBooleanValueClass(dataDevice)}"></span>
+                                                </ui:fragment>
+                                                
+                                                <ui:fragment rendered="#{HydrocarbonBean.isFloatValue(dataDevice)}">                                                    
+                                                    <span style="border: 1px solid #ababab;border-radius: 5px;padding: 5px 20px;margin-left: 10px;font-weight: bold;display: inline-block;text-align: right;">#{HydrocarbonBean.getFloatValue(dataDevice)}</span>
+                                                </ui:fragment>   
+
+                                            </div>
+                                            
+                                        </p:repeat>
+                                    </p:panel>
+
+                                </div>
+                            </div>
+                        </div>                        
+
+                    </div>
+                    
+                </h:form>            
+
+            </div> <!-- Fechamento do conteúdo -->  
+
+        </div> <!-- Fechamento do container -->  
+
+        <!-- Importar rodapé -->
+        <ui:include src="/admin/components/footer.xhtml" />         
+
+        <!-- Importações scripts -->
+        <h:outputScript name="js/menu.js" target="body"/>
+
+        <script>
+            $(function () {
+
+                $(".menu-sensors").addClass("active");
+                $(".menu-sensors-hydrocarbon").addClass("active-link");
+
+            });
+
+        </script>
+
+    </h:body>
+
+</html>
