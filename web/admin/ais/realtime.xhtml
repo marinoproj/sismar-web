@@ -233,6 +233,9 @@
         <!-- Importar atracacao -->
         <ui:include src="/admin/components/atracacao.xhtml" />   
 
+        <!-- Importar meteorologia -->
+        <ui:include src="/admin/components/meteorologiaais.xhtml" />   
+        
         <h:form id="update-vessels">
             <p:poll listener="#{AisBean.updateVessels(null)}" 
                     interval="#{AisBean.delay}" 
@@ -249,6 +252,7 @@
         <h:outputScript name="js/leaflet.label.js" target="body"/>
         <h:outputScript name="js/L.Control.Layers.Tree.js" target="body"/>
         <h:outputScript name="js/atracacao.js" target="body"/>
+        <h:outputScript name="js/meteorologiaais.js" target="body"/>
 
         <script>
 
@@ -291,6 +295,9 @@
 
                 var atracacao = new Atracacao();
                 atracacao.realtime("#atracacao-laser", ais);
+                
+                var meteorologia = new MeteorologiaAis();
+                meteorologia.realtime("#meteorologiaais-main", ais);
 
             });
 

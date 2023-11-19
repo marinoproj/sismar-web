@@ -1,0 +1,156 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets">    
+
+    <style>
+
+        .disabled {
+            background: #eee;
+        }        
+
+        select {
+            border: none;
+            border-radius: 10px;
+            padding: 8px;
+            width: 100%;
+            margin-top: 5px;
+            text-align-last:center;
+        }
+
+        .tb-meteorologiaais-main-title{
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        #meteorologiaais-main{
+            position: fixed;
+            bottom: 70px;
+            left: 50%;                
+            padding-left: 20px;
+            padding-right: 20px;
+            margin-left: -115px;
+            background: #f7f7f7;
+            z-index: 100000000;
+            box-shadow: 0 3px 14px rgba(0,0,0,0.4);
+            border-radius: 12px;
+            font-size: 12px;
+            cursor: move;   
+            display: none;
+            height: 400px;
+            width: 350px;
+            text-align: center;
+        }            
+
+        #meteorologiaais-main > .row{
+            margin-top: 5px;
+        }
+
+        .card-group-chart{
+            margin-top: 10px;
+            display: flex;
+        }
+
+        .card-group-tite{
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .card-group-label{
+            font-weight: bold;
+        }
+
+        #cb-corrente{
+            width: 200px;
+            margin-left: 15px;
+        }
+
+        #cb-vento{
+            width: 200px;
+            margin-left: 15px;
+        }
+
+        .card-group-value{
+            font-size: 18px;
+            margin-right: 10px;
+            color: #858585;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 992px) {
+            #meteorologiaais-main{
+                position: fixed;
+                left: 0;
+                margin-left: 12%;
+                bottom: 50%;
+                width: 86%;
+                height: 410px;
+            }            
+
+        }
+
+    </style>
+
+    <div id="meteorologiaais-main">
+
+        <div class="row" style="margin-top: 15px;">
+            <div class="col-xs-12 tb-meteorologiaais-main-title" style="text-align: center">METEOROLOGIA</div>
+        </div>
+
+        <div class="row" style="margin-top: 15px;">
+            <div class="col-xs-12 card-group-tite">
+                <span>VENTO</span>
+                <select name="select-vento" id="cb-vento">
+                </select>
+            </div>
+            <div class="col-xs-12 message-status">
+                <span id="card-group-vento-status"></span>
+            </div>                    
+            <div class="col-xs-6 card-group">
+                <span class="card-group-label">Velocidade</span>
+                <div class="card-group-chart">
+                    <span class="card-group-value" id="card-group-value-vento-vel">&nbsp;</span>    
+                    <span class="sismar-icon sismar-icon-speed" style="font-size: 35px; color: #858585"></span>
+                </div>
+            </div>            
+            <div class="col-xs-6 card-group">
+                <span class="card-group-label">Direção</span>                
+                <div class="card-group-chart">
+                    <span class="card-group-value" id="card-group-value-vento-dir">&nbsp;</span>    
+                    <span class="sismar-icon sismar-icon-direction" style="font-size: 35px; color: #858585"></span>
+                </div>                
+            </div>            
+        </div>
+
+        <div class="row" style="margin-top: 10px;border-top: 1px solid #d7d7d7;padding-top: 10px">
+            <div class="col-xs-12 card-group-tite">
+                <span>CORRENTE</span>
+                <select name="select-corrente" id="cb-corrente">
+                </select>
+            </div>        
+            <div class="col-xs-12 message-status">
+                <span id="card-group-corrente-status"></span>
+            </div>                    
+            <div class="col-xs-6 card-group">
+                <span class="card-group-label">Velocidade</span>                
+                <div class="card-group-chart">
+                    <span class="card-group-value" id="card-group-value-corrente-vel">&nbsp;</span>    
+                    <span class="sismar-icon sismar-icon-speed" style="font-size: 35px; color: #858585"></span>
+                </div>                
+            </div>            
+            <div class="col-xs-6 card-group">
+                <span class="card-group-label">Direção</span>
+                <div class="card-group-chart">
+                    <span class="card-group-value" id="card-group-value-corrente-dir">&nbsp;</span>    
+                    <span class="sismar-icon sismar-icon-direction" style="font-size: 35px; color: #858585"></span>
+                </div>
+
+            </div>            
+        </div>
+
+    </div>               
+
+</ui:composition>

@@ -92,7 +92,7 @@ public class MeteorologyBean implements Serializable {
         }
         return Util.dateToString(date, formatRegex);
     }
-
+    
     public boolean isExceptionGeral(){
         return exGeral != null;
     }
@@ -100,7 +100,7 @@ public class MeteorologyBean implements Serializable {
     public boolean isExceptionVento(){
         return exVento != null;
     }
-    
+        
     public boolean isExceptionCorrente(){
         return exCorrente != null;
     }   
@@ -111,7 +111,7 @@ public class MeteorologyBean implements Serializable {
             return "-";
         }
         return getValueFormatted(Util.getSpeedCorrentometroByLevel(corrente)) + " nós";
-    }
+    }    
 
     public String getSeaCurrentDir(Integer codEquipamento) {
         Correntometro corrente = correntes.get(codEquipamento);
@@ -199,6 +199,7 @@ public class MeteorologyBean implements Serializable {
 
             List<ClientesEquipamentos> listClientesEquipamentos = ClientesEquipamentosController.getListClientesEquipamentosByCodCliente(manager, cliente.getCod());
 
+            
             equipamentosCorrente = new ArrayList<>();
             equipamentosVento = new ArrayList<>();
 
@@ -210,9 +211,9 @@ public class MeteorologyBean implements Serializable {
                 if (!obj.isExibirTelaMeteorologia()) {
                     continue;
                 }
-
-                Equipamentos eq = obj.getCodEquipamento();
-
+                                
+                Equipamentos eq = obj.getCodEquipamento();               
+                
                 if (eq.getTipo().equalsIgnoreCase(TipoEquipamentoEnum.CORRENTE.getValue())) {
                     equipamentosCorrente.add(eq);
                     correntes.put(eq.getCodEquipamento(), null);
@@ -247,6 +248,7 @@ public class MeteorologyBean implements Serializable {
 
     }
 
+    
     public void reloadCorrente(EntityManager managerSuper) {
 
         if (managerSuper == null) {
