@@ -38,11 +38,9 @@ import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.zone.ZoneRules;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -114,6 +112,13 @@ public class Util {
 
     public static String converterValue(double value) {
         return FORMAT_VALUE.format(value);
+    }
+
+    public static String formatarValor(double value) {        
+        BigDecimal valorExato = new BigDecimal(value)
+                .setScale(1, RoundingMode.HALF_DOWN);
+        
+        return converterValueWithoutDecimals(valorExato.doubleValue());
     }
 
     public static String converterValueWithoutDecimals(double value) {
@@ -396,9 +401,17 @@ public class Util {
     public static String getStringDateLastUpdateDash(Date date) {
         Date now = new Date();
 
+        Calendar ct = Calendar.getInstance();
+        ct.add(Calendar.DAY_OF_MONTH, 1);
+        Date tomorrow = ct.getTime();
+
         SimpleDateFormat s = new SimpleDateFormat("HH:mm");
         SimpleDateFormat ss = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         SimpleDateFormat sss = new SimpleDateFormat("dd/MM/yyyy");
+
+        if (sss.format(date).equals(sss.format(tomorrow))) {
+            return "Amanhã às " + s.format(date);
+        }
 
         if (sss.format(date).equals(sss.format(now))) {
             return "Hoje às " + s.format(date);

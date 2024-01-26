@@ -36,7 +36,7 @@ public class AispoinController {
         return list;
 
     }
-    
+
     public static List<Aispoin> getListAispoinsOpenByEvent(EntityManager manager, int idPoin, Date date) throws Exception {
 
         String sql = "SELECT "
@@ -48,7 +48,7 @@ public class AispoinController {
                 + "velocidadeSaida, "
                 + "codPoin "
                 + "FROM aispoin "
-                + "WHERE codPoin = " + idPoin + " AND dataEntrada >= '" + Util.DATE_START_AIS + "' AND (dataSaida IS NULL OR dataSaida >= '"+Util.getDateFromBDSQL(date)+"') ORDER BY dataEntrada ASC";
+                + "WHERE codPoin = " + idPoin + " AND dataEntrada >= '" + Util.DATE_START_AIS + "' AND (dataSaida IS NULL OR dataSaida >= '" + Util.getDateFromBDSQL(date) + "') ORDER BY dataEntrada ASC";
 
         Query query = manager.createNativeQuery(sql, Aispoin.class);
 
@@ -88,15 +88,15 @@ public class AispoinController {
 
     }
 
-    
     /**
      * Retorna a lista de AisPoin CRIADO(DATA_CHEGADA) entre um intervalo
+     *
      * @param manager
      * @param codPoin
      * @param start
      * @param end
      * @return
-     * @throws Exception 
+     * @throws Exception
      */
     public static List<Aispoin> getListAispoinVesselArrivalDateByPeriod(EntityManager manager,
             int codPoin, Date start, Date end) throws Exception {
@@ -125,15 +125,16 @@ public class AispoinController {
         return list;
 
     }
-    
+
     /**
      * Retorna a lista de AisPoin ENCERRADO(DATA_SAIDA) entre um intervalo
+     *
      * @param manager
      * @param codPoin
      * @param start
      * @param end
      * @return
-     * @throws Exception 
+     * @throws Exception
      */
     public static List<Aispoin> getListAispoinVesselDepartureDateByPeriod(EntityManager manager,
             int codPoin, Date start, Date end) throws Exception {
@@ -162,7 +163,7 @@ public class AispoinController {
         return list;
 
     }
-    
+
     public static List<Aispoin> getListAispoinVesselByPeriod(EntityManager manager,
             int mmsi, Date start, Date end) throws Exception {
 
@@ -221,7 +222,7 @@ public class AispoinController {
                 + "AND (dataEntrada <= '" + Util.getDateFromBDSQL(end) + "' OR dataSaida <= '" + Util.getDateFromBDSQL(end) + "') "
                 + (limitIntervalMinutes != null ? ("AND datediff(mi, dataEntrada, dataSaida) > " + limitIntervalMinutes) : "")
                 + " ORDER BY dataEntrada " + (orderStart ? "ASC" : "DESC");
-
+        
         Query query = manager.createNativeQuery(sql, Aispoin.class);
 
         List<Aispoin> list = query.getResultList();
@@ -384,6 +385,33 @@ public class AispoinController {
         }
 
         return null;
+
+    }
+
+    public static Aispoin getLastAispoinByMssiAndCodPoin(EntityManager manager,
+            int mmsi, int codPoin) throws Exception {
+
+        String sql = "SELECT TOP 1 "
+                + "codAisPoin, "
+                + "mmsi, "
+                + "dataEntrada, "
+                + "dataSaida, "
+                + "velocidadeEntrada, "
+                + "velocidadeSaida, "
+                + "codPoin "
+                + "FROM aispoin "
+                + "WHERE mmsi = " + mmsi + " AND codPoin = " + codPoin + " AND dataSaida IS NOT NULL "
+                + "ORDER BY dataEntrada DESC";
+
+        Query query = manager.createNativeQuery(sql, Aispoin.class);
+
+        Object obj = query.getSingleResult();
+
+        if (obj == null) {
+            return null;
+        }
+
+        return (Aispoin) obj;
 
     }
 

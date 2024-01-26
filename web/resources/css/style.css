@@ -947,6 +947,10 @@ select[name="table-fila_length"] {
 
 @media (max-width: 992px) {
 
+    .ship-not{
+        top: 0px !important;
+    }
+    
     .header-tool-user{
         display: none;
     }
@@ -1130,7 +1134,7 @@ th.ui-state-default{
     box-sizing: border-box;
     box-shadow: 0 10px 40px rgb(41 50 65 / 6%);
     border-radius: 24px;
-    min-height: 530px;
+    min-height: 380px;
 }
 
 .card-dash-white{
@@ -1176,6 +1180,15 @@ th.ui-state-default{
     line-height: 1.2;
     color: inherit;
     font-weight: 600;
+}
+
+.card-dash-overview-info > .value-box {
+    margin: 0;
+    font-family: inherit;
+    line-height: 1.2;
+    color: inherit;
+    font-size: 20px;
+    font-weight: 700;
 }
 
 .card-dash-details-title > h6 {
@@ -1274,11 +1287,15 @@ th.ui-state-default{
 }
 
 .row-dash > .col-md-3{
-    padding: 5px !important;
+    padding: 8px !important;
 }
 
 .row-dash > .col-md-6{
-    padding: 5px !important;
+    padding: 8px !important;
+}
+
+.row-dash > .col-md-9{
+    padding: 8px !important;
 }
 
 .row{
@@ -1347,4 +1364,122 @@ th.ui-state-default{
     display: inline-block;
     text-align: right;
     width: 10px;
+}
+
+.duration-of-stay-period{
+    display: grid;
+    margin-top: 20px;
+}
+
+.duration-of-stay-period-title{
+    text-align: center;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.duration-of-stay-period-qtd{
+    text-align: center;
+    font-size: 16px;
+}
+
+.duration-of-stay-period-pct{
+    text-align: center;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.dfs-green {
+    color: green;
+}
+
+.dfs-orange {
+    color: orange;
+}
+
+.dfs-red {
+    color: red;
+}
+
+.ship-docked-now-step{
+    display: grid;
+    font-size: 12px;
+}
+
+.ship-docked-now-step-icon{
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;  
+    display: inline-block;
+}
+
+.step-icon-green{
+    background: #85C47E;
+    border: 1px solid #619942;
+}
+
+.step-icon-blue{
+    background: #DAE8FC;
+    border: 1px solid #6C8EBF;
+}
+
+.ship-docked-now-step-name{
+    font-weight: bold;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.ship-docked-now-step-details{
+    text-align: center;
+    display: grid;
+    margin-top: 10px;
+}
+
+.ship-docked-now-progress{
+    text-align: center;
+}
+
+.ship-docked-now-step-progress-expected-title{
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.ship-docked-now-step-progress-expected-hours{
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.ship-docked-now-step-progress-bar{
+    width: 80%;
+    height: 10px;
+    border: 1px solid #c1c1c1;
+    background: #e3e3e3;
+    left: 15%;
+    position: relative;
+    border-radius: 5px;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+.ship-docked-now-step-progress-bar-progress{
+    height: 10px;
+    background: #e3e3e3;
+    border-radius: 5px;
+    margin-top: -1px;
+}
+
+.step-progress-bar-on-time{
+    background: #a0d79a;
+}
+
+.step-progress-bar-exceeded-limit{
+    background: #ff7878;
+}
+
+.active-period{
+    background: #007FFF;
+    color: #fff;
+}
+
+.ship-not{
+    top: 100px;
 }

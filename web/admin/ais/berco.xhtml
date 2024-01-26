@@ -3,47 +3,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
-    <h:head>                
+    <h:head>
 
-        <title>Sismar - Berço</title>       
+        <title>Sismar - Berço</title>
 
         <!-- Importações padrão -->
-        <ui:include src="/admin/components/headdefault.xhtml" />   
+        <ui:include src="/admin/components/headdefault.xhtml" />           
 
         <!-- HighCharts -->
         <script src="https://code.highcharts.com/highcharts.js"></script>
         <script src="https://code.highcharts.com/modules/series-label.js"></script>
         <script src="https://code.highcharts.com/modules/exporting.js"></script>
 
-        <!-- Leaflet -->
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.3/dist/leaflet.css"
-              integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
-              crossorigin=""></link>
-        <script src="https://unpkg.com/leaflet@1.3.3/dist/leaflet.js"
-                integrity="sha512-tAGcCfR4Sc5ZP5ZoVz0quoZDYX5aCtEm/eu1KhSLj2c9eFrylXZknQYmxUssFaVJKvvc0dJQixhGjG2yXWiV9Q=="
-        crossorigin=""></script>
-
-        <h:outputScript name="js/sismar.berco.js"/>
-
-        <style>
-
-            .historic-attractions > div.ui-datatable-tablewrapper > table > thead > tr > th.ui-state-default{
-                visibility: hidden !important;
-            }
-
-            .top5-attractions > div.ui-datatable-tablewrapper > table > thead > tr > th.ui-state-default{
-                visibility: hidden !important;
-            }
-
-            .active-period{
-                background: #3a86b2;
-                color: #fff;
-            }
-
-        </style>
+        <!-- Script para gerar o gráfico -->
+        <h:outputScript name="js/chartline.js" target="body"/>
 
     </h:head>
 
@@ -61,491 +37,358 @@
             <div id="content" class="col-xs-12">
 
                 <!-- Título do conteúdo -->
-                <div id="content-header" class="col-xs-12">
+                <div id="content-header" class="col-xs-12" style="margin-bottom: 20px">
                     <span id="content-title">Berço</span> 
-                    <span id="content-subtitle">Informações atuais</span>
+                    <span id="content-subtitle">Informações para gestão</span>
                 </div>
 
-                <!-- Área para exibir a lista de berços cadastrados -->
+                <h:form>                   
 
+                    <div class="row" style="margin-bottom: 15px !important">
 
-                <!-- SOBRE -->
-                <div class="row">
+                        <div class="col-xs-12 col-md-6 form-group" style="padding: 0px !important;">
+                            <h:outputLabel class="col-sm-12" value="Berço:"/>
+                            <div class="col-sm-12">
+                                <h:selectOneMenu class="form-control"
+                                                 value="#{BercoDashBean.bercoSelected}"
+                                                 converter="bercoConverter"
+                                                 >   
+                                    <f:selectItem itemValue="#{null}" itemLabel="Selecione"/>
+                                    <f:selectItems value="#{BercoDashBean.listBercos}" 
+                                                   var="obj" 
+                                                   itemLabel="#{obj.nome}" 
+                                                   itemValue="#{obj}"/>
+                                    <f:ajax event="change"
+                                            listener="#{BercoDashBean.reloadMetrics(BercoDashBean.periodSelected, null)}"
+                                            render="jtotalVessels jTmpOperative jTmpDead jTmpOfStay jDurationOfStay jShipDockedNow"/>
+                                </h:selectOneMenu>
+                            </div>
+                        </div>
 
-                    <!-- SOBRE -->                                                     
-                    <div class="col-xs-12 col-md-12 col-md-offset-0 col-xs-offset-0"
-                         style="margin-top: 20px !important">                            
+                        <div class="col-xs-12 col-md-6 form-group" style="padding: 0px !important;">
 
-                        <div class="card" style="float: left; display: flex; flex-flow: wrap;">                            
+                            <label class="col-sm-12">&nbsp;</label>
 
-                            <div class="col-xs-12 col-md-12 title-card">SOBRE</div>
+                            <div class="col-sm-12">                               
 
-                            <!-- DADOS DO BERÇO -->
-                            <div class="col-xs-12 col-md-6 berco-details-content">
+                                <p:commandButton 
+                                    value="Últimos 3 meses"
+                                    actionListener="#{BercoDashBean.reloadMetrics('3months', null)}"
+                                    update="jtotalVessels jTmpOperative jTmpDead jTmpOfStay jDurationOfStay jShipDockedNow"
+                                    class="#{BercoDashBean.getClassForPeriodHistoricSelected('3months')}"
+                                    style="margin: 0px;"/>
 
-                                <div class="row">
-                                    <div class="col-xs-12 col-md-5">
-                                        NOME
-                                    </div>
-                                    <div class="col-xs-12 col-md-7"
-                                         style="color: #1e96dc;
-                                         font-weight: bold;
-                                         font-size: 17px;">
-                                        #{BercoAboutBean.berco.nome}
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-xs-12 col-md-5">
-                                        CABEÇOS
-                                    </div>
-                                    <div class="col-xs-12 col-md-7">
-                                        #{BercoAboutBean.getCabecos(BercoAboutBean.berco)}
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-xs-12 col-md-5">
-                                        COMPRIMENTO
-                                    </div>
-                                    <div class="col-xs-12 col-md-7">
-                                        #{BercoAboutBean.getComprimento(BercoAboutBean.berco)}
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-xs-12 col-md-5">
-                                        TIPO DE CAIS
-                                    </div>
-                                    <div class="col-xs-12 col-md-7">
-                                        #{BercoAboutBean.getTipoCais(BercoAboutBean.berco)}
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-xs-12 col-md-5">
-                                        PROFUNDIDADE
-                                    </div>
-                                    <div class="col-xs-12 col-md-7">
-                                        #{BercoAboutBean.getProfundidade(BercoAboutBean.berco)}
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-xs-12 col-md-5">
-                                        CALADO - BAIXA MARÉ
-                                    </div>
-                                    <div class="col-xs-12 col-md-7">
-                                        #{BercoAboutBean.getCaladoBaixaMare(BercoAboutBean.berco)}
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-xs-12 col-md-5">
-                                        CALADO - PREA MARÉ
-                                    </div>
-                                    <div class="col-xs-12 col-md-7">
-                                        #{BercoAboutBean.getCaladoPreaMare(BercoAboutBean.berco)}
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-xs-12 col-md-5">
-                                        EMPRESA
-                                    </div>
-                                    <div class="col-xs-12 col-md-7">
-                                        #{BercoAboutBean.getEmpresa(BercoAboutBean.berco)}
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-xs-12 col-md-5">
-                                        MERCADORIA
-                                    </div>
-                                    <div class="col-xs-12 col-md-7">
-                                        #{BercoAboutBean.getMercadoria(BercoAboutBean.berco)}
-                                    </div>
-                                </div>                                     
+                                <p:commandButton 
+                                    value="Últimos 30 dias"
+                                    actionListener="#{BercoDashBean.reloadMetrics('30days', null)}"                                    
+                                    update="jtotalVessels jTmpOperative jTmpDead jTmpOfStay jDurationOfStay jShipDockedNow"
+                                    class="#{BercoDashBean.getClassForPeriodHistoricSelected('30days')}"
+                                    style="margin: 0px; right: 10px;"/> 
+
+                                <p:commandButton 
+                                    value="Últimos 7 dias"
+                                    actionListener="#{BercoDashBean.reloadMetrics('7days', null)}"                                    
+                                    update="jtotalVessels jTmpOperative jTmpDead jTmpOfStay jDurationOfStay jShipDockedNow"
+                                    class="#{BercoDashBean.getClassForPeriodHistoricSelected('7days')}"
+                                    style="margin: 0px; right: 20px"/>
 
                             </div>
 
-                            <!-- MAPA BERÇO -->
-                            <div id="map-berco" 
-                                 class="col-xs-12 col-md-6 berco-details-content"
-                                 style="padding: 0px !important; margin: 0px;">
-                            </div>
-
-                        </div>       
+                        </div>
 
                     </div>
 
-                </div>
-
-                <!-- NAVIO ATRACADO -->
-                <div class="row"
-                     style="margin-top: 20px;">
-
-                    <!-- NAVIO ATRACADO -->                                                     
-                    <div class="col-xs-12 col-md-12 col-md-offset-0 col-xs-offset-0">                            
-
-                        <div class="card" style="float: left; display: flex; flex-flow: wrap;">                            
-
-                            <div class="col-xs-12 col-md-12 title-card">NAVIO ATRACADO</div>
-
-                            <ui:fragment rendered="#{BercoAboutBean.shipNow != null}">
-
-                                <!-- SOBRE NAVIO -->
-                                <div class="col-xs-12 col-md-6 berco-details-content">                                 
-
-                                    <div class="col-xs-12 col-md-12" style="margin-top: 0px; margin-bottom: 10px; padding: 0px !important">                                                                        
-                                        <p style="font-size: 18px;">
-                                            <h:outputText value="#{BercoAboutBean.shipNow.aisMmsi.codNavio.nomeNavio}" />
-                                        </p>
-                                        <p style="line-height: 0;">
-                                            <b>IMO: </b> <h:outputText value="#{BercoAboutBean.shipNow.aisMmsi.codNavio.imo}" />
-                                            <b>Categoria: </b> <h:outputText value="#{BercoAboutBean.getType(BercoAboutBean.shipNow.aisMmsi.codNavio)}" />
-                                        </p>
-                                    </div>
-
-
-                                    <img id="image-vessel-popup"
-                                         style="border-radius: 5px;"
-                                         width="100%"
-                                         height="250px"
-                                         src="${BercoAboutBean.getImageVessel(BercoAboutBean.shipNow.aisMmsi.codNavio.image)}"/>                            
-
-
-                                </div>
-
-                                <!-- MAIS INFO NAVIO -->
-                                <div class="col-xs-12 col-md-6 berco-details-content">
-
-                                    <div class="row">
-                                        <div class="col-xs-12 col-md-5">
-                                            DIMENSÃO
-                                        </div>
-                                        <div class="col-xs-12 col-md-7">
-                                            #{BercoAboutBean.getDimension(BercoAboutBean.shipNow.aisMmsi.codNavio )}
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-xs-12 col-md-5">
-                                            CHAGADA
-                                        </div>
-                                        <div class="col-xs-12 col-md-7">
-                                            #{BercoAboutBean.getDatetime(BercoAboutBean.shipNow.dataEntrada)}
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-xs-12 col-md-5">
-                                            VELOCIDADE DE CHEGADA
-                                        </div>
-                                        <div class="col-xs-12 col-md-7">
-                                            #{BercoAboutBean.shipNow.velocidadeEntrada} kn
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-xs-12 col-md-5">
-                                            DURAÇÃO
-                                        </div>
-                                        <div class="col-xs-12 col-md-7">
-                                            <span style="background: #248e02;
-                                                  color: #ffffff;
-                                                  font-size: 16px;
-                                                  border-radius: 10px;
-                                                  padding: 2px 10px;
-                                                  font-weight: bold;">
-                                                <h:outputText value="#{BercoAboutBean.shipNow.tempoPermanenciaByString}" />
-                                            </span>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                            </ui:fragment>
-
-                            <ui:fragment rendered="#{BercoAboutBean.shipNow == null}">
-                                <span style="width: 100%; padding: 20px; text-align: center; 
-                                      color: #f1d722; font-size: 18px">
-                                    Nenhum navio atracado
-                                </span>
-                            </ui:fragment>
-
-                        </div>       
-
-                    </div>
-
-                </div>
-
-
-                <!-- HISTÓRICO -->
-                <h:form>
-                    <div class="row"
-                         style="margin-top: 20px; margin-bottom: 20px">
-
-                        <div class="col-xs-12 col-md-12 col-md-offset-0 col-xs-offset-0">
-
-                            <div class="row">
-
-                                <div class="col-xs-12 col-md-12 col-md-offset-0 col-xs-offset-0">                            
-
-                                    <div class="card"
-                                         style="float: left;">                            
-
-                                        <div class="title-card" style="display: flex;">
-                                            HISTÓRICO
-                                            <div style="padding: 0px !important;
-                                                 margin: 0px !important;
-                                                 float: right;
-                                                 width: 100%;">
-                                                <p:commandButton 
-                                                    value="6 meses"
-                                                    actionListener="#{BercoAboutBean.changePeriod('6months')}"
-                                                    class="#{BercoAboutBean.getClassForPeriodHistoricSelected('6months')}"
-                                                    style="margin: 0px;"/>
-                                                <p:commandButton 
-                                                    value="30 dias"
-                                                    actionListener="#{BercoAboutBean.changePeriod('30days')}"
-                                                    class="#{BercoAboutBean.getClassForPeriodHistoricSelected('30days')}"
-                                                    style="margin: 0px;"/>
-                                                <p:commandButton 
-                                                    value="7 dias"
-                                                    actionListener="#{BercoAboutBean.changePeriod('7days')}"
-                                                    class="#{BercoAboutBean.getClassForPeriodHistoricSelected('7days')}"
-                                                    style="margin: 0px;"/>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-xs-12 col-md-12">
-
-                                            <div class="col-xs-12 col-md-6"
-                                                 style="margin: 15px 0px 0px 0px">
-
-                                                <div class="col-xs-12 col-md-12"
-                                                     style="font-weight: bold;
-                                                     border-bottom: 1px solid #efefef;
-                                                     padding: 0px 0px 10px 0px;">
-                                                    HISTÓRICO DE ATRACAÇÕES
-                                                </div>
-
-                                                <p:dataTable var="vessel" 
-                                                             value="#{BercoAboutBean.listShipAttracationsPeriod}"
-                                                             rows="5"
-                                                             paginator="true"
-                                                             rowIndexVar="index"
-                                                             class="historic-attractions"
-                                                             emptyMessage="Nenhum resultado encontrado"
-                                                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
-
-                                                    <p:column headerText="#" 
-                                                              style="width:25px;text-align: center">                            
-                                                        <h:outputText value="#{index + 1}" />                        
-                                                    </p:column>
-
-                                                    <p:column headerText="Embarcação">
-                                                        <div style="display: inline-flex;">
-                                                            <img style="border-radius:8px;" width="80px" height="50px" src="${BercoAboutBean.getImageVessel(vessel.aisMmsi.codNavio.image)}"/>
-                                                            <span style="display: inline-block;margin-left:10px;">
-                                                                <b>
-                                                                    <h:outputText value="${vessel.aisMmsi.codNavio.nomeNavio}" />
-                                                                </b><br/>
-                                                                IMO: <h:outputText value="${vessel.aisMmsi.codNavio.imo}" /><br/>
-                                                                ATRACAÇÃO: <h:outputText value="#{BercoAboutBean.getDatetime(vessel.dataEntrada)}" /> <br/>
-                                                                PARTIDA: <h:outputText value="#{BercoAboutBean.getDatetime(vessel.dataSaida)}" />
-                                                            </span>
-                                                        </div>
-                                                    </p:column>  
-
-                                                    <p:column headerText="Duração" 
-                                                              style="width:80px;text-align: center">                            
-                                                        <span style="color: #248e02; font-weight: bold">
-                                                            <h:outputText value="#{vessel.tempoPermanenciaByString}" />
-                                                        </span>                                                             
-                                                    </p:column>
-
-                                                </p:dataTable>
-
-                                            </div>
-
-
-
-
-                                            <div class="col-xs-12 col-md-6"
-                                                 style="margin: 15px 0px 0px 0px">
-
-                                                <div class="col-xs-12 col-md-12"
-                                                     style="font-weight: bold;
-                                                     border-bottom: 1px solid #efefef;
-                                                     padding: 0px 0px 10px 0px;">
-                                                    TOP 5 ATRACAÇÕES - POR TEMPO DE PERMANÊNCIA
-                                                </div>
-
-                                                <p:dataTable var="vessel" 
-                                                             value="#{BercoAboutBean.listTop5ShipAttracationsPermanencePeriod}"
-                                                             rows="5"
-                                                             paginator="true"
-                                                             rowIndexVar="index"
-                                                             class="top5-attractions"
-                                                             emptyMessage="Nenhum resultado encontrado"
-                                                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
-
-                                                    <p:column headerText="#" 
-                                                              style="width:25px;text-align: center">                            
-                                                        <h:outputText value="#{index + 1}" />                        
-                                                    </p:column>
-
-                                                    <p:column headerText="Embarcação">
-                                                        <div style="display: inline-flex;">
-                                                            <img style="border-radius:8px;" width="80px" height="50px" src="${BercoAboutBean.getImageVessel(vessel.aisMmsi.codNavio.image)}"/>
-                                                            <span style="display: inline-block;margin-left:10px;">
-                                                                <b>
-                                                                    <h:outputText value="${vessel.aisMmsi.codNavio.nomeNavio}" />
-                                                                </b><br/>
-                                                                IMO: <h:outputText value="${vessel.aisMmsi.codNavio.imo}" /><br/>
-                                                                ATRACAÇÃO: <h:outputText value="#{BercoAboutBean.getDatetime(vessel.dataEntrada)}" /> <br/>
-                                                                PARTIDA: <h:outputText value="#{BercoAboutBean.getDatetime(vessel.dataSaida)}" />
-                                                            </span>
-                                                        </div>
-                                                    </p:column>  
-
-                                                    <p:column headerText="Duração" 
-                                                              style="width:80px;text-align: center">                            
-                                                        <span style="color: #248e02; font-weight: bold "><h:outputText value="#{vessel.tempoPermanenciaByString}" /></span>                                                        
-                                                    </p:column>
-
-                                                </p:dataTable>
-
-                                            </div>
-
-
-                                            <div class="col-xs-12 col-md-6"
-                                                 style="margin: 25px 0px 0px 0px">
-
-                                                <div class="col-xs-12 col-md-12"
-                                                     style="font-weight: bold;
-                                                     border-bottom: 1px solid #efefef;
-                                                     padding: 0px 0px 10px 0px;">
-                                                    TMP. ATIVIDADE x TMP. OCIOSO
-                                                </div>
-
-                                                <div id="chart-tmp-activity-tmp-idle" 
-                                                     style="width: 100%; margin: 0 auto; height: 250px"></div>
-
-                                            </div>
-
-
-                                            <div class="col-xs-12 col-md-6"
-                                                 style="margin: 25px 0px 0px 0px">
-
-                                                <div class="col-xs-12 col-md-12"
-                                                     style="font-weight: bold;
-                                                     border-bottom: 1px solid #efefef;
-                                                     padding: 0px 0px 10px 0px;">
-                                                    ATRACAÇÕES POR TIPO DE NAVIO
-                                                </div>
-
-                                                <div id="chart-attracations-by-type-ship" 
-                                                     style="width: 100%; margin: 0 auto; height: 250px"></div>
-
-                                            </div>
-
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-                            </div>
-
-                        </div> 
-
-                    </div>
                 </h:form>
 
+                <div class="row row-dash">
+
+                    <!-- total de navios -->
+                    <div class="col-xs-12 col-md-3">
+                        <div class="card-dash card-dash-white">
+                            <div class="card-dash-overview-info">
+                                <h6>Total de navios</h6>
+                                <h:outputText id="jtotalVessels" class="value-box" value="#{BercoDashBean.totalVessels}"/>
+                            </div>
+                            <div class="card-dash-icon">
+                                <img src="/sismar/faces/javax.faces.resource/img/icon-berco-vessel.png"
+                                     height="28px"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- tempo operante -->
+                    <div class="col-xs-12 col-md-3">
+                        <div class="card-dash card-dash-blue">
+                            <div class="card-dash-overview-info">
+                                <h6>Tempo operante</h6>
+                                <h:outputText id="jTmpOperative" class="value-box" value="#{BercoDashBean.tmpOperative}"/>
+                            </div>
+                            <div class="card-dash-icon">
+                                <img src="/sismar/faces/javax.faces.resource/img/icon-berco-time-left.png"
+                                     height="28px"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- tempo inoperante -->
+                    <div class="col-xs-12 col-md-3">
+                        <div class="card-dash card-dash-gray">
+                            <div class="card-dash-overview-info">
+                                <h6>Tempo inoperante</h6>
+                                <h:outputText id="jTmpDead" class="value-box" value="#{BercoDashBean.tmpDead}"/>
+                            </div>
+                            <div class="card-dash-icon">
+                                <img src="/sismar/faces/javax.faces.resource/img/icon-berco-time-left.png"
+                                     height="28px"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- tempo médio de estadia -->
+                    <div class="col-xs-12 col-md-3">
+                        <div class="card-dash card-dash-orange">
+                            <div class="card-dash-overview-info">
+                                <h6>Tempo médio de estadia</h6>
+                                <h:outputText id="jTmpOfStay" class="value-box" value="#{BercoDashBean.tmpOfStay}"/>
+                            </div>
+                            <div class="card-dash-icon">
+                                <img src="/sismar/faces/javax.faces.resource/img/icon-berco-time-left.png"
+                                     height="28px"/>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row row-dash">
+
+                    <!-- duração da estadia -->
+                    <div class="col-xs-12 col-md-3">
+                        <div class="card-dash-details card-dash-details-white">
+                            <div class="col-xs-12 card-dash-details-title">
+                                <h6>Duração da estadia</h6>
+                                <span>Quantidade de navios por período</span>
+                            </div>
+
+                            <div class="col-xs-12 card-dash-details-content">
+
+                                <p:panel id="jDurationOfStay">
+
+                                    <div class="duration-of-stay-period">
+                                        <span class="duration-of-stay-period-title">Em até 24h</span>
+                                        <span class="duration-of-stay-period-qtd dfs-green">
+                                            #{BercoDashBean.durationOfStay.within24Hours.totalVessels} embarcações
+                                        </span>
+                                        <span class="duration-of-stay-period-pct dfs-green">
+                                            #{BercoDashBean.durationOfStay.within24Hours.totalPct}%
+                                        </span>
+                                    </div>                                    
+
+                                    <div class="duration-of-stay-period">
+                                        <span class="duration-of-stay-period-title">Em até 48h</span>
+                                        <span class="duration-of-stay-period-qtd dfs-orange">
+                                            #{BercoDashBean.durationOfStay.within48Hours.totalVessels} embarcações
+                                        </span>
+                                        <span class="duration-of-stay-period-pct dfs-orange">
+                                            #{BercoDashBean.durationOfStay.within48Hours.totalPct}%
+                                        </span>
+                                    </div>                                    
+
+                                    <div class="duration-of-stay-period">
+                                        <span class="duration-of-stay-period-title">Acima de 48h</span>
+                                        <span class="duration-of-stay-period-qtd dfs-red">
+                                            #{BercoDashBean.durationOfStay.over48Hours.totalVessels} embarcações
+                                        </span>
+                                        <span class="duration-of-stay-period-pct dfs-red">
+                                            #{BercoDashBean.durationOfStay.over48Hours.totalPct}%
+                                        </span>
+                                    </div>                                    
+
+                                </p:panel>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- navio atracado agora -->
+                    <div class="col-xs-12 col-md-9">
+                        <div class="card-dash-details card-dash-details-white">
+                            <div class="col-xs-12 card-dash-details-title">
+                                <h6>Navio atracado agora</h6>
+                                <span>Detalhes da operação</span>
+                            </div>
+
+                            <div class="col-xs-12 card-dash-details-content">
+
+                                <p:panel id="jShipDockedNow">
+
+                                    <ui:fragment rendered="#{BercoDashBean.vesselDockedNow.hasShip}">
+
+                                        <div class="col-xs-12 col-md-4 berco-details-content">                                 
+
+                                            <div class="col-xs-12 col-md-12" style="margin-top: 0px; margin-bottom: 10px; padding: 0px !important">                                                                        
+                                                <div style="font-size: 18px;">
+                                                    <h:outputText value="#{BercoDashBean.vesselDockedNow.name}" />
+                                                </div>
+                                                <div style="display: grid; margin-top: 5px; font-size: 12px">
+                                                    <span><b>IMO: </b> <h:outputText value="#{BercoDashBean.vesselDockedNow.imo}" /></span>
+                                                    <span><b>Categoria: </b> <h:outputText value="#{BercoDashBean.vesselDockedNow.type}" /></span>
+                                                </div>
+                                            </div>
+
+                                            <img id="image-vessel-popup"
+                                                 style="border-radius: 5px;"
+                                                 width="100%"
+                                                 height="130px"
+                                                 src="${BercoDashBean.vesselDockedNow.image}"/>                            
+
+                                        </div>
+
+                                        <div class="col-xs-12 col-md-8 berco-details-content">                                 
+
+                                            <div class="col-xs-12 col-md-12 ship-docked-now-progress">
+
+                                                <ui:fragment rendered="#{BercoDashBean.vesselDockedNow.onTime}">
+                                                    <div class="col-xs-12 col-md-12" style="display: grid">
+                                                        <span class="ship-docked-now-step-progress-expected-title">Término esperado</span>
+                                                        <span class="ship-docked-now-step-progress-expected-hours">#{BercoDashBean.vesselDockedNow.expectedEndDate}</span>
+                                                    </div>
+                                                </ui:fragment>
+
+                                                <ui:fragment rendered="#{BercoDashBean.vesselDockedNow.exceededTime}">
+                                                    <div class="col-xs-12 col-md-6" style="display: grid; text-align: right;">
+                                                        <span class="ship-docked-now-step-progress-expected-title">Término esperado</span>
+                                                        <span class="ship-docked-now-step-progress-expected-hours">#{BercoDashBean.vesselDockedNow.expectedEndDate}</span>
+                                                    </div>
+                                                    <div class="col-xs-12 col-md-6" style="display: grid; text-align: left;">
+                                                        <span class="ship-docked-now-step-progress-expected-title">Tempo excedido</span>
+                                                        <span class="ship-docked-now-step-progress-expected-hours" style="color: red; font-weight: bold">#{BercoDashBean.vesselDockedNow.timeExceeded}</span>
+                                                    </div>
+                                                </ui:fragment>
+
+                                                <div class="col-xs-12 col-md-12">
+                                                    <div class="ship-docked-now-step-progress-bar">
+                                                        <div class="ship-docked-now-step-progress-bar-progress #{BercoDashBean.vesselDockedNow.classProgress}"
+                                                             style="width: #{BercoDashBean.vesselDockedNow.progress}%;"></div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="col-xs-12 col-md-4 ship-docked-now-step">
+                                                <div style="text-align: center;">
+
+                                                    <ui:fragment rendered="#{BercoDashBean.vesselDockedNow.anchorage.inProgress()}">
+                                                        <span class="ship-docked-now-step-icon step-icon-blue">
+                                                            <img src="/sismar/faces/javax.faces.resource/img/icon-progress-step.png"
+                                                                 height="30px" style="margin-top: 8px;"/>
+                                                        </span>
+                                                    </ui:fragment>
+
+                                                    <ui:fragment rendered="#{BercoDashBean.vesselDockedNow.anchorage.finished}">
+                                                        <span class="ship-docked-now-step-icon step-icon-green">
+                                                            <img src="/sismar/faces/javax.faces.resource/img/icon-check-step.png"
+                                                                 height="30px" style="margin-top: 8px;"/>
+                                                        </span>
+                                                    </ui:fragment>
+
+                                                </div>
+                                                <span class="ship-docked-now-step-name">Fundeio</span>
+                                                <div class="ship-docked-now-step-details">
+                                                    <span><b>Chegada:</b> #{BercoDashBean.vesselDockedNow.anchorage.start}</span>
+                                                    <span><b>Partida:</b> #{BercoDashBean.vesselDockedNow.anchorage.end}</span>
+                                                    <span><b>Duração:</b> #{BercoDashBean.vesselDockedNow.anchorage.duration}</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xs-12 col-md-4 ship-docked-now-step">
+                                                <div style="text-align: center;">
+
+                                                    <ui:fragment rendered="#{BercoDashBean.vesselDockedNow.navigation.inProgress()}">
+                                                        <span class="ship-docked-now-step-icon step-icon-blue">
+                                                            <img src="/sismar/faces/javax.faces.resource/img/icon-progress-step.png"
+                                                                 height="30px" style="margin-top: 8px;"/>
+                                                        </span>
+                                                    </ui:fragment>
+
+                                                    <ui:fragment rendered="#{BercoDashBean.vesselDockedNow.navigation.finished}">
+                                                        <span class="ship-docked-now-step-icon step-icon-green">
+                                                            <img src="/sismar/faces/javax.faces.resource/img/icon-check-step.png"
+                                                                 height="30px" style="margin-top: 8px;"/>
+                                                        </span>
+                                                    </ui:fragment>
+
+                                                </div>
+                                                <span class="ship-docked-now-step-name">Navegação/Canal</span>
+                                                <div class="ship-docked-now-step-details">
+                                                    <span><b>Ínicio:</b> #{BercoDashBean.vesselDockedNow.navigation.start}</span>
+                                                    <span><b>Término:</b> #{BercoDashBean.vesselDockedNow.navigation.end}</span>
+                                                    <span><b>Duração:</b> #{BercoDashBean.vesselDockedNow.navigation.duration}</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xs-12 col-md-4 ship-docked-now-step">
+                                                <div style="text-align: center;">
+
+                                                    <ui:fragment rendered="#{BercoDashBean.vesselDockedNow.berth.inProgress()}">
+                                                        <span class="ship-docked-now-step-icon step-icon-blue">
+                                                            <img src="/sismar/faces/javax.faces.resource/img/icon-progress-step.png"
+                                                                 height="30px" style="margin-top: 8px;"/>
+                                                        </span>
+                                                    </ui:fragment>
+
+                                                    <ui:fragment rendered="#{BercoDashBean.vesselDockedNow.berth.finished}">
+                                                        <span class="ship-docked-now-step-icon step-icon-green">
+                                                            <img src="/sismar/faces/javax.faces.resource/img/icon-check-step.png"
+                                                                 height="30px" style="margin-top: 8px;"/>
+                                                        </span>
+                                                    </ui:fragment>
+
+                                                </div>
+                                                <span class="ship-docked-now-step-name">Berço</span>
+                                                <div class="ship-docked-now-step-details">
+                                                    <span><b>Chegada:</b> #{BercoDashBean.vesselDockedNow.berth.start}</span>
+                                                    <span><b>Partida:</b> #{BercoDashBean.vesselDockedNow.berth.end}</span>
+                                                    <span><b>Duração:</b> #{BercoDashBean.vesselDockedNow.berth.duration}</span>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </ui:fragment>
+
+                                    <ui:fragment rendered="#{BercoDashBean.vesselDockedNow.hasShip == false}">
+                                        <div class="col-xs-12 ship-not" style="text-align: center">
+                                            <span style="width: 100%; text-align: center; 
+                                                  color: #66a74b; font-size: 18px">
+                                                Nenhuma embarcação atracada
+                                            </span>
+                                        </div>
+                                    </ui:fragment>
+
+                                </p:panel>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
 
             </div> <!-- Fechamento do conteúdo -->  
 
-        </div> <!-- Fechamento do container -->                
+        </div> <!-- Fechamento do container -->  
+
+        <!-- Importar rodapé -->
+        <ui:include src="/admin/components/footer.xhtml" />         
 
         <!-- Importações scripts -->
         <h:outputScript name="js/menu.js" target="body"/>
 
-        <!-- Importações templates -->        
-        <ui:include src="/admin/components/footer.xhtml" />           
-
-        <h:outputScript>            
-
-            Highcharts.chart('chart-tmp-activity-tmp-idle', {
-            chart: {
-            plotBackgroundColor: null,
-            plotBorderWidth: null,
-            plotShadow: false,
-            type: 'pie'
-            },
-            title: {
-            text: null
-            },
-            exporting: {
-            enabled: false
-            },
-            tooltip: {
-            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-            },
-            plotOptions: {
-            pie: {
-            allowPointSelect: true,
-            cursor: 'pointer',
-            dataLabels: {
-            enabled: true,
-            format: '<b>{point.name}</b>: {point.percentage:.1f} %'
-            }
-            }
-            },
-            series: [{
-            name: 'Brands',
-            colorByPoint: true,
-            data: JSON.parse('#{BercoAboutBean.dataForChartTmpActivityTmpIdle}')
-            }]
-            });
-
-
-            Highcharts.chart('chart-attracations-by-type-ship', {
-            chart: {
-            plotBackgroundColor: null,
-            plotBorderWidth: null,
-            plotShadow: false,
-            type: 'pie'
-            },
-            title: {
-            text: null
-            },
-            exporting: {
-            enabled: false
-            },
-            tooltip: {
-            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-            },
-            plotOptions: {
-            pie: {
-            allowPointSelect: true,
-            cursor: 'pointer',
-            dataLabels: {
-            enabled: true,
-            format: '<b>{point.name}</b>: {point.percentage:.1f} %'
-            }
-            }
-            },
-            series: [{
-            name: 'Brands',
-            colorByPoint: true,
-            data: JSON.parse('#{BercoAboutBean.dataForChartAttracationsByTypeShip}')
-            }]
-            });
-
-            var berco = new Sismar.berco();
-            berco.initialize('map-berco');
-            berco.addPoin(JSON.parse('#{BercoAboutBean.dataPoinBerco}'));
-
-        </h:outputScript>       
-
         <script>
-
             $(function () {
 
                 $(".menu-ais").addClass("active");
-                $(".menu-ais-bercos").addClass("active-link");
+                $(".menu-ais-berco").addClass("active-link");
 
             });
 

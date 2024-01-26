@@ -48,6 +48,22 @@ public class BercosController {
 
     }
     
+    public static List<Berco> getListBercosActive(EntityManager manager) throws Exception {
+
+        String sql = "SELECT * FROM berco WHERE ativo = 1";
+
+        Query query = manager.createNativeQuery(sql, Berco.class);
+
+        List<Berco> list = query.getResultList();
+
+        if (list == null || list.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        return list;
+
+    }
+    
     public static List<Berco> getListBercos(EntityManager manager)
             throws Exception {
         Query query = manager.createNamedQuery("Berco.findAll");

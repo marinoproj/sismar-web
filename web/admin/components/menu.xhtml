@@ -68,6 +68,12 @@
                                         </h:link>                                
                                     </li>
                                 </ui:fragment>
+                                <ui:fragment rendered="#{MenuBean.isActiveFeature('ais_berco')}">
+                                    <li>
+                                        <h:link value="Berço" outcome="/admin/ais/berco.xhtml" class="menu-ais-berco">
+                                        </h:link>
+                                    </li>
+                                </ui:fragment>
                             </ul>    
                         </li>
                     </ui:fragment>
@@ -137,13 +143,7 @@
                                         <h:link value="Operações" outcome="/admin/operations/operations.xhtml" class="menu-operations-operations">
                                         </h:link>
                                     </li>
-                                </ui:fragment>   
-                                <ui:fragment rendered="#{MenuBean.isActiveFeature('operations_berco')}">
-                                    <li>
-                                        <h:link value="Berço" outcome="/admin/operations/berco.xhtml" class="menu-operations-berco">
-                                        </h:link>
-                                    </li>
-                                </ui:fragment>   
+                                </ui:fragment>      
                             </ul>    
                         </li>
                     </ui:fragment>

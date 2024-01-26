@@ -2,7 +2,7 @@ package br.com.marino.sismar.bean.admin.components;
 
 import br.com.marino.sismar.controller.BercosController;
 import br.com.marino.sismar.entity.Berco;
-import static br.com.marino.sismar.entity.Berco_.codBerco;
+//import static br.com.marino.sismar.entity.Berco_.codBerco;
 import br.com.marino.sismar.util.Util;
 import java.io.IOException;
 import java.io.Serializable;

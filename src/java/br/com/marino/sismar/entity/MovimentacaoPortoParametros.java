@@ -155,7 +155,7 @@ public class MovimentacaoPortoParametros implements Serializable {
 
     @Override
     public String toString() {
-        return "br.com.marino.sismar.entity.MovimentacaoPortoParametros[ codMovimentacaoPortoParametro=" + codMovimentacaoPortoParametro + " ]";
+        return "MovimentacaoPortoParametros{" + "codMovimentacaoPortoParametro=" + codMovimentacaoPortoParametro + ", setPointTempoPermanenciaBerco=" + setPointTempoPermanenciaBerco + ", codPoinChegada=" + codPoinChegada + ", codPoinFundeio=" + codPoinFundeio + ", codPoinCanal=" + codPoinCanal + ", codPorto=" + codPorto + ", codArea=" + codArea + ", movimentacaoPortoList=" + movimentacaoPortoList + '}';
     }
     
 }
