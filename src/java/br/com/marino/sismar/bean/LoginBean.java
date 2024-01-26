@@ -260,5 +260,14 @@ public class LoginBean implements Serializable {
     public Clientes getClient(){
         return SessionContext.getInstance().getClientLoggedIn();
     }
+    
+    public String getNameSystem() {
+        UsuariosWeb user = getUserLoggedIn();
+        if (user.getLogin().equalsIgnoreCase("carlos") || user.getLogin().equalsIgnoreCase("leo")){
+            return "MARINO";
+        }
+        return "SISMAR";
+    }
 
+    
 }

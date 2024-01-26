@@ -11,7 +11,7 @@
         <h:outputScript>            
 
             localStorage.setItem('user_logged_in', '#{LoginBean.userLoggedInByJSON}');
-            
+
             function openInfoVesselBySearch(mmsi, obj){
 
             var path = window.location.pathname;
@@ -43,7 +43,7 @@
                     <div id="header-icon-menu">
                         <span class="glyphicon glyphicon-menu-hamburger bt-menu" 
                               style="margin-right:13px"></span>
-                        <h:link value="SISMAR" outcome="/admin/home" style="text-decoration: none; color: #484848">                           
+                        <h:link value="#{LoginBean.nameSystem}" outcome="/admin/home" style="text-decoration: none; color: #484848">                           
                         </h:link>            
                     </div>
                 </div>
