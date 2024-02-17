@@ -526,7 +526,7 @@ public class BercoDashBean implements Serializable {
         vesselDockedNow.setName(shipNow.getAisMmsi().getCodNavio().getNomeNavio());
         vesselDockedNow.setImo(shipNow.getAisMmsi().getCodNavio().getImo() + "");
         vesselDockedNow.setType(vesselMap.getCategoriaEmbarcacao());
-        vesselDockedNow.setImage(Util.getImageVessel(shipNow.getAisMmsi().getCodNavio().getImage()));
+        vesselDockedNow.setImage(Util.getImageVessel(shipNow.getAisMmsi().getCodNavio().getImageUrl()));
 
         MovimentacaoPortoParametros movimentacaoPortoParametros = MovimentacaoPortoParametrosController
                 .getMovimentacaoPortoParametrosByCodArea(manager, bercoSelected.getCodArea().getCodArea());

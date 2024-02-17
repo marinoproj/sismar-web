@@ -5,7 +5,6 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
@@ -19,23 +18,26 @@ public class ImageVessel implements Serializable {
     @Column(name = "codNavio")
     private Integer codNavio;
 
-    @Lob
-    @Column(name = "imagem")
-    private Byte[] imagem;
+    @Column(name = "imagemUrl")
+    private String imageUrl;
+    
+    //@Lob
+    //@Column(name = "imagem")
+    //private Byte[] imagem;
 
-    public ImageVessel(Byte[] imagem) {
-        this.imagem = imagem;
+    public ImageVessel(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public ImageVessel() {
     }
 
-    public Byte[] getImagem() {
-        return imagem;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setImagem(Byte[] imagem) {
-        this.imagem = imagem;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public Integer getCodNavio() {
@@ -61,11 +63,6 @@ public class ImageVessel implements Serializable {
         ImageVessel other = (ImageVessel) object;
         return !((this.codNavio == null && other.codNavio != null)
                 || (this.codNavio != null && !this.codNavio.equals(other.codNavio)));
-    }
-
-    @Override
-    public String toString() {
-        return "ImageVessel{" + "imagem=" + imagem + '}';
     }
 
 }

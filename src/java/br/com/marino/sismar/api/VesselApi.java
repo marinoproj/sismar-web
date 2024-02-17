@@ -75,15 +75,8 @@ public class VesselApi {
 
                 ImageVessel image = NavioController.getImageVesselByCod(manager, vessel.getCodNavio());
 
-                if (image != null && image.getImagem() != null) {
-                    byte[] bytes = new byte[image.getImagem().length];
-                    for (int i = 0; i < image.getImagem().length; i++) {
-                        bytes[i] = image.getImagem()[i];
-                    }
-                    StringBuilder sb = new StringBuilder();
-                    sb.append("data:image/png;base64,");
-                    sb.append(StringUtils.newStringUtf8(Base64.encodeBase64(bytes, false)));
-                    vesselJson.put("image", sb.toString());
+                if (image != null && image.getImageUrl() != null) {
+                    vesselJson.put("image", image.getImageUrl());
 
                 } else {
                     vesselJson.put("image", JSONObject.NULL);
@@ -291,17 +284,9 @@ public class VesselApi {
 
             ImageVessel imageVessel = NavioController.getImageVesselByImo(manager, imo);
 
-            if (imageVessel != null && imageVessel.getImagem() != null) {
-                byte[] bytes = new byte[imageVessel.getImagem().length];
-                for (int i = 0; i < imageVessel.getImagem().length; i++) {
-                    bytes[i] = imageVessel.getImagem()[i];
-                }
-                StringBuilder sb = new StringBuilder();
-                sb.append("data:image/png;base64,");
-                sb.append(StringUtils.newStringUtf8(Base64.encodeBase64(bytes, false)));
-
+            if (imageVessel != null && imageVessel.getImageUrl() != null) {                
                 json.put("found", true);
-                json.put("image", sb.toString());
+                json.put("image", imageVessel.getImageUrl());
 
             } else {
                 json.put("found", false);
@@ -576,15 +561,8 @@ public class VesselApi {
 
                 ImageVessel image = NavioController.getImageVesselByCod(manager, vessel.getCodNavio());
 
-                if (image != null && image.getImagem() != null) {
-                    byte[] bytes = new byte[image.getImagem().length];
-                    for (int i = 0; i < image.getImagem().length; i++) {
-                        bytes[i] = image.getImagem()[i];
-                    }
-                    StringBuilder sb = new StringBuilder();
-                    sb.append("data:image/png;base64,");
-                    sb.append(StringUtils.newStringUtf8(Base64.encodeBase64(bytes, false)));
-                    json.put("image", sb.toString());
+                if (image != null && image.getImageUrl() != null) {                    
+                    json.put("image", image.getImageUrl());
 
                 } else {
                     json.put("image", Util.getValueFromJson(null));
@@ -644,15 +622,8 @@ public class VesselApi {
                 jsonVessel.put("dimension", Util.getValueFromJson((vesselMapAis.getComprimentoReal() + "m X " + vesselMapAis.getLarguraReal() + "m")));
                 jsonVessel.put("type", Util.getValueFromJson(vesselMapAis.getCategoriaEmbarcacao()));
 
-                if (image != null && image.getImagem() != null) {
-                    byte[] bytes = new byte[image.getImagem().length];
-                    for (int i = 0; i < image.getImagem().length; i++) {
-                        bytes[i] = image.getImagem()[i];
-                    }
-                    StringBuilder sb = new StringBuilder();
-                    sb.append("data:image/png;base64,");
-                    sb.append(StringUtils.newStringUtf8(Base64.encodeBase64(bytes, false)));
-                    jsonVessel.put("image", sb.toString());
+                if (image != null && image.getImageUrl() != null) {                    
+                    jsonVessel.put("image", image.getImageUrl());
 
                 } else {
                     jsonVessel.put("image", Util.getValueFromJson(null));
@@ -803,15 +774,8 @@ public class VesselApi {
                 jsonVessel.put("dimension", Util.getValueFromJson((embarcacao.getComprimentoReal() + "m X " + embarcacao.getLarguraReal() + "m")));
                 jsonVessel.put("type", Util.getValueFromJson(embarcacao.getCategoriaEmbarcacao()));
 
-                if (image != null && image.getImagem() != null) {
-                    byte[] bytes = new byte[image.getImagem().length];
-                    for (int i = 0; i < image.getImagem().length; i++) {
-                        bytes[i] = image.getImagem()[i];
-                    }
-                    StringBuilder sb = new StringBuilder();
-                    sb.append("data:image/png;base64,");
-                    sb.append(StringUtils.newStringUtf8(Base64.encodeBase64(bytes, false)));
-                    jsonVessel.put("image", sb.toString());
+                if (image != null && image.getImageUrl() != null) {                    
+                    jsonVessel.put("image", image.getImageUrl());
 
                 } else {
                     jsonVessel.put("image", JSONObject.NULL);

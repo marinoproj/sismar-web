@@ -8,7 +8,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -36,11 +35,13 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Navio.findByMmsi", query = "SELECT n FROM Navio n WHERE n.mmsi = :mmsi")})
 public class Navio implements Serializable {
 
-    @Lob
-    @Column(name = "imagem")
-    private byte[] imagem;
+    //@Lob
+    //@Column(name = "imagem")
+    //private byte[] imagem;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codNavio")
     private List<Operacao> operacaoList;
+    
     @OneToMany(mappedBy = "codNavio")
     private List<MovimentacaoPorto> movimentacaoPortoList;
 
@@ -84,8 +85,11 @@ public class Navio implements Serializable {
     @Transient
     private Ais ais;
 
-    @Transient
-    private Byte[] image;
+    //@Transient
+    //private Byte[] image;
+    
+    @Column(name = "imagemUrl")
+    private String imageUrl;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codNavio")
     private List<Atracacao> listaOperacoes;
@@ -104,8 +108,7 @@ public class Navio implements Serializable {
         this.mmsi = vesselSearch.getMmsi();
         this.tipo = vesselSearch.getTipo();
         this.dimensao = vesselSearch.getDimensao();
-        this.image = vesselSearch.getImagem();
-
+        this.imageUrl = vesselSearch.getImageUrl();
     }
 
     public Navio(Integer codNavio, String nomeNavio, int imo) {
@@ -217,12 +220,12 @@ public class Navio implements Serializable {
         return hash;
     }
 
-    public Byte[] getImage() {
-        return image;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setImage(Byte[] image) {
-        this.image = image;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     @Override
@@ -252,14 +255,6 @@ public class Navio implements Serializable {
 
     public void setMovimentacaoPortoList(List<MovimentacaoPorto> movimentacaoPortoList) {
         this.movimentacaoPortoList = movimentacaoPortoList;
-    }
-
-    public byte[] getImagem() {
-        return imagem;
-    }
-
-    public void setImagem(byte[] imagem) {
-        this.imagem = imagem;
     }
 
     @XmlTransient

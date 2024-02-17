@@ -48,7 +48,7 @@ public class SearchVesselsBean implements Serializable {
         this.nameOrImoVessel = nameOrImoVessel;
     }
 
-    public String getImageVessel(Byte[] image) {
+    public String getImageVessel(String image) {
         return Util.getImageVessel(image);
     }
 

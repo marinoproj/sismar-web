@@ -364,16 +364,8 @@ public class MooringApi {
 
         ImageVessel imageVessel = NavioController.getImageVesselByImo(manager, imo);
 
-        if (imageVessel != null && imageVessel.getImagem() != null) {
-            byte[] bytes = new byte[imageVessel.getImagem().length];
-            for (int i = 0; i < imageVessel.getImagem().length; i++) {
-                bytes[i] = imageVessel.getImagem()[i];
-            }
-            StringBuilder sb = new StringBuilder();
-            sb.append("data:image/png;base64,");
-            sb.append(StringUtils.newStringUtf8(Base64.encodeBase64(bytes, false)));
-            return sb.toString();
-
+        if (imageVessel != null && imageVessel.getImageUrl() != null) {
+            return imageVessel.getImageUrl();
         }
 
         return null;

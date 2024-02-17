@@ -105,6 +105,13 @@ public class Util {
 
     }
 
+    public static String getImageVessel(String image) {
+        if (image == null || image.isEmpty()) {
+            return "/sismar/faces/javax.faces.resource/img/sem_imagem.png";
+        }       
+        return image;
+    }
+    
     public static String getDateFromBDSQL(Date date) {
         SimpleDateFormat format = new SimpleDateFormat(TYPE_DATE_FORMAT_BD);
         return format.format(date);

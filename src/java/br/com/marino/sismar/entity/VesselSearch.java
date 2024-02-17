@@ -6,7 +6,6 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -35,29 +34,33 @@ public class VesselSearch implements Serializable {
     @Column(name = "tipo")
     private String tipo;
     
-     @Column(name = "dimensao")
+    @Column(name = "dimensao")
     private String dimensao;
     
-    @Lob
-    @Column(name = "imagem")
-    private Byte[] imagem;
+    @Column(name = "imagemUrl")
+    private String imageUrl;
+    
+    //@Lob
+    //@Column(name = "imagem")
+    //private Byte[] imagem;
 
     @Transient
     private NavioUltimaAtualizacao navioUltimaAtualizacao;
     
-    public VesselSearch(Byte[] imagem) {
-        this.imagem = imagem;
+    public VesselSearch(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public VesselSearch() {
     }
+    
 
-    public Byte[] getImagem() {
-        return imagem;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setImagem(Byte[] imagem) {
-        this.imagem = imagem;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public Integer getCodNavio() {
@@ -135,11 +138,6 @@ public class VesselSearch implements Serializable {
 
     public String toJSONMap() throws Exception{
         return Util.getAisByJson(this, null).toString();
-    }
-    
-    @Override
-    public String toString() {
-        return "ImageVessel{" + "imagem=" + imagem + '}';
-    }
+    }   
 
 }

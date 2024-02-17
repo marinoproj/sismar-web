@@ -10,7 +10,6 @@ import br.com.marino.sismar.entity.Eventos;
 import br.com.marino.sismar.entity.ImageVessel;
 import br.com.marino.sismar.entity.Interrupcoes;
 import br.com.marino.sismar.entity.Operacao;
-import br.com.marino.sismar.entity.UsuariosWeb;
 import br.com.marino.sismar.session.SessionContext;
 import br.com.marino.sismar.util.NavioMapAis;
 import br.com.marino.sismar.util.Util;
@@ -255,10 +254,10 @@ public class OperationStepBean implements Serializable {
             ImageVessel imageVessel = NavioController
                     .getImageVesselByCod(manager, operation.getCodNavio().getCodNavio());
 
-            return Util.getImageVessel(imageVessel.getImagem());
+            return Util.getImageVessel(imageVessel.getImageUrl());
 
         } catch (Exception ex) {
-            return Util.getImageVessel(null);
+            return Util.getImageVessel("");
 
         } finally {
             if (manager != null) {

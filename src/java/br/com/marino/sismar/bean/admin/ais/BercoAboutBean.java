@@ -506,7 +506,7 @@ public class BercoAboutBean implements Serializable {
     }
 
     // NAVIO
-    public String getImageVessel(Byte[] image) {
+    public String getImageVessel(String image) {
         return Util.getImageVessel(image);
     }
 

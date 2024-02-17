@@ -46,9 +46,9 @@ public class AisBean implements Serializable {
               
         if (!init){
             PrimeFaces.current().executeScript("ais.updateVessels(false); ais.fitBoundsShowAllVessels(); ais.execByParamsUrl();");               
-        } else{
+        } else {
             PrimeFaces.current().executeScript("ais.updateVessels(true);");               
-        }               
+        }                       
         
         init = true; 
         delay = user.getTempoAtualizacao();

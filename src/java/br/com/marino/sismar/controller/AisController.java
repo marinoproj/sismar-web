@@ -526,7 +526,7 @@ public class AisController {
                         navio = NavioController.getVesselByMmsi(manager, ais.getMmsi());
                         if (navio != null) {
                             ImageVessel imageVessel = NavioController.getImageVesselByCod(manager, navio.getCodNavio());
-                            navio.setImage(imageVessel.getImagem());
+                            navio.setImageUrl(imageVessel.getImageUrl());
                         }
                     }
                     ais.setCodNavio(navio);

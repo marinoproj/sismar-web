@@ -292,10 +292,10 @@ public class OperationStepsBean implements Serializable {
             ImageVessel imageVessel = NavioController
                     .getImageVesselByCod(manager, operation.getCodNavio().getCodNavio());
 
-            return Util.getImageVessel(imageVessel.getImagem());
+            return Util.getImageVessel(imageVessel.getImageUrl());
 
         } catch (Exception ex) {
-            return Util.getImageVessel(null);
+            return Util.getImageVessel("");
 
         } finally {
             if (manager != null) {

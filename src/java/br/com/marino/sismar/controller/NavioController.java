@@ -19,7 +19,7 @@ public class NavioController {
                 + "mmsi, "
                 + "tipo, "
                 + "dimensao, "
-                + "imagem "
+                + "imagemUrl "
                 + "FROM navio WHERE nomeNavio LIKE '%" + search + "%' "
                 + "OR CONCAT(imo,'') LIKE '%" + search + "%'";
 
@@ -44,7 +44,7 @@ public class NavioController {
                 + "mmsi, "
                 + "tipo, "
                 + "dimensao, "
-                + "imagem "
+                + "imagemUrl "
                 + "FROM navio WHERE nomeNavio LIKE '%" + search + "%' "
                 + "OR CONCAT(imo,'') LIKE '%" + search + "%'";
 
@@ -68,7 +68,7 @@ public class NavioController {
                 + "mmsi, "
                 + "tipo, "
                 + "dimensao, "
-                + "imagem "
+                + "imagemUrl "
                 + "FROM navio WHERE mmsi = " + mmsi;
 
         Query query = manager.createNativeQuery(sql, VesselSearch.class);
@@ -134,7 +134,7 @@ public class NavioController {
 
     public static ImageVessel getImageVesselByCod(EntityManager manager, int codVessel) throws Exception {
 
-        String sql = "SELECT codNavio, imagem FROM navio WHERE codNavio = " + codVessel;
+        String sql = "SELECT codNavio, imagemUrl FROM navio WHERE codNavio = " + codVessel;
 
         Query query = manager.createNativeQuery(sql, ImageVessel.class);
 
@@ -146,7 +146,7 @@ public class NavioController {
 
     public static ImageVessel getImageVesselByImo(EntityManager manager, int imo) throws Exception {
 
-        String sql = "SELECT codNavio, imagem FROM navio WHERE imo = " + imo;
+        String sql = "SELECT codNavio, imagemUrl FROM navio WHERE imo = " + imo;
 
         Query query = manager.createNativeQuery(sql, ImageVessel.class);
 
