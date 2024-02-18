@@ -187,6 +187,8 @@ public class BercoDashBean implements Serializable {
             Date startAisPoin = aisPoin.getDataEntrada();
             Date endAisPoin = aisPoin.getDataSaida() == null ? currentDate : aisPoin.getDataSaida();
 
+            boolean flag = true;
+            
             for (Aispoin aisPoin2 : list) {
 
                 if (aisPoin.getCodAisPoin().intValue() == aisPoin2.getCodAisPoin().intValue()) {
@@ -197,11 +199,14 @@ public class BercoDashBean implements Serializable {
                 Date endAisPoin2 = aisPoin2.getDataSaida() == null ? currentDate : aisPoin2.getDataSaida();               
 
                 if (startAisPoin.after(startAisPoin2) && (endAisPoin.before(endAisPoin2) || endAisPoin.equals(endAisPoin2))) {
-                    continue;
-                }
+                    flag = false;
+                    break;
+                }               
                 
+            }
+            
+            if (flag){
                 newList.add(aisPoin);
-                
             }
 
         }
