@@ -1854,7 +1854,7 @@ Sismar.ais = function () {
         var functionalities = JSON.parse(localStorage.getItem("user_logged_in")).functionalities;
 
         var content = '<div class="container-popup-vessel">' +
-                '<div class="row">' +
+                '<div class="row" style="padding: 0px !important;">' +
                 '<div class="container-popup-title col-xs-12 col-md-12">' +
                 '<div class="dropdown" style="float: left;">' +
                 '<button class="btn btn-link dropdown-toggle" type="button" data-toggle="dropdown" style="color: white; padding-left: 0px !important; padding-top: 9px;">' +
@@ -1881,15 +1881,15 @@ Sismar.ais = function () {
                 '</p>' +
                 '</div>' +
                 '</div>' +
-                '<div class="row">' +
+                '<div class="row" style="padding: 0px !important;">' +
                 '<div class="container-popup-img col-xs-12 col-md-12">' +
                 (isNullValueJson(response.vessel.image) ?
                         '<img id="image-vessel-popup" src="/sismar/faces/javax.faces.resource/img/sem_imagem.png" width="100%" height="200px"></img>' :
                         '<img id="image-vessel-popup" src="' + response.vessel.image + '" width="100%" height="200px"></img>') +
                 '</div>' +
                 '</div>' +
-                '<div class="row">' +
-                '<div class="container-popup-info col-xs-12 col-md-12">' +
+                '<div class="row" style="padding: 0px !important;">' +
+                '<div class="container-popup-info col-xs-12 col-md-12" style="padding: 0px !important;">' +
                 '<div class="row">' +
                 '<div class="container-popup-info-card col-xs-3 col-md-3">' +
                 '<p class="container-popup-info-card-title">Dimensão:</p>' +
@@ -1920,7 +1920,7 @@ Sismar.ais = function () {
                 '</div>' +
                 '</div>' +
                 '</div>' +
-                '<div class="row">' +
+                '<div class="row" style="padding: 0px !important;">' +
                 '<div class="container-popup-footer col-xs-12 col-md-12">' +
                 '<p><b>Recebido:</b> ' + getValueFromContent(response.last_ais_record.message) + '</p>' +
                 '<p><b>Latitude:</b> ' + getValueFromContent(response.last_ais_record.lat) + ' <b>Longitude:</b> ' + getValueFromContent(response.last_ais_record.lng) + '</p>' +
