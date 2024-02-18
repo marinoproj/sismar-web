@@ -178,14 +178,43 @@ public class BercoDashBean implements Serializable {
 
     private List<Aispoin> organize(List<Aispoin> list) {
 
-        for (Aispoin aispoin : list) {
+        List<Aispoin> newList = new ArrayList<>();
+
+        Date currentDate = new Date();
+        
+        for (Aispoin aisPoin : list) {
+
+            Date startAisPoin = aisPoin.getDataEntrada();
+            Date endAisPoin = aisPoin.getDataSaida() == null ? currentDate : aisPoin.getDataSaida();
+
+            for (Aispoin aisPoin2 : list) {
+
+                if (aisPoin.getCodAisPoin().intValue() == aisPoin2.getCodAisPoin().intValue()) {
+                    continue;
+                }
+
+                Date startAisPoin2 = aisPoin2.getDataEntrada();
+                Date endAisPoin2 = aisPoin2.getDataSaida() == null ? currentDate : aisPoin2.getDataSaida();               
+
+                if (startAisPoin.after(startAisPoin2) && (endAisPoin.before(endAisPoin2) || endAisPoin.equals(endAisPoin2))) {
+                    continue;
+                }
+                
+                newList.add(aisPoin);
+                
+            }
+
+        }
+        
+        
+        for (Aispoin aispoin : newList) {
 
             System.out.println(aispoin.getAisMmsi().getCodNavio().getMmsi() + " / entrada: " + aispoin.getDataEntrada()
                     + " / saida: " + aispoin.getDataSaida());
 
         }
 
-        return list;
+        return newList;
 
         /*if (list == null || list.isEmpty()) {
             return new ArrayList<>();
@@ -259,7 +288,7 @@ public class BercoDashBean implements Serializable {
             FacesContext.getCurrentInstance().getExternalContext().redirect(Util.getPathUrl() + "admin/ais/berco.xhtml?berco=" + bercoSelected.getCodBerco() + "&historic=" + period);
         } catch (IOException ex) {
         }
-        
+
     }
 
     public void reloadInit() {
@@ -579,7 +608,7 @@ public class BercoDashBean implements Serializable {
         vesselDockedNow.setAnchorage(anchorage);
         vesselDockedNow.setNavigation(navigation);
         vesselDockedNow.setBerth(berth);
-        
+
     }
 
     public String getClassForPeriodHistoricSelected(String period) {
@@ -587,6 +616,38 @@ public class BercoDashBean implements Serializable {
             return "active-period";
         }
         return "";
+    }
+
+    public void teste(List<Aispoin> listAisPoin) {
+
+        List<Aispoin> newList = new ArrayList<>();
+
+        Date currentDate = new Date();
+        
+        for (Aispoin aisPoin : listAisPoin) {
+
+            Date startAisPoin = aisPoin.getDataEntrada();
+            Date endAisPoin = aisPoin.getDataSaida() == null ? currentDate : aisPoin.getDataSaida();
+
+            for (Aispoin aisPoin2 : listAisPoin) {
+
+                if (aisPoin.getCodAisPoin().intValue() == aisPoin2.getCodAisPoin().intValue()) {
+                    continue;
+                }
+
+                Date startAisPoin2 = aisPoin2.getDataEntrada();
+                Date endAisPoin2 = aisPoin2.getDataSaida() == null ? currentDate : aisPoin2.getDataSaida();               
+
+                if (startAisPoin.after(startAisPoin2) && (endAisPoin.before(endAisPoin2) || endAisPoin.equals(endAisPoin2))) {
+                    continue;
+                }
+                
+                newList.add(aisPoin);
+                
+            }
+
+        }
+
     }
 
 }
