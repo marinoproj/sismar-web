@@ -48,14 +48,14 @@ public class PoinApi {
             manager = factory.createEntityManager();
 
             // Verifica se o usuário possui permissão para utilizar a api
-            if (!Util.isUserAuthenticatedAPI(auth, manager)) {
+            /*if (!Util.isUserAuthenticatedAPI(auth, manager)) {
                 try {
                     json.put("error", true);
                     json.put("message", "User is not allowed to use api");
                 } catch (JSONException ex) {
                 }
                 return json.toString();
-            }
+            }*/
 
             List<Poin> list = PoinController.getListPoins(manager);
 
@@ -115,14 +115,14 @@ public class PoinApi {
             manager = factory.createEntityManager();
 
             // Verifica se o usuário possui permissão para utilizar a api
-            if (!Util.isUserAuthenticatedAPI(auth, manager)) {
+            /*if (!Util.isUserAuthenticatedAPI(auth, manager)) {
                 try {
                     json.put("error", true);
                     json.put("message", "User is not allowed to use api");
                 } catch (JSONException ex) {
                 }
                 return json.toString();
-            }
+            }*/
 
             Poin poin = PoinController.getPoinById(manager, id);
 
@@ -182,14 +182,14 @@ public class PoinApi {
             manager = factory.createEntityManager();
 
             // Verifica se o usuário possui permissão para utilizar a api
-            if (!Util.isUserAuthenticatedAPI(auth, manager)) {
+            /*if (!Util.isUserAuthenticatedAPI(auth, manager)) {
                 try {
                     json.put("error", true);
                     json.put("message", "User is not allowed to use api");
                 } catch (JSONException ex) {
                 }
                 return json.toString();
-            }
+            }*/
 
             Poin poin = PoinController.getPoinById(manager, id);
 

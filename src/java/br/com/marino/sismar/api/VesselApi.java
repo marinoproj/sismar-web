@@ -53,14 +53,14 @@ public class VesselApi {
             manager = factory.createEntityManager();
 
             // Verifica se o usuário possui permissão para utilizar a api
-            if (!Util.isUserAuthenticatedAPI(auth, manager)) {
+            /*if (!Util.isUserAuthenticatedAPI(auth, manager)) {
                 try {
                     json.put("error", true);
                     json.put("message", "User is not allowed to use api");
                 } catch (JSONException ex) {
                 }
                 return json.toString();
-            }
+            }*/
 
             List<VesselSearch> vessels = NavioController.getVesselsBySearch(manager, search);
 
@@ -136,14 +136,14 @@ public class VesselApi {
             manager = factory.createEntityManager();
 
             // Verifica se o usuário possui permissão para utilizar a api
-            if (!Util.isUserAuthenticatedAPI(auth, manager)) {
+            /*if (!Util.isUserAuthenticatedAPI(auth, manager)) {
                 try {
                     json.put("error", true);
                     json.put("message", "User is not allowed to use api");
                 } catch (JSONException ex) {
                 }
                 return json.toString();
-            }
+            }*/
 
             Navio vessel = NavioController.getVesselByImo(manager, imo);
 
@@ -273,14 +273,14 @@ public class VesselApi {
             manager = factory.createEntityManager();
 
             // Verifica se o usuário possui permissão para utilizar a api
-            if (!Util.isUserAuthenticatedAPI(auth, manager)) {
+            /*if (!Util.isUserAuthenticatedAPI(auth, manager)) {
                 try {
                     json.put("error", true);
                     json.put("message", "User is not allowed to use api");
                 } catch (JSONException ex) {
                 }
                 return json.toString();
-            }
+            }*/
 
             ImageVessel imageVessel = NavioController.getImageVesselByImo(manager, imo);
 
@@ -353,14 +353,14 @@ public class VesselApi {
             manager = factory.createEntityManager();
 
             // Verifica se o usuário possui permissão para utilizar a api
-            if (!Util.isUserAuthenticatedAPI(auth, manager)) {
+            /*if (!Util.isUserAuthenticatedAPI(auth, manager)) {
                 try {
                     json.put("error", true);
                     json.put("message", "User is not allowed to use api");
                 } catch (JSONException ex) {
                 }
                 return json.toString();
-            }
+            }*/
 
             Navio vessel = NavioController.getVesselByImo(manager, imo);
 
@@ -456,14 +456,14 @@ public class VesselApi {
             manager = factory.createEntityManager();
 
             // Verifica se o usuário possui permissão para utilizar a api
-            if (!Util.isUserAuthenticatedAPI(auth, manager)) {
+            /*if (!Util.isUserAuthenticatedAPI(auth, manager)) {
                 try {
                     json.put("error", true);
                     json.put("message", "User is not allowed to use api");
                 } catch (JSONException ex) {
                 }
                 return json.toString();
-            }
+            }*/
 
             Navio vessel = NavioController.getVesselByImo(manager, imo);
 

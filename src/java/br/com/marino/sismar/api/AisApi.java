@@ -229,7 +229,7 @@ public class AisApi {
             manager = factory.createEntityManager();
 
             // Verifica se o usuário possui permissão para utilizar a api
-            if (!Util.isUserAuthenticatedAPI(auth, manager)) {
+            /*if (!Util.isUserAuthenticatedAPI(auth, manager)) {
                 json = new JSONObject();
                 try {
                     json.put("error", true);
@@ -237,7 +237,7 @@ public class AisApi {
                 } catch (JSONException ex) {
                 }
                 return json.toString();
-            }
+            }*/
             
             Navio vessel = NavioController.getVesselByMmsi(manager, mmsi);
             
@@ -285,14 +285,14 @@ public class AisApi {
             manager = factory.createEntityManager();
 
             // Verifica se o usuário possui permissão para utilizar a api
-            if (!Util.isUserAuthenticatedAPI(auth, manager)) {                
+            /*if (!Util.isUserAuthenticatedAPI(auth, manager)) {                
                 try {
                     json.put("error", true);
                     json.put("message", "User is not allowed to use api");
                 } catch (JSONException ex) {
                 }
                 return json.toString();
-            }
+            }*/
             
             // pega os layers
             List<Layer> layers = LayerController.getListLayers(manager);

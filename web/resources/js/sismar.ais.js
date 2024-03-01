@@ -1670,20 +1670,6 @@ Sismar.ais = function () {
         xmlreq.send(null);
     };
 
-    /*getListLayers = function (async) {
-     var xmlreq = getResquestAjax();
-     xmlreq.open("GET", "/sismar/api/layer/all_sys", async);
-     xmlreq.setRequestHeader("Authorization", "Basic bGVvOjEyMw==");
-     
-     xmlreq.onreadystatechange = function () {
-     if (xmlreq.readyState === 4 && xmlreq.status === 200) {
-     var json = jQuery.parseJSON(xmlreq.responseText);
-     layers = json;
-     }
-     };
-     xmlreq.send(null);
-     };*/
-
     this.fitBoundsShowAllVessels = function () {
         if (vessels !== null && vessels.length > 0) {
             var latLngsBoat = [];

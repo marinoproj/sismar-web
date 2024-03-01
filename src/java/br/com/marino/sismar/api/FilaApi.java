@@ -45,14 +45,14 @@ public class FilaApi {
             manager = factory.createEntityManager();
 
             // Verifica se o usuário possui permissão para utilizar a api
-            if (!Util.isUserAuthenticatedAPI(auth, manager)) {
+            /*if (!Util.isUserAuthenticatedAPI(auth, manager)) {
                 try {
                     json.put("error", true);
                     json.put("message", "User is not allowed to use api");
                 } catch (JSONException ex) {
                 }
                 return json.toString();
-            }
+            }*/
 
             Layer layer = LayerController.getLayerByCodigo(manager, Layer.LAYER_AREA_FUNDEIO);
 
