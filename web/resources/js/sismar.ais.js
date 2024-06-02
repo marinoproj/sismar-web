@@ -1895,21 +1895,25 @@ Sismar.ais = function () {
                 '</div>' +
                 '</div>' +
                 '<div class="row">' +
-                '<div class="container-popup-info-card col-xs-6 col-md-6">' +
+                '<div class="container-popup-info-card col-xs-5 col-md-5">' +
                 '<p class="container-popup-info-card-title">Destino:</p>' +
                 '<p class="container-popup-info-card-value">' + getValueFromContent(response.last_ais_record.destination) + '</p>' +
                 '</div>' +
-                '<div class="container-popup-info-card col-xs-6 col-md-6">' +
+                '<div class="container-popup-info-card col-xs-4 col-md-4">' +
                 '<p class="container-popup-info-card-title">Estado:</p>' +
                 '<p class="container-popup-info-card-value">' + getValueFromContent(response.last_ais_record.state) + '</p>' +
-                '</div>' +
+                '</div>' +                
+                '<div class="container-popup-info-card col-xs-3 col-md-3">' +
+                '<p class="container-popup-info-card-title">Call Sign:</p>' +
+                '<p class="container-popup-info-card-value">' + getValueFromContent(response.vessel.call_sign) + '</p>' +
+                '</div>' +                
                 '</div>' +
                 '</div>' +
                 '</div>' +
                 '<div class="row" style="padding: 0px !important;">' +
                 '<div class="container-popup-footer col-xs-12 col-md-12">' +
-                '<p><b>Recebido:</b> ' + getValueFromContent(response.last_ais_record.message) + '</p>' +
-                '<p><b>Latitude:</b> ' + getValueFromContent(response.last_ais_record.lat) + ' <b>Longitude:</b> ' + getValueFromContent(response.last_ais_record.lng) + '</p>' +
+                '<p><b>Recebido:</b> ' + getValueFromContent(response.last_ais_record.message) + '</p>' +                
+                '<p style="display: flex;"><b>Latitude:</b><span style="line-height: 1.5;margin-top: -8px;padding-left: 5px;padding-right: 10px;"> ' + getValueFromContent(response.last_ais_record.lat_graus) + ' <br>' + getValueFromContent(response.last_ais_record.lat) + '</span><b>Longitude:</b><span style="line-height: 1.5;margin-top: -8px;padding-left: 5px;padding-right: 10px;"> ' + getValueFromContent(response.last_ais_record.lng_graus) + '<br>' + getValueFromContent(response.last_ais_record.lng) + '</span></p>' +
                 '<p><b>MMSI:</b> ' + getValueFromContent(response.last_ais_record.mmsi) + '</p>' +
                 '</div>' +
                 '</div>' +
@@ -1975,21 +1979,25 @@ Sismar.ais = function () {
                 '</div>' +
                 '</div>' +
                 '<div class="row">' +
-                '<div class="container-popup-info-card col-xs-6 col-md-6">' +
+                '<div class="container-popup-info-card col-xs-5 col-md-5">' +
                 '<p class="container-popup-info-card-title">Destino:</p>' +
                 '<p class="container-popup-info-card-value">' + getValueFromContent(response.last_ais_record.destination) + '</p>' +
                 '</div>' +
-                '<div class="container-popup-info-card col-xs-6 col-md-6">' +
+                '<div class="container-popup-info-card col-xs-4 col-md-4">' +
                 '<p class="container-popup-info-card-title">Estado:</p>' +
                 '<p class="container-popup-info-card-value">' + getValueFromContent(response.last_ais_record.state) + '</p>' +
+                '</div>' +
+                '<div class="container-popup-info-card col-xs-3 col-md-3">' +
+                '<p class="container-popup-info-card-title">Call Sign:</p>' +
+                '<p class="container-popup-info-card-value">' + getValueFromContent(response.vessel.call_sign) + '</p>' +
                 '</div>' +
                 '</div>' +
                 '</div>' +
                 '</div>' +
                 '<div class="row">' +
                 '<div class="container-popup-footer col-xs-12 col-md-12">' +
-                '<p><b>Recebido:</b> ' + getValueFromContent(response.last_ais_record.message) + '</p>' +
-                '<p><b>Latitude:</b> ' + getValueFromContent(response.last_ais_record.lat) + ' <b>Longitude:</b> ' + getValueFromContent(response.last_ais_record.lng) + '</p>' +
+                '<p><b>Recebido:</b> ' + getValueFromContent(response.last_ais_record.message) + '</p>' +                
+                '<p style="display: flex;"><b>Latitude:</b><span style="line-height: 1.5;margin-top: -8px;padding-left: 5px;padding-right: 10px;"> ' + getValueFromContent(response.last_ais_record.lat_graus) + ' <br>' + getValueFromContent(response.last_ais_record.lat) + '</span><b>Longitude:</b><span style="line-height: 1.5;margin-top: -8px;padding-left: 5px;padding-right: 10px;"> ' + getValueFromContent(response.last_ais_record.lng_graus) + '<br>' + getValueFromContent(response.last_ais_record.lng) + '</span></p>' +
                 '<p><b>MMSI:</b> ' + getValueFromContent(response.last_ais_record.mmsi) + '</p>' +
                 '</div>' +
                 '</div>' +

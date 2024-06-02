@@ -771,6 +771,7 @@ public class VesselApi {
                 JSONObject jsonVessel = new JSONObject();
                 jsonVessel.put("name", Util.getValueFromJson(vessel.getNomeNavio()));
                 jsonVessel.put("imo", Util.getValueFromJson(vessel.getImo()));
+                jsonVessel.put("call_sign", vessel.getIndicativo() == null ? "" : vessel.getIndicativo());
                 jsonVessel.put("dimension", Util.getValueFromJson((embarcacao.getComprimentoReal() + "m X " + embarcacao.getLarguraReal() + "m")));
                 jsonVessel.put("type", Util.getValueFromJson(embarcacao.getCategoriaEmbarcacao()));
 
@@ -795,7 +796,9 @@ public class VesselApi {
                 JSONObject jsonAis = new JSONObject();
                 jsonAis.put("mmsi", Util.getValueFromJson(navioUltimaAtualizacao.getMmsi()));
                 jsonAis.put("lat", Util.getValueFromJson(navioUltimaAtualizacao.getLatitude()));
-                jsonAis.put("lng", Util.getValueFromJson(navioUltimaAtualizacao.getLongitude()));
+                jsonAis.put("lng", Util.getValueFromJson(navioUltimaAtualizacao.getLongitude()));                
+                jsonAis.put("lat_graus",  Util.getValueFromJson(convertToDMS(navioUltimaAtualizacao.getLatitude(), true)));
+                jsonAis.put("lng_graus", Util.getValueFromJson(convertToDMS(navioUltimaAtualizacao.getLongitude(), false)));                
                 jsonAis.put("velocity", Util.getValueFromJson(navioUltimaAtualizacao.getVelocidadeSobreSolo()));
                 jsonAis.put("direction", Util.getValueFromJson(navioUltimaAtualizacao.getCursoSobreSolo()));
                 jsonAis.put("destination", Util.getValueFromJson(navioUltimaAtualizacao.getDestino()));
@@ -825,6 +828,26 @@ public class VesselApi {
         }
 
         return json.toString();
-    }      
+    }     
+    
+    public String convertToDMS(Double decimal, boolean isLatitude) {
+        if (decimal == null){
+            return "";
+        }
+        String direction;
+        if (isLatitude) {
+            direction = decimal >= 0 ? "N" : "S";
+        } else {
+            direction = decimal >= 0 ? "E" : "W";
+        }
+
+        decimal = Math.abs(decimal);
+        int degrees = (int) decimal.doubleValue();
+        double fractionalPart = decimal - degrees;
+        int minutes = (int) (fractionalPart * 60);
+        double seconds = (fractionalPart * 60 - minutes) * 60;
+
+        return String.format("%s%d°%02d'%06.3f", direction, degrees, minutes, seconds);
+    }
 
 }
