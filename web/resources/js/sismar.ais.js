@@ -13,7 +13,7 @@ Sismar.ais = function () {
     const REBOCADOR_EMBARCACOES_ESPECIAIS = 4;
     const EMBARCACAO_DESCONHECIDA = 5;
     const EMBARCACAO_NAO_ESPECIFICADA = 6;
-    
+
     const iconBerco1 = new L.Icon({
         iconUrl: '/sismar/faces/javax.faces.resource/img/icon_berco_marker.png',
         iconSize: [20, 27]
@@ -314,12 +314,24 @@ Sismar.ais = function () {
 
                 changeTooltipContent = function (positionStart, positionEnd, marker, start, end) {
 
-                    var distance = getValueDistanceToText(getDistancePositions(positionStart.lat, positionStart.lng,
-                            positionEnd.lat, positionEnd.lng));
 
-                    var text = "<b>Posição inicial:</b> " + start + "<br><u>Lat:</u> " + positionStart.lat.toFixed(6) + " / <u>Lng:</u> " + positionStart.lng.toFixed(6);
-                    text += "<br><br><b>Posição final:</b> " + end + "<br><u>Lat:</u> " + positionEnd.lat.toFixed(6) + " / <u>Lng:</u> " + positionEnd.lng.toFixed(6);
-                    text += "<br><br><b>Distância:</b> " + distance;
+                    var distanceKm = getDistancePositions(positionStart.lat, positionStart.lng,
+                            positionEnd.lat, positionEnd.lng);
+
+                    var distanceKmText = getValueDistanceToText(distanceKm);
+
+                    var distanceMilhasText = distanceKm * 0.539957;
+                    distanceMilhasText = distanceMilhasText.toFixed(2);
+
+                    var latInicialDms = converterDecimalParaDMS(positionStart.lat, true);
+                    var lonInicialDms = converterDecimalParaDMS(positionStart.lng, false);
+                    
+                    var latFinalDms = converterDecimalParaDMS(positionEnd.lat, true);
+                    var lonFinalDms = converterDecimalParaDMS(positionEnd.lng, false);
+
+                    var text = "<b>Posição inicial:</b> " + start + "<br><u>Lat:</u> " + latInicialDms + " ~ " + positionStart.lat.toFixed(6) + " / <u>Lng:</u> " + lonInicialDms + " ~ " + positionStart.lng.toFixed(6);
+                    text += "<br><br><b>Posição final:</b> " + end + "<br><u>Lat:</u> " + latFinalDms + " ~ " + positionEnd.lat.toFixed(6) + " / <u>Lng:</u> " + lonFinalDms + " ~ " + positionEnd.lng.toFixed(6);
+                    text += "<br><br><b>Distância:</b> " + distanceKmText + " ~ " + distanceMilhasText + " nmi";
 
                     if (marker.getTooltip() === null || marker.getTooltip() === undefined) {
                         marker.bindTooltip(text).openTooltip();
@@ -400,8 +412,8 @@ Sismar.ais = function () {
 
     };
 
-    this.addButtonToMap = function(title, image, func){
-               
+    this.addButtonToMap = function (title, image, func) {
+
         var aisButtonMap = L.Control.extend({
 
             options: {
@@ -438,9 +450,9 @@ Sismar.ais = function () {
             }
 
         });
-        
+
         map.addControl(new aisButtonMap());
-        
+
     };
 
     loadFilaVessels = function () {
@@ -587,7 +599,7 @@ Sismar.ais = function () {
 
     };
 
-    this.setLatLngAndZoom = function(lat, lng, zoom){
+    this.setLatLngAndZoom = function (lat, lng, zoom) {
         map.fitBounds([L.latLng(lat, lng)]);
         map.setZoom(zoom);
         console.log("change latlng and zoom from map");
@@ -671,6 +683,24 @@ Sismar.ais = function () {
         return newDistance.toFixed(2) + " " + medida;
     };
 
+    function converterDecimalParaDMS(coordenada, isLatitude) {
+        
+        const absCoordenada = Math.abs(coordenada);
+        const graus = Math.floor(absCoordenada);
+        const minutosDecimais = (absCoordenada - graus) * 60;
+        const minutos = Math.floor(minutosDecimais);
+        const segundos = (minutosDecimais - minutos) * 60;
+
+        let direcao;
+        if (isLatitude) {
+            direcao = coordenada >= 0 ? 'N' : 'S';
+        } else {
+            direcao = coordenada >= 0 ? 'E' : 'W';
+        }
+
+        return `${direcao}${graus}° ${minutos}' ${segundos.toFixed(2)}"`;
+    }
+
     getLayersActive = function () {
         var layers = [getTypeMapPrimary()];
         for (var i = 0; i < typeVessels.length; i++) {
@@ -736,16 +766,16 @@ Sismar.ais = function () {
     loadNauticalCharts = function () {
         var portoSantosParteSul = new L.ImageOverlay('/sismar/faces/javax.faces.resource/img/porto_santos_parte_sul.png',
                 [[-23.95000000, -46.39305556], [-24.08416667, -46.27750000]]);
-                
+
         var portoSantosParteNorte = new L.ImageOverlay('/sismar/faces/javax.faces.resource/img/porto_santos_parte_norte.png',
                 [[-23.866452, -46.399899], [-23.966843, -46.266389]], {opacity: 1.0});
-                
+
         var proxPortoSaoSebastiao = new L.ImageOverlay('/sismar/faces/javax.faces.resource/img/proximidades_porto_sao_sebastiao.png',
                 [[-23.621249, -45.753250], [-24.120435, -44.971161]], {opacity: 1.0});
-        
+
         nauticalCharts = [{name: "Parte Sul - Porto de Santos", layer: portoSantosParteSul},
-                          {name: "Parte Norte - Porto de Santos", layer: portoSantosParteNorte},
-                          {name: "Proximidades - Porto de São Sebastião", layer: proxPortoSaoSebastiao}];
+            {name: "Parte Norte - Porto de Santos", layer: portoSantosParteNorte},
+            {name: "Proximidades - Porto de São Sebastião", layer: proxPortoSaoSebastiao}];
     };
 
     loadTypeVessels = function () {
@@ -1681,8 +1711,8 @@ Sismar.ais = function () {
         }
     };
 
-    this.updateVessels = function (async) {        
-        updateListVessels(async);        
+    this.updateVessels = function (async) {
+        updateListVessels(async);
 //        updateListVessels(false);
 //        fitBoundsShowAllVessels();
 //        setInterval(function () {
@@ -1902,17 +1932,17 @@ Sismar.ais = function () {
                 '<div class="container-popup-info-card col-xs-4 col-md-4">' +
                 '<p class="container-popup-info-card-title">Estado:</p>' +
                 '<p class="container-popup-info-card-value">' + getValueFromContent(response.last_ais_record.state) + '</p>' +
-                '</div>' +                
+                '</div>' +
                 '<div class="container-popup-info-card col-xs-3 col-md-3">' +
                 '<p class="container-popup-info-card-title">Call Sign:</p>' +
                 '<p class="container-popup-info-card-value">' + getValueFromContent(response.vessel.call_sign) + '</p>' +
-                '</div>' +                
+                '</div>' +
                 '</div>' +
                 '</div>' +
                 '</div>' +
                 '<div class="row" style="padding: 0px !important;">' +
                 '<div class="container-popup-footer col-xs-12 col-md-12">' +
-                '<p><b>Recebido:</b> ' + getValueFromContent(response.last_ais_record.message) + '</p>' +                
+                '<p><b>Recebido:</b> ' + getValueFromContent(response.last_ais_record.message) + '</p>' +
                 '<p style="display: flex;"><b>Latitude:</b><span style="line-height: 1.5;margin-top: -8px;padding-left: 5px;padding-right: 10px;"> ' + getValueFromContent(response.last_ais_record.lat_graus) + ' <br>' + getValueFromContent(response.last_ais_record.lat) + '</span><b>Longitude:</b><span style="line-height: 1.5;margin-top: -8px;padding-left: 5px;padding-right: 10px;"> ' + getValueFromContent(response.last_ais_record.lng_graus) + '<br>' + getValueFromContent(response.last_ais_record.lng) + '</span></p>' +
                 '<p><b>MMSI:</b> ' + getValueFromContent(response.last_ais_record.mmsi) + '</p>' +
                 '</div>' +
@@ -1996,7 +2026,7 @@ Sismar.ais = function () {
                 '</div>' +
                 '<div class="row">' +
                 '<div class="container-popup-footer col-xs-12 col-md-12">' +
-                '<p><b>Recebido:</b> ' + getValueFromContent(response.last_ais_record.message) + '</p>' +                
+                '<p><b>Recebido:</b> ' + getValueFromContent(response.last_ais_record.message) + '</p>' +
                 '<p style="display: flex;"><b>Latitude:</b><span style="line-height: 1.5;margin-top: -8px;padding-left: 5px;padding-right: 10px;"> ' + getValueFromContent(response.last_ais_record.lat_graus) + ' <br>' + getValueFromContent(response.last_ais_record.lat) + '</span><b>Longitude:</b><span style="line-height: 1.5;margin-top: -8px;padding-left: 5px;padding-right: 10px;"> ' + getValueFromContent(response.last_ais_record.lng_graus) + '<br>' + getValueFromContent(response.last_ais_record.lng) + '</span></p>' +
                 '<p><b>MMSI:</b> ' + getValueFromContent(response.last_ais_record.mmsi) + '</p>' +
                 '</div>' +

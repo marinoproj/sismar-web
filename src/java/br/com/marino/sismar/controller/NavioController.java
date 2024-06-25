@@ -21,7 +21,8 @@ public class NavioController {
                 + "dimensao, "
                 + "imagemUrl "
                 + "FROM navio WHERE nomeNavio LIKE '%" + search + "%' "
-                + "OR CONCAT(imo,'') LIKE '%" + search + "%'";
+                + "OR CONCAT(imo,'') LIKE '%" + search + "%' "
+                + "OR indicativo LIKE '%" + search + "%'";
 
         Query query = manager.createNativeQuery(sql, VesselSearch.class);
 
@@ -46,7 +47,8 @@ public class NavioController {
                 + "dimensao, "
                 + "imagemUrl "
                 + "FROM navio WHERE nomeNavio LIKE '%" + search + "%' "
-                + "OR CONCAT(imo,'') LIKE '%" + search + "%'";
+                + "OR CONCAT(imo,'') LIKE '%" + search + "%' "
+                + "OR indicativo LIKE '%" + search + "%'";
 
         Query query = manager.createNativeQuery(sql, VesselSearch.class);
 
