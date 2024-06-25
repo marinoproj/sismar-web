@@ -329,8 +329,8 @@ Sismar.ais = function () {
                     var latFinalDms = converterDecimalParaDMS(positionEnd.lat, true);
                     var lonFinalDms = converterDecimalParaDMS(positionEnd.lng, false);
 
-                    var text = "<b>Posição inicial:</b> " + start + "<br><u>Lat:</u> " + latInicialDms + " ~ " + positionStart.lat.toFixed(6) + " / <u>Lng:</u> " + lonInicialDms + " ~ " + positionStart.lng.toFixed(6);
-                    text += "<br><br><b>Posição final:</b> " + end + "<br><u>Lat:</u> " + latFinalDms + " ~ " + positionEnd.lat.toFixed(6) + " / <u>Lng:</u> " + lonFinalDms + " ~ " + positionEnd.lng.toFixed(6);
+                    var text = "<b>Posição inicial:</b> " + start + "<br><u>Lat:</u> " + latInicialDms + " ~ " + positionStart.lat.toFixed(6) + " <br> <u>Lng:</u> " + lonInicialDms + " ~ " + positionStart.lng.toFixed(6);
+                    text += "<br><br><b>Posição final:</b> " + end + "<br><u>Lat:</u> " + latFinalDms + " ~ " + positionEnd.lat.toFixed(6) + " <br> <u>Lng:</u> " + lonFinalDms + " ~ " + positionEnd.lng.toFixed(6);
                     text += "<br><br><b>Distância:</b> " + distanceKmText + " ~ " + distanceMilhasText + " nmi";
 
                     if (marker.getTooltip() === null || marker.getTooltip() === undefined) {
