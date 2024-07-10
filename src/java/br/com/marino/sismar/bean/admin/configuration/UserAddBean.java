@@ -200,6 +200,7 @@ public class UserAddBean implements Serializable {
 
             userAdd.setSenha(Util.convertStringToMd5(password));
             userAdd.setMaster(userAdd.getMaster() == null ? false : userAdd.getMaster());
+            userAdd.setAtivo(true);
 
             manager.getTransaction().begin();
             

@@ -111,8 +111,12 @@
             }
 
             .container-popup-info{
+                margin-top: 10px !important;
+            }
+            
+            .container-popup-info{
                 font-size: 13px !important;
-                line-height: 0.2;
+                line-height: 1;
             }
 
             .container-popup-info-card-title {
@@ -130,10 +134,13 @@
             .container-popup-name{
                 font-size: 16px;
                 font-weight: bold;
+                margin-top: 15px;
+                line-height: 1;
             }
 
             .container-popup-type{
                 font-size: 12px;
+                padding-bottom: 5px;
             }          
 
             .container-popup-footer{
@@ -142,6 +149,8 @@
                 line-height: 0.2;
                 border-bottom-left-radius: 10px !important;
                 border-bottom-right-radius: 10px !important;
+                margin-top: 15px;
+                padding-top: 15px;
             }
 
             .container-popup-info > div.row:nth-child(1) > div.container-popup-info-card{
@@ -168,6 +177,11 @@
             .container-popup-info > div.row:nth-child(2){
                 padding-top: 10px;
             }            
+            
+            .container-popup-info > div.row {
+                margin-right: 0px !important;
+                margin-left: 0px !important;
+            }
 
         </style>
 
@@ -236,6 +250,9 @@
         <!-- Importar meteorologia -->
         <ui:include src="/admin/components/meteorologiaais.xhtml" />   
         
+        <!-- Importar informacoes embarcacao -->
+        <ui:include src="/admin/components/vesselinfoais.xhtml" />   
+        
         <h:form id="update-vessels">
             <p:poll listener="#{AisBean.updateVessels(null)}" 
                     interval="#{AisBean.delay}" 
@@ -253,6 +270,7 @@
         <h:outputScript name="js/L.Control.Layers.Tree.js" target="body"/>
         <h:outputScript name="js/atracacao.js" target="body"/>
         <h:outputScript name="js/meteorologiaais.js" target="body"/>
+        <h:outputScript name="js/vesselinfoais.js" target="body"/>
 
         <script>
 
@@ -298,6 +316,11 @@
                 
                 var meteorologia = new MeteorologiaAis();
                 meteorologia.realtime("#meteorologiaais-main", ais);
+                
+                var vesselInfo = new VesselInfoAis();
+                vesselInfo.realtime("#vesselinfoais-main");
+                
+                ais.setModalVesselInfo(vesselInfo);
 
             });
 

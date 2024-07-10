@@ -43,6 +43,8 @@ Sismar.ais = function () {
     var layersMap;
     var bercosMap;
     var dataStartup;
+    
+    var modalVesselInfo;
 
     this.initialize = function (id) {
 
@@ -357,7 +359,7 @@ Sismar.ais = function () {
         map.addControl(new routeButton());
 
 
-        var aisInfoFilaButton = L.Control.extend({
+        /*var aisInfoFilaButton = L.Control.extend({
 
             options: {
                 position: 'topleft'
@@ -408,8 +410,13 @@ Sismar.ais = function () {
 
         });
 
-        map.addControl(new aisInfoFilaButton());
+        map.addControl(new aisInfoFilaButton());*/
 
+    };
+
+
+    this.setModalVesselInfo = function(modal){
+        modalVesselInfo = modal;
     };
 
     this.addButtonToMap = function (title, image, func) {
@@ -1843,8 +1850,9 @@ Sismar.ais = function () {
         } else {
             content = getContentVesselUnknown(response);
         }
-        e.bindPopup(content, {className: "leaflet_popup_info_vessel"});
-        e.openPopup();
+        modalVesselInfo.showInfo(content);
+        //e.bindPopup(content, {className: "leaflet_popup_info_vessel"});
+        //e.openPopup();
     };
 
     isNullValueJson = function (value) {
@@ -1890,6 +1898,10 @@ Sismar.ais = function () {
 
         content += '</ul>' +
                 '</div>' +
+                '<div class="dropdown" style="float: right;">' +
+                '<button class="btn btn-link dropdown-toggle" onclick="$(\'#vesselinfoais-main\').hide();" type="button" data-toggle="dropdown" style="color: white; padding-left: 0px !important; padding-top: 9px;">' +
+                '<i class="glyphicon glyphicon-remove-circle"></i></button>' +
+                '</div>' +               
                 '<p class="container-popup-name">' + getValueFromContent(response.vessel.name, "", true, "DESCONHECIDO") + '</p>' +
                 '<p class="container-popup-type" style="padding-left: 30px;">' +
                 '<b>IMO:</b> ' + getValueFromContent(response.vessel.imo) + ' ' +
@@ -1943,7 +1955,7 @@ Sismar.ais = function () {
                 '<div class="row" style="padding: 0px !important;">' +
                 '<div class="container-popup-footer col-xs-12 col-md-12">' +
                 '<p><b>Recebido:</b> ' + getValueFromContent(response.last_ais_record.message) + '</p>' +
-                '<p style="display: flex;"><b>Latitude:</b><span style="line-height: 1.5;margin-top: -8px;padding-left: 5px;padding-right: 10px;"> ' + getValueFromContent(response.last_ais_record.lat_graus) + ' <br>' + getValueFromContent(response.last_ais_record.lat) + '</span><b>Longitude:</b><span style="line-height: 1.5;margin-top: -8px;padding-left: 5px;padding-right: 10px;"> ' + getValueFromContent(response.last_ais_record.lng_graus) + '<br>' + getValueFromContent(response.last_ais_record.lng) + '</span></p>' +
+                '<p style="display: flex; padding-top: 10px; padding-bottom: 5px;"><b>Latitude:</b><span style="line-height: 1.5;margin-top: -8px;padding-left: 5px;padding-right: 10px;"> ' + getValueFromContent(response.last_ais_record.lat_graus) + ' <br>' + getValueFromContent(response.last_ais_record.lat) + '</span><b>Longitude:</b><span style="line-height: 1.5;margin-top: -8px;padding-left: 5px;padding-right: 10px;"> ' + getValueFromContent(response.last_ais_record.lng_graus) + '<br>' + getValueFromContent(response.last_ais_record.lng) + '</span></p>' +
                 '<p><b>MMSI:</b> ' + getValueFromContent(response.last_ais_record.mmsi) + '</p>' +
                 '</div>' +
                 '</div>' +
@@ -1975,7 +1987,11 @@ Sismar.ais = function () {
         }
 
         content += '</ul>' +
-                '</div>' +
+                '</div>' +                
+                '<div class="dropdown" style="float: right;">' +
+                '<button class="btn btn-link dropdown-toggle" onclick="modalVesselInfo.closed()" type="button" data-toggle="dropdown" style="color: white; padding-left: 0px !important; padding-top: 9px;">' +
+                '<i class="glyphicon glyphicon-remove-circle"></i></button>' +
+                '</div>' +               
                 '<p class="container-popup-name">DESCONHECIDO</p>' +
                 '<p class="container-popup-type" style="padding-left: 30px;">' +
                 '<b>IMO:</b> DESCONHECIDO ' +

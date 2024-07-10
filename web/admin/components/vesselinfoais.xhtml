@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets">    
+
+    <style>
+
+        #vesselinfoais-main{
+            position: fixed;
+            bottom: 70px;
+            left: 50%;                
+            margin-left: -115px;
+            background: #f7f7f7;
+            z-index: 100000000;
+            box-shadow: 0 3px 14px rgba(0,0,0,0.4);
+            border-radius: 12px;
+            font-size: 12px;
+            cursor: move;   
+            display: none;
+            height: 400px;
+            width: 436px;
+        }            
+
+        @media (max-width: 992px) {
+            #vesselinfoais-main{
+                position: fixed;
+                left: 0;
+                margin-left: 12%;
+                bottom: 50%;
+                width: 86%;
+                height: 410px;
+            }            
+
+        }
+        
+    </style>
+    
+    <div id="vesselinfoais-main">
+    </div>               
+
+</ui:composition>

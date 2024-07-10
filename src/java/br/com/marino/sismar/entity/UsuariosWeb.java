@@ -123,6 +123,10 @@ public class UsuariosWeb implements Serializable, Cloneable {
     @Column(name = "paginaInicial")
     private String paginaInicial;
     
+    @Basic(optional = true)
+    @Column(name = "ativo")
+    private Boolean ativo;
+    
     public UsuariosWeb() {
     }
 
@@ -380,5 +384,13 @@ public class UsuariosWeb implements Serializable, Cloneable {
     public void setPaginaInicial(String paginaInicial) {
         this.paginaInicial = paginaInicial;
     }   
+
+    public Boolean getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
+    }    
     
 }

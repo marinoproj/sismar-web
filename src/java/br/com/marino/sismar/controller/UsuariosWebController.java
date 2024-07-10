@@ -15,6 +15,32 @@ public class UsuariosWebController {
         return list;
     }
 
+    public static List<UsuariosWeb> getListUsersActiveByClient(EntityManager manager, int codClient, boolean plusMaster)
+            throws Exception {
+
+        String sql;
+
+        if (plusMaster) {
+
+            sql = "select * from usuarios_web as u where u.ativo = 1 and (u.master = 1 "
+                    + "or u.idUsuario in (select cu.codUsuario from clientes_usuarios as cu "
+                    + "where cu.codCliente = " + codClient + "))";
+
+        } else {
+
+            sql = "select * from usuarios_web as u where u.ativo = 1 and (u.master = 0 "
+                    + "and u.idUsuario in (select cu.codUsuario from clientes_usuarios as cu "
+                    + "where cu.codCliente = " + codClient + "))";
+
+        }
+
+        Query query = manager.createNativeQuery(sql,
+                UsuariosWeb.class);
+
+        return query.getResultList();
+
+    }
+    
     public static List<UsuariosWeb> getListUsersByClient(EntityManager manager, int codClient, boolean plusMaster)
             throws Exception {
 
@@ -73,8 +99,9 @@ public class UsuariosWebController {
     }
 
     public static void delete(EntityManager manager, int id) throws Exception {
-        UsuariosWeb user = manager.getReference(UsuariosWeb.class, id);
-        manager.remove(user);
+        UsuariosWeb user = getUserById(manager, id);
+        user.setAtivo(false);
+        edit(manager, user);
     }
 
     public static void edit(EntityManager manager, UsuariosWeb user) throws Exception {
@@ -143,6 +170,11 @@ public class UsuariosWebController {
             }
 
             UsuariosWeb user = (UsuariosWeb) obj;
+            
+            if (user.getAtivo() == false){
+                return null;
+            }
+            
             return user;
 
         } catch (NoResultException ex) {

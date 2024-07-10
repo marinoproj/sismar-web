@@ -98,10 +98,10 @@ public class UsersBean implements Serializable {
             UsuariosWeb u = SessionContext.getInstance().getUserLoggedIn();
             
             if (u.getMaster() != null && u.getMaster()){
-                return UsuariosWebController.getListUsersByClient(manager, client.getCod(), true);
+                return UsuariosWebController.getListUsersActiveByClient(manager, client.getCod(), true);
             }
             
-            return UsuariosWebController.getListUsersByClient(manager, client.getCod(), false);
+            return UsuariosWebController.getListUsersActiveByClient(manager, client.getCod(), false);
             
         } catch (Exception ex) {
             return new ArrayList<>();
