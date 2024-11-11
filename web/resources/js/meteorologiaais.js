@@ -53,7 +53,7 @@ function MeteorologiaAis() {
 
     };
 
-    showPanel = function (codBercoForce) {
+    showPanelMeteorologia = function (codBercoForce) {
 
         if (show) {
 
@@ -77,7 +77,7 @@ function MeteorologiaAis() {
                 },
                 success: function (response) {
                     if (!response.error) {
-                        setData(response);
+                        setDataMeteorologia(response);
                     }
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -85,7 +85,7 @@ function MeteorologiaAis() {
                 dataType: 'json'
             });
 
-            taskUpdate = setInterval(updateData, 3000);
+            taskUpdate = setInterval(updateDataMeteorologia, 3000);
 
         }
 
@@ -133,11 +133,11 @@ function MeteorologiaAis() {
 
     addButtonToMap = function () {
         if (equipaments.length > 0) {
-            mapModule.addButtonToMap("Meteorologia", "wind.png", showPanel);
+            mapModule.addButtonToMap("Meteorologia", "wind.png", showPanelMeteorologia);
         }
     };
 
-    updateData = function () {
+    updateDataMeteorologia = function () {
 
         var token = JSON.parse(localStorage.getItem('user_logged_in')).token;
 
@@ -150,7 +150,7 @@ function MeteorologiaAis() {
             },
             success: function (response) {
                 if (!response.error) {
-                    setData(response);
+                    setDataMeteorologia(response);
                 }
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -160,7 +160,7 @@ function MeteorologiaAis() {
 
     };
 
-    setData = function (data) {
+    setDataMeteorologia = function (data) {
 
         var codEquipamentVento = cbVento.children("option:selected").val();
 

@@ -85,7 +85,7 @@ function Atracacao() {
                 success: function (response) {
                     if (!response.error) {
                         var berco = response.berco;
-                        showPanel(berco.cod);
+                        showPanelAtracacao(berco.cod);
                     }
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -145,7 +145,7 @@ function Atracacao() {
 
     };
 
-    showPanel = function (codBercoForce) {
+    showPanelAtracacao = function (codBercoForce) {
 
         if (show) {
             show = !show;
@@ -157,9 +157,8 @@ function Atracacao() {
 
             if (codBercoForce) {
                 cbBerco.val(codBercoForce);
-                taskUpdate = setInterval(updateData, 1000);
+                taskUpdate = setInterval(updateDataAtracacao, 1000);
                 show = !show;
-                console.log("show panel atracação");
                 return;
             }
 
@@ -191,7 +190,7 @@ function Atracacao() {
                 dataType: 'json'
             });
 
-            taskUpdate = setInterval(updateData, 1000);
+            taskUpdate = setInterval(updateDataAtracacao, 1000);
 
         }
 
@@ -230,11 +229,11 @@ function Atracacao() {
 
     addButtonToMap = function () {
         if (bercos.length > 0) {
-            mapModule.addButtonToMap("Atracacoes", "ship.png", showPanel);
+            mapModule.addButtonToMap("Atracacoes", "ship.png", showPanelAtracacao);
         }
     };
 
-    updateData = function () {
+    updateDataAtracacao = function () {
 
         var codBerco = cbBerco.children("option:selected").val();
         var token = JSON.parse(localStorage.getItem('user_logged_in')).token;
@@ -268,7 +267,7 @@ function Atracacao() {
             },
             success: function (response) {
                 if (!response.error) {
-                    setData(response);
+                    setDataAtracacao(response);
                 }
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -282,7 +281,7 @@ function Atracacao() {
         return coordenadasBerco;
     };
 
-    this.updateData = function (dataHoraTime) {
+    this.updateDataAtracacao = function (dataHoraTime) {
 
         if (!codAtracacao) {
             return;
@@ -299,7 +298,7 @@ function Atracacao() {
             },
             success: function (response) {
                 if (!response.error) {
-                    setData(response);
+                    setDataAtracacao(response);
                 }
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -309,7 +308,7 @@ function Atracacao() {
 
     };
 
-    setData = function (data) {
+    setDataAtracacao = function (data) {
 
         if (show || codAtracacao) {
             $(idPanel).show();
