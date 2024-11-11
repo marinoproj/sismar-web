@@ -1487,7 +1487,7 @@ Sismar.playback = function () {
                 clearInterval(refreshIntervalDataId);
             } else {
                 setDataPlayback(dataPlayback[index_data].vessels, dataPlayback[index_data].date);
-                moduleAtracacao.updateData(dataPlayback[index_data].date);
+                moduleAtracacao.updateDataAtracacao(dataPlayback[index_data].date);
                 index_data = index_data + 1;
                 sld_navegation.val(index_data + 1);
             }
