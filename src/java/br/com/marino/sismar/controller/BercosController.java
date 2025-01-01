@@ -64,6 +64,24 @@ public class BercosController {
 
     }
     
+    public static List<Berco> getListBercosByCodClient(EntityManager manager, long codClient) throws Exception {
+
+        String sql = "SELECT b.* FROM berco b "
+                + "INNER JOIN bercos_clientes bc ON bc.codBerco = b.codBerco "
+                + "WHERE bc.codCliente = " + codClient;
+
+        Query query = manager.createNativeQuery(sql, Berco.class);
+
+        List<Berco> list = query.getResultList();
+
+        if (list == null || list.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        return list;
+
+    }
+    
     public static List<Berco> getListBercos(EntityManager manager)
             throws Exception {
         Query query = manager.createNamedQuery("Berco.findAll");

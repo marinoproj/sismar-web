@@ -2,14 +2,17 @@ package br.com.marino.sismar.bean.admin.ais;
 
 import br.com.marino.sismar.controller.AispoinController;
 import br.com.marino.sismar.controller.BercosController;
+import br.com.marino.sismar.controller.ClientesController;
 import br.com.marino.sismar.controller.MovimentacaoPortoParametrosController;
 import br.com.marino.sismar.entity.Aispoin;
 import br.com.marino.sismar.entity.Berco;
+import br.com.marino.sismar.entity.Clientes;
 import br.com.marino.sismar.entity.DurationOfStay;
 import br.com.marino.sismar.entity.DurationOfStayTotalPeriod;
 import br.com.marino.sismar.entity.MovimentacaoPortoParametros;
 import br.com.marino.sismar.entity.VesselDockedNow;
 import br.com.marino.sismar.entity.VesselDockedStepTimeline;
+import br.com.marino.sismar.session.SessionContext;
 import br.com.marino.sismar.util.NavioMapAis;
 import br.com.marino.sismar.util.Util;
 import java.io.IOException;
@@ -181,14 +184,14 @@ public class BercoDashBean implements Serializable {
         List<Aispoin> newList = new ArrayList<>();
 
         Date currentDate = new Date();
-        
+
         for (Aispoin aisPoin : list) {
 
             Date startAisPoin = aisPoin.getDataEntrada();
             Date endAisPoin = aisPoin.getDataSaida() == null ? currentDate : aisPoin.getDataSaida();
 
             boolean flag = true;
-            
+
             for (Aispoin aisPoin2 : list) {
 
                 if (aisPoin.getCodAisPoin().intValue() == aisPoin2.getCodAisPoin().intValue()) {
@@ -196,22 +199,21 @@ public class BercoDashBean implements Serializable {
                 }
 
                 Date startAisPoin2 = aisPoin2.getDataEntrada();
-                Date endAisPoin2 = aisPoin2.getDataSaida() == null ? currentDate : aisPoin2.getDataSaida();               
+                Date endAisPoin2 = aisPoin2.getDataSaida() == null ? currentDate : aisPoin2.getDataSaida();
 
                 if (startAisPoin.after(startAisPoin2) && (endAisPoin.before(endAisPoin2) || endAisPoin.equals(endAisPoin2))) {
                     flag = false;
                     break;
-                }               
-                
+                }
+
             }
-            
-            if (flag){
+
+            if (flag) {
                 newList.add(aisPoin);
             }
 
         }
-        
-        
+
         for (Aispoin aispoin : newList) {
 
             System.out.println(aispoin.getAisMmsi().getCodNavio().getMmsi() + " / entrada: " + aispoin.getDataEntrada()
@@ -310,16 +312,35 @@ public class BercoDashBean implements Serializable {
                 historic = "7days";
             }
 
-            listBercos = BercosController.getListBercos(manager);
+            Boolean isUserMaster = SessionContext.getInstance().getUserLoggedIn().getMaster();
+
+            if (isUserMaster) {
+                listBercos = BercosController.getListBercos(manager);
+
+            } else {
+
+                Clientes client = ClientesController.getByCod(manager,
+                        SessionContext.getInstance().getClientLoggedIn().getCod());
+
+                listBercos = BercosController.getListBercosByCodClient(manager, client.getCod());
+
+            }
 
             if (codBerco == null) {
-                for (Berco berco : listBercos) {
-                    if (berco.getNome().contains("P1")) {
-                        bercoSelected = berco;
-                        codBerco = bercoSelected.getCodBerco();
-                        break;
+
+                if (listBercos.size() == 1) {
+                    bercoSelected = listBercos.get(0);
+                    codBerco = bercoSelected.getCodBerco();
+                } else {
+                    for (Berco berco : listBercos) {
+                        if (berco.getNome().contains("P1")) {
+                            bercoSelected = berco;
+                            codBerco = bercoSelected.getCodBerco();
+                            break;
+                        }
                     }
                 }
+                
             } else {
                 for (Berco berco : listBercos) {
                     if (berco.getCodBerco().intValue() == codBerco.intValue()) {
@@ -364,6 +385,7 @@ public class BercoDashBean implements Serializable {
         } catch (Exception ex) {
             listAisPoin = new ArrayList<>();
             listBercos = new ArrayList<>();
+            ex.printStackTrace();
 
         } finally {
             if (manager != null) {
@@ -578,13 +600,29 @@ public class BercoDashBean implements Serializable {
                         movimentacaoPortoParametros.getCodPoinFundeio().getCodPoin()
                 );
 
+        Aispoin aisPoinChannel = null;
+
+        if (aisPoinAnchorage == null) {
+            aisPoinChannel = AispoinController
+                    .getLastAispoinByMssiAndCodPoin(
+                            manager,
+                            shipNow.getAisMmsi().getCodNavio().getMmsi(),
+                            movimentacaoPortoParametros.getCodPoinCanal().getCodPoin(),
+                            null
+                    );
+        }
+
         System.out.println("ais poin de fundeio: " + aisPoinAnchorage);
 
+        System.out.println("ais poin de canal: " + aisPoinChannel);
+
         VesselDockedStepTimeline anchorage = VesselDockedStepTimeline
-                .build(aisPoinAnchorage.getDataEntrada(), aisPoinAnchorage.getDataSaida());
+                .build(aisPoinAnchorage == null ? null : aisPoinAnchorage.getDataEntrada(),
+                        aisPoinAnchorage == null ? null : aisPoinAnchorage.getDataSaida());
 
         VesselDockedStepTimeline navigation = VesselDockedStepTimeline
-                .build(aisPoinAnchorage.getDataSaida(), shipNow.getDataEntrada());
+                .build(aisPoinAnchorage != null ? aisPoinAnchorage.getDataSaida() : aisPoinChannel != null ? aisPoinChannel.getDataEntrada() : null,
+                        aisPoinAnchorage != null || aisPoinChannel != null ? shipNow.getDataEntrada() : null);
 
         VesselDockedStepTimeline berth = VesselDockedStepTimeline
                 .build(shipNow.getDataEntrada(), null);
@@ -628,7 +666,7 @@ public class BercoDashBean implements Serializable {
         List<Aispoin> newList = new ArrayList<>();
 
         Date currentDate = new Date();
-        
+
         for (Aispoin aisPoin : listAisPoin) {
 
             Date startAisPoin = aisPoin.getDataEntrada();
@@ -641,14 +679,14 @@ public class BercoDashBean implements Serializable {
                 }
 
                 Date startAisPoin2 = aisPoin2.getDataEntrada();
-                Date endAisPoin2 = aisPoin2.getDataSaida() == null ? currentDate : aisPoin2.getDataSaida();               
+                Date endAisPoin2 = aisPoin2.getDataSaida() == null ? currentDate : aisPoin2.getDataSaida();
 
                 if (startAisPoin.after(startAisPoin2) && (endAisPoin.before(endAisPoin2) || endAisPoin.equals(endAisPoin2))) {
                     continue;
                 }
-                
+
                 newList.add(aisPoin);
-                
+
             }
 
         }

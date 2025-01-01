@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 public class AispoinController {
@@ -405,13 +406,64 @@ public class AispoinController {
 
         Query query = manager.createNativeQuery(sql, Aispoin.class);
 
-        Object obj = query.getSingleResult();
-
-        if (obj == null) {
-            return null;
+        Aispoin aispoin = null;
+        
+        try {
+            
+            Object obj = query.getSingleResult();
+            if (obj != null) {
+                aispoin = (Aispoin) obj;
+            }
+            
+        } catch (NoResultException ex){
+            aispoin = null;
         }
+        
+        return aispoin;
 
-        return (Aispoin) obj;
+    }
+    
+    public static Aispoin getLastAispoinByMssiAndCodPoin(EntityManager manager,
+            int mmsi, int codPoin, Boolean saiuDoPoin) throws Exception {
+
+        String flag;
+        
+        if (saiuDoPoin == null){
+            flag = "";
+        } else if (saiuDoPoin){
+            flag = "AND dataSaida IS NOT NULL";
+        } else {
+            flag = "AND dataSaida IS NULL";
+        }
+        
+        String sql = "SELECT TOP 1 "
+                + "codAisPoin, "
+                + "mmsi, "
+                + "dataEntrada, "
+                + "dataSaida, "
+                + "velocidadeEntrada, "
+                + "velocidadeSaida, "
+                + "codPoin "
+                + "FROM aispoin "
+                + "WHERE mmsi = " + mmsi + " AND codPoin = " + codPoin + " " + flag + " "
+                + "ORDER BY dataEntrada DESC";
+
+        Query query = manager.createNativeQuery(sql, Aispoin.class);
+
+        Aispoin aispoin = null;
+        
+        try {
+            
+            Object obj = query.getSingleResult();
+            if (obj != null) {
+                aispoin = (Aispoin) obj;
+            }
+            
+        } catch (NoResultException ex){
+            aispoin = null;
+        }
+        
+        return aispoin;
 
     }
 

@@ -17,22 +17,35 @@ public class VesselDockedStepTimeline {
 
     public VesselDockedStepTimeline() {
     }
-    
-    public static VesselDockedStepTimeline build(Date start, Date end){        
+
+    public static VesselDockedStepTimeline build(Date start, Date end) {
         VesselDockedStepTimeline obj = new VesselDockedStepTimeline();
-        
-        obj.setStart(Util.getStringDateLastUpdateDash(start));
-        
-        if (end != null){            
-            obj.setEnd(Util.getStringDateLastUpdateDash(end));
-            obj.setDuration(Util.getTimeDuration(start, end));
-            
-        } else {            
-            obj.setEnd("Em andamento");
-            obj.setDuration(Util.getTimeDuration(start, new Date()));            
+
+        if (start == null) {
+            obj.setStart("");
+        } else {
+            obj.setStart(Util.getStringDateLastUpdateDash(start));
         }
-        
-        return obj;        
+
+        if (start == null && end == null) {
+            obj.setEnd("");
+            obj.setDuration("");
+        }
+
+        if (start != null) {
+
+            if (end != null) {
+                obj.setEnd(Util.getStringDateLastUpdateDash(end));
+                obj.setDuration(Util.getTimeDuration(start, end));
+
+            } else {
+                obj.setEnd("Em andamento");
+                obj.setDuration(Util.getTimeDuration(start, new Date()));
+            }
+
+        }
+
+        return obj;
     }
 
     public String getStart() {
@@ -57,14 +70,14 @@ public class VesselDockedStepTimeline {
 
     public void setDuration(String duration) {
         this.duration = duration;
-    }   
-    
-    public boolean inProgress(){
+    }
+
+    public boolean inProgress() {
         return end.equalsIgnoreCase("Em andamento");
     }
-    
-    public boolean isFinished(){
+
+    public boolean isFinished() {
         return !inProgress();
     }
-    
+
 }
