@@ -46,12 +46,18 @@ Sismar.ais = function () {
     
     var modalVesselInfo;
 
+    var filesKmz;
+    var geojsonLayer;
+
     this.initialize = function (id) {
 
         idMap = id;
 
         // Coleta os dados iniciais
         getDataForStartup(false);
+        
+        // carrega arquivos kml
+        getGeoJsonKml(false);
 
         // Posição default do mapa
         centerDefault = L.latLng(-23.802159, -45.391202);
@@ -61,6 +67,9 @@ Sismar.ais = function () {
 
         // Carrega as cartas náuticas
         loadNauticalCharts();
+        
+        // Carrega arquivos kml
+        loadFilesKml();
 
         // Tipos de embarcações
         loadTypeVessels();
@@ -784,6 +793,12 @@ Sismar.ais = function () {
             {name: "Parte Norte - Porto de Santos", layer: portoSantosParteNorte},
             {name: "Proximidades - Porto de São Sebastião", layer: proxPortoSaoSebastiao}];
     };
+    
+    loadFilesKml = function () {
+        console.log("teste ==");
+        console.log(geojsonLayer);
+        filesKmz = [{name: "Área do Porto Organizado de São Sebastião", layer: geojsonLayer}];               
+    };
 
     loadTypeVessels = function () {
         typeVessels = [{name: "Navios de carga <img src='/sismar/faces/javax.faces.resource/img/icone_navio_carga.png'/>", type: NAVIOS_CARGA, layer: new L.layerGroup()},
@@ -1013,6 +1028,19 @@ Sismar.ais = function () {
         };
         return layer;
     };
+    
+    getFilesKmzLayer = function () {
+        var children = [];
+        for (var i = 0; i < filesKmz.length; i++) {
+            var fileKmz = filesKmz[i];
+            children.push({label: fileKmz.name, layer: fileKmz.layer});
+        }
+        var layer = {
+            label: "<span class='leaflet-layerstree-header-title'>Arquivos KMZ</span>",
+            children: children
+        };
+        return layer;
+    };
 
     getTypeVesselsLayer = function () {
         var children = [];
@@ -1080,7 +1108,7 @@ Sismar.ais = function () {
     };
 
     getOverlayLayer = function () {
-        var overlayLayer = [getNauticalChartLayer(), getInfoVesselsLayer(),
+        var overlayLayer = [getNauticalChartLayer(), getFilesKmzLayer(), getInfoVesselsLayer(),
             getTypeVesselsLayer(), getWeatherLayer(), getLayersFromLayer(), getBercosLayer()];
         return overlayLayer;
     };
@@ -1701,6 +1729,90 @@ Sismar.ais = function () {
                 }
             } else {
                 dataStartup = {"layers": [], "bercos": []};
+            }
+        };
+
+        xmlreq.send(null);
+    };
+    
+    convertKMLColor = function(kmlColor) {
+        if (kmlColor.length === 8) {
+            const a = parseInt(kmlColor.substring(0, 2), 16) / 255;
+            const b = parseInt(kmlColor.substring(2, 4), 16);
+            const g = parseInt(kmlColor.substring(4, 6), 16);
+            const r = parseInt(kmlColor.substring(6, 8), 16);
+            return `rgba(${r}, ${g}, ${b}, ${a})`;
+        }
+        return 'rgba(255, 0, 0, 1)';
+    };
+    
+    getGeoJsonKml = function (async) {
+        var xmlreq = getResquestAjax();
+        xmlreq.open("GET", "/sismar/faces/javax.faces.resource/files/area_porto_sao_sebastiao.kml", async);
+
+        xmlreq.onreadystatechange = function () {
+            if (xmlreq.readyState === 4 && xmlreq.status === 200) {
+                
+                const parser = new DOMParser();
+                const kml = parser.parseFromString(xmlreq.responseText, "text/xml");
+                
+                const styleElements = kml.getElementsByTagName('Style');
+                
+                var styles = {};
+                
+                for (let style of styleElements) {
+                    const id = style.getAttribute('id');
+                    if (id) {
+                        const iconElement = style.getElementsByTagName('Icon')[0];
+                        const colorElement = style.getElementsByTagName('color')[0];
+                        let color = 'rgba(255, 0, 0, 1)';
+                        if (colorElement) {
+                            color = convertKMLColor(colorElement.textContent);
+                        }
+                        let iconUrl = 'http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png';
+                        if (iconElement) {
+                            const href = iconElement.getElementsByTagName('href')[0];
+                            if (href) {
+                                iconUrl = href.textContent;
+                            }
+                        }
+                        styles[id] = { iconUrl, color };
+                    }
+                }
+                
+                const geojson = toGeoJSON.kml(kml);
+                
+                geojsonLayer = L.geoJSON(geojson, {
+                    pointToLayer: function (feature, latlng) {
+                        let iconUrl = 'http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png';
+                        if (feature.properties.styleUrl) {
+                            const styleId = feature.properties.styleUrl.replace('#', '');
+                            if (styles[styleId] && styles[styleId].iconUrl) {
+                                iconUrl = styles[styleId].iconUrl;
+                            }
+                        }
+                        const icon = L.icon({
+                            iconUrl: iconUrl,
+                            iconSize: [32, 32],
+                            iconAnchor: [16, 16],
+                            popupAnchor: [0, -16]
+                        });
+                        return L.marker(latlng, { icon }).bindPopup(feature.properties.name || 'Sem nome');
+                    },
+                    style: function (feature) {
+                        let color = 'rgba(255, 0, 0, 1)';
+                        if (feature.properties.styleUrl) {
+                            const styleId = feature.properties.styleUrl.replace('#', '');
+                            if (styles[styleId] && styles[styleId].color) {
+                                color = styles[styleId].color;
+                            }
+                        }
+                        return { color: color, weight: 2, fillOpacity: 0.5 };
+                    }
+                });
+                
+                console.log(geojsonLayer);
+                
             }
         };
 
