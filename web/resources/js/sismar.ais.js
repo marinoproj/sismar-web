@@ -46,8 +46,8 @@ Sismar.ais = function () {
     
     var modalVesselInfo;
 
-    var filesKmz;
-    var geojsonLayer;
+    //var filesKmz;
+    //var geojsonLayer;
 
     this.initialize = function (id) {
 
@@ -57,7 +57,7 @@ Sismar.ais = function () {
         getDataForStartup(false);
         
         // carrega arquivos kml
-        getGeoJsonKml(false);
+        //getGeoJsonKml(false);
 
         // Posição default do mapa
         centerDefault = L.latLng(-23.802159, -45.391202);
@@ -69,7 +69,7 @@ Sismar.ais = function () {
         loadNauticalCharts();
         
         // Carrega arquivos kml
-        loadFilesKml();
+        //loadFilesKml();
 
         // Tipos de embarcações
         loadTypeVessels();
@@ -795,7 +795,6 @@ Sismar.ais = function () {
     };
     
     loadFilesKml = function () {
-        console.log("teste ==");
         console.log(geojsonLayer);
         filesKmz = [{name: "Área do Porto Organizado de São Sebastião", layer: geojsonLayer}];               
     };
@@ -1108,7 +1107,9 @@ Sismar.ais = function () {
     };
 
     getOverlayLayer = function () {
-        var overlayLayer = [getNauticalChartLayer(), getFilesKmzLayer(), getInfoVesselsLayer(),
+        //var overlayLayer = [getNauticalChartLayer(), getFilesKmzLayer(), getInfoVesselsLayer(),
+          //  getTypeVesselsLayer(), getWeatherLayer(), getLayersFromLayer(), getBercosLayer()];
+        var overlayLayer = [getNauticalChartLayer(), getInfoVesselsLayer(),
             getTypeVesselsLayer(), getWeatherLayer(), getLayersFromLayer(), getBercosLayer()];
         return overlayLayer;
     };
