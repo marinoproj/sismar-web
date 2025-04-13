@@ -200,7 +200,12 @@
 
             <!-- Corpo do container: conteúdo -->
             <div id="content-map">                
-                <div id="map" class="map-ais-information-invisible"></div>
+                <div id="map" class="map-ais-information-invisible">
+                    
+                    <!-- Importar informacoes embarcacao -->
+                    <ui:include src="/admin/components/vesselinfoais.xhtml" />
+                    
+                </div>
 
                 <div id="ais-information" class="ais-information-invisible">
 
@@ -237,7 +242,7 @@
                     </div>
 
                 </div>       
-
+                
             </div> <!-- Fechamento do conteúdo -->  
 
             <!-- Importar rodapé -->
@@ -249,10 +254,7 @@
         <ui:include src="/admin/components/atracacao.xhtml" />   
 
         <!-- Importar meteorologia -->
-        <ui:include src="/admin/components/meteorologiaais.xhtml" />   
-        
-        <!-- Importar informacoes embarcacao -->
-        <ui:include src="/admin/components/vesselinfoais.xhtml" />   
+        <ui:include src="/admin/components/meteorologiaais.xhtml" />             
         
         <h:form id="update-vessels">
             <p:poll listener="#{AisBean.updateVessels(null)}" 
@@ -320,6 +322,9 @@
                 
                 var vesselInfo = new VesselInfoAis();
                 vesselInfo.realtime("#vesselinfoais-main");
+                
+                L.DomEvent.disableClickPropagation(document.getElementById('vesselinfoais-main'));
+                L.DomEvent.disableScrollPropagation(document.getElementById('vesselinfoais-main'));
                 
                 ais.setModalVesselInfo(vesselInfo);
 

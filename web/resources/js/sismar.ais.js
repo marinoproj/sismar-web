@@ -104,7 +104,7 @@ Sismar.ais = function () {
 
         addClickButtonCloseInfoAis();
         addClickButtonRefreshFila();
-        addClickOpenMoreInfoVessel();
+        addClickOpenMoreInfoVessel();       
 
     };
 
