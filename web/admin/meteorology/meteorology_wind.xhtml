@@ -1,0 +1,279 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+
+        <title>Sismar - Meteorologia</title>
+
+        <!-- Importações padrão -->
+        <ui:include src="/admin/components/headdefault.xhtml" />           
+
+        <!-- HighCharts -->
+        <script src="https://code.highcharts.com/highcharts.js"></script>
+        <script src="https://code.highcharts.com/highcharts-more.js"></script>
+        <script src="https://code.highcharts.com/modules/exporting.js"></script>
+        <script src="https://code.highcharts.com/modules/export-data.js"></script>
+        <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+        <!-- Script para gerar o gráfico -->
+        <h:outputScript name="js/meteorology.js" target="body"/>
+
+        <style>
+
+            #gauge-wind-speed {
+                height: 300px;
+                border-radius: 15px;
+            }
+
+            #gauge-wind-rajada {
+                height: 300px;
+                border-radius: 15px;
+            }
+
+            #gauge-wind-rose {
+                height: 300px;
+                border-radius: 15px;
+            }
+
+            #chartline-wind-speed-gust{
+                height: 400px;
+                border-radius: 15px;
+            }
+
+            #gauge-wind-direction-frequency{
+                height: 400px;
+                border-radius: 15px;
+            }
+
+            .card-dash-meteorology {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                height: 400px; /* ou defina uma altura fixa se preferir */
+                gap: 20px; /* espaçamento vertical entre os blocos */
+                background: #ffffff;
+                border-radius: 15px;
+            }
+
+            .metric-title {
+                display: block;
+                font-weight: bold;
+                font-size: 12px;
+            }
+            .metric-content {
+                display: flex;
+                justify-content: center;
+                align-items: baseline;
+                gap: 5px;
+            }
+            .metric-value {
+                font-size: 30px;
+            }
+            .metric-unit {
+                font-size: 14px;
+            }
+
+
+        </style>
+
+    </h:head>
+
+    <h:body>
+
+        <div class="container-fluid" style="padding: 0px">           
+
+            <!-- Importar menu -->
+            <ui:include src="/admin/components/menu.xhtml" />
+
+            <!-- Importar header -->
+            <ui:include src="/admin/components/header.xhtml" />   
+
+            <!-- Corpo do container: conteúdo -->
+            <div id="content" class="col-xs-12">
+
+                <!-- Título do conteúdo -->
+                <div id="content-header" class="col-xs-12">
+                    <span id="content-title">Vento</span> 
+                    <span id="content-subtitle">Informações de vento</span>
+                </div>                
+
+                <h:form>                   
+
+                    <div class="row" style="margin-bottom: 15px !important">
+
+                        <div class="col-xs-12 col-md-4 form-group" style="padding: 0px !important; margin-top: 20px">
+                            <h:outputLabel class="col-sm-12" value="Estação Anemométrica:"/>
+                            <div class="col-sm-12">
+                                <h:selectOneMenu class="form-control"
+                                                 value="#{MeteorologyWindBean.equipmentSelected}"
+                                                 converter="equipamentoConverter"
+                                                 >   
+                                    <f:selectItems value="#{MeteorologyWindBean.equipamentosVento}" 
+                                                   var="obj" 
+                                                   itemLabel="#{obj.nome}" 
+                                                   itemValue="#{obj}"/>
+                                    <f:ajax event="change"
+                                            listener="#{MeteorologyWindBean.reload(null, MeteorologyWindBean.equipmentSelected, MeteorologyWindBean.periodSelected, MeteorologyWindBean.tmpUpdateSelected)}"/>
+                                </h:selectOneMenu>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-md-4 form-group" style="padding: 0px !important; margin-top: 20px">
+                            <h:outputLabel class="col-sm-12" value="Período:"/>
+                            <div class="col-sm-12">
+                                <h:selectOneMenu class="form-control"
+                                                 value="#{MeteorologyWindBean.periodSelected}">   
+                                    <f:selectItem itemValue="1" itemLabel="Útima hora"/>
+                                    <f:selectItem itemValue="2" itemLabel="Últimas 12 horas"/>
+                                    <f:selectItem itemValue="3" itemLabel="Últimas 24 horas"/>
+                                    <f:selectItem itemValue="4" itemLabel="Últimos 7 dias"/>
+                                    <f:selectItem itemValue="5" itemLabel="Últimos 30 dias"/>                                    
+                                    <f:ajax event="change"
+                                            listener="#{MeteorologyWindBean.reload(null, MeteorologyWindBean.equipmentSelected, MeteorologyWindBean.periodSelected, MeteorologyWindBean.tmpUpdateSelected)}"/>
+                                </h:selectOneMenu>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-md-4 form-group" style="padding: 0px !important; margin-top: 20px">
+                            <h:outputLabel class="col-sm-12" value="Atualização automática:"/>
+                            <div class="col-sm-12">
+                                <h:selectOneMenu class="form-control"
+                                                 value="#{MeteorologyWindBean.tmpUpdateSelected}">   
+                                    <f:selectItem itemValue="1" itemLabel="Desligado"/>
+                                    <f:selectItem itemValue="2" itemLabel="A cada 10 segundos"/>
+                                    <f:selectItem itemValue="3" itemLabel="A cada 30 segundos"/>
+                                    <f:selectItem itemValue="4" itemLabel="A cada 1 minuto"/>
+                                    <f:ajax event="change"
+                                            listener="#{MeteorologyWindBean.reload(null, MeteorologyWindBean.equipmentSelected, MeteorologyWindBean.periodSelected, MeteorologyWindBean.tmpUpdateSelected)}"
+                                            render="update-data"/>
+                                </h:selectOneMenu>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </h:form>
+
+                <div class="row">
+                    <div class="col-xs-12 col-md-4 content-card-data">
+                        <div id="gauge-wind-speed"></div>
+                    </div>
+                    <div class="col-xs-12 col-md-4 content-card-data">
+                        <div id="gauge-wind-rajada"></div>
+                    </div>
+                    <div class="col-xs-12 col-md-4 content-card-data">
+                        <div id="gauge-wind-rose"></div>
+                    </div>
+                    <div class="col-xs-12 col-md-6 content-card-data">
+                        <div id="chartline-wind-speed-gust"></div>
+                    </div>
+                    <div class="col-xs-12 col-md-2 content-card-data">
+                        <div class="card-dash-meteorology">
+                            <div>
+                                <span class="metric-title">Rajada máxima</span>
+                                <div class="metric-content">
+                                    <span id="maxWindGust" class="metric-value">-</span>
+                                    <span class="metric-unit">nós</span>
+                                </div>
+                            </div>
+
+                            <div style="margin-top: 10px;">
+                                <span class="metric-title">Velocidade mínima</span>
+                                <div class="metric-content">
+                                    <span id="minWindSpeed" class="metric-value">-</span>
+                                    <span class="metric-unit">nós</span>
+                                </div>
+                            </div>
+
+                            <div style="margin-top: 10px;">
+                                <span class="metric-title">Velocidade média</span>
+                                <div class="metric-content">
+                                    <span id="medWindSpeed" class="metric-value">-</span>
+                                    <span class="metric-unit">nós</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-4 content-card-data">
+                        <div id="gauge-wind-direction-frequency"></div>
+                    </div>
+                </div>
+
+                <h:form id="update-data">
+                    <p:poll listener="#{MeteorologyWindBean.reload(null, MeteorologyWindBean.equipmentSelected, MeteorologyWindBean.periodSelected, MeteorologyWindBean.tmpUpdateSelected)}"
+                            interval="#{MeteorologyWindBean.delay}"
+                            update="update-data"
+                            rendered="#{MeteorologyWindBean.pollingEnabled}" />
+                </h:form>
+
+            </div> <!-- Fechamento do conteúdo -->  
+
+        </div> <!-- Fechamento do container -->  
+
+        <!-- Importar rodapé -->
+        <ui:include src="/admin/components/footer.xhtml" />         
+
+        <!-- Importações scripts -->
+        <h:outputScript name="js/menu.js" target="body"/>
+
+        <script>
+
+            var gaugeWindSpeed;
+            var gaugeWindRajada;
+            var gaugeWindRose;
+            var chartWindSpeedAndGust;
+            var gaugeWindDirectionFrequency;
+
+            $(document).ready(function () {
+
+                $(".menu-meteorology").addClass("active");
+                $(".menu-meteorology-wind").addClass("active-link");
+
+                gaugeWindSpeed = new Meteorology.gaugeSpeed();
+                gaugeWindSpeed.initialize('gauge-wind-speed', 'Velocidade do vento', 'Atual');
+                gaugeWindSpeed.setValue(0);
+
+                gaugeWindRajada = new Meteorology.gaugeSpeed();
+                gaugeWindRajada.initialize('gauge-wind-rajada', 'Rajada de vento', 'Atual');
+                gaugeWindRajada.setValue(0);
+
+                gaugeWindRose = new Meteorology.gaugeWindRose();
+                gaugeWindRose.initialize('gauge-wind-rose', 'Direção do vento', 'Atual');
+                gaugeWindRose.setValue(0);
+
+                chartWindSpeedAndGust = new Meteorology.chartLineWindSpeedAndGust();
+                chartWindSpeedAndGust.initialize('chartline-wind-speed-gust', 'Velocidade e Rajada do vento');
+                chartWindSpeedAndGust.addValues([]);
+
+                gaugeWindDirectionFrequency = new Meteorology.gaugeWindDirectionFrequency();
+                gaugeWindDirectionFrequency.initialize('gauge-wind-direction-frequency', 'Frequencias de direção do vento');
+                gaugeWindDirectionFrequency.addValues({
+                    'N': 0, 'NE': 0, 'E': 0, 'SE': 0, 'S': 0, 'SW': 0, 'W': 0, 'NW': 0
+                });
+
+            });
+
+            function updateMaxWindGust(value) {
+                $('#maxWindGust').text(value);
+            }
+
+            function updateMinWindSpeed(value) {
+                $('#minWindSpeed').text(value);
+            }
+
+            function updateMedWindSpeed(value) {
+                $('#medWindSpeed').text(value);
+            }
+
+        </script>
+
+    </h:body>
+
+</html>

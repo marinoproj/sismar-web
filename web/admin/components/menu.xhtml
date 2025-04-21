@@ -96,22 +96,22 @@
                                         <h:link value="Windy" outcome="/admin/meteorology/windy.xhtml" class="menu-meteorology-windy">
                                         </h:link>
                                     </li>
-                                </ui:fragment>
-                                <ui:fragment rendered="#{MenuBean.isActiveFeature('meteorology_seacurrent')}">
-                                    <li>
-                                        <h:link value="Corrente" outcome="/admin/meteorology/seacurrent.xhtml" class="menu-meteorology-seacurrent">
-                                        </h:link>
-                                    </li>
-                                </ui:fragment>
-                                <ui:fragment rendered="#{MenuBean.isActiveFeature('meteorology_wind')}">
-                                    <li>
-                                        <h:link value="Vento" outcome="/admin/meteorology/wind.xhtml" class="menu-meteorology-wind">
-                                        </h:link>
-                                    </li>                            
-                                </ui:fragment>
+                                </ui:fragment>                                                             
                                 <ui:fragment rendered="#{MenuBean.isActiveFeature('meteorology_all')}">
                                     <li>
                                         <h:link value="Vento e Corrente" outcome="/admin/meteorology/meteorology.xhtml" class="menu-meteorology-all">
+                                        </h:link>
+                                    </li>                            
+                                </ui:fragment>
+                                <ui:fragment rendered="#{MenuBean.isActiveFeature('meteorology_wind')}">
+                                    <li>
+                                        <h:link value="Vento" outcome="/admin/meteorology/meteorology_wind.xhtml" class="menu-meteorology-wind">
+                                        </h:link>
+                                    </li>                            
+                                </ui:fragment>
+                                <ui:fragment rendered="#{MenuBean.isActiveFeature('meteorology_sea_current')}">
+                                    <li>
+                                        <h:link value="Corrente" outcome="/admin/meteorology/seacurrent.xhtml" class="menu-meteorology-sea-current">
                                         </h:link>
                                     </li>                            
                                 </ui:fragment>
