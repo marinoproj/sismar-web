@@ -7,7 +7,7 @@ Meteorology.gaugeSpeed = function () {
 
     var gaugeSpeedChart;
 
-    this.initialize = function (id, title, subtitle) {
+    this.initialize = function (id, title, subtitle, min, max, normal, attention, critical) {
 
         gaugeSpeedChart = Highcharts.chart(id, {
 
@@ -43,8 +43,8 @@ Meteorology.gaugeSpeed = function () {
 
             // the value axis
             yAxis: {
-                min: 0,
-                max: 50,
+                min: min,
+                max: max,
                 tickPixelInterval: 50,
                 tickPosition: 'inside',
                 tickColor: Highcharts.defaultOptions.chart.backgroundColor || '#FFFFFF',
@@ -59,27 +59,27 @@ Meteorology.gaugeSpeed = function () {
                 },
                 lineWidth: 0,
                 plotBands: [{
-                        from: 0,
-                        to: 20,
+                        from: normal,
+                        to: attention,
                         color: '#55BF3B', // green
                         thickness: 20,
                         borderRadius: '0%'
                     }, {
-                        from: 28,
-                        to: 50,
+                        from: critical,
+                        to: max,
                         color: '#DF5353', // red
                         thickness: 20,
                         borderRadius: '0%'
                     }, {
-                        from: 20,
-                        to: 28,
+                        from: attention,
+                        to: critical,
                         color: '#DDDF0D', // yellow
                         thickness: 20
                     }]
             },
 
             series: [{
-                    name: 'Speed',
+                    name: 'Velocidade',
                     data: [15],
                     tooltip: {
                         valueSuffix: ' nós'
@@ -124,13 +124,13 @@ Meteorology.gaugeSpeed = function () {
 
 };
 
-Meteorology.gaugeWindRose = function () {
+Meteorology.gaugeDirRose = function () {
 
-    var gaugeWindRoseChart;
+    var gaugeDirRoseChart;
 
     this.initialize = function (id, title, subtitle) {
 
-        gaugeWindRoseChart = Highcharts.chart(id, {
+        gaugeDirRoseChart = Highcharts.chart(id, {
             chart: {
                 type: 'gauge',
                 plotBorderWidth: 0,
@@ -227,7 +227,7 @@ Meteorology.gaugeWindRose = function () {
     };
 
     this.setValue = function (value) {
-        gaugeWindRoseChart.series[0].points[0].update(value);
+        gaugeDirRoseChart.series[0].points[0].update(value);
     };
 
 };
@@ -236,7 +236,7 @@ Meteorology.chartLineWindSpeedAndGust = function () {
 
     var chartWindSpeedAndGust;
 
-    const SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000;
+    //const SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000;
 
     this.initialize = function (id, title) {
 
@@ -323,12 +323,12 @@ Meteorology.chartLineWindSpeedAndGust = function () {
         chartWindSpeedAndGust.series[1].addPoint([timestamp, gustSpeed], false);
 
         // Limpar dados mais antigos que 7 dias
-        const now = Date.now();
+        /*const now = Date.now();
         chartWindSpeedAndGust.series.forEach(series => {
             while (series.data.length && (now - series.data[0].x) > SEVEN_DAYS) {
                 series.data[0].remove(false);
             }
-        });
+        });*/
 
         chartWindSpeedAndGust.redraw();
 
@@ -342,12 +342,12 @@ Meteorology.chartLineWindSpeedAndGust = function () {
         });
 
         // Limpar dados mais antigos que 7 dias
-        const now = Date.now();
+        /*const now = Date.now();
         chartWindSpeedAndGust.series.forEach(series => {
             while (series.data.length && (now - series.data[0].x) > SEVEN_DAYS) {
                 series.data[0].remove(false);
             }
-        });
+        });*/
 
         chartWindSpeedAndGust.redraw();
     };
@@ -451,6 +451,108 @@ Meteorology.gaugeWindDirectionFrequency = function () {
 
     this.clear = function () {
         gaugeWindDirectionFrequencyChart.series.forEach(series => {
+            while (series.data.length) {
+                series.data[0].remove(false);
+            }
+        });
+    };
+
+};
+
+Meteorology.chartLineSeacurrentSpeed = function () {
+
+    var chartSeacurrentSpeed;
+
+    //const SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000;
+
+    this.initialize = function (id, title) {
+
+        chartSeacurrentSpeed = Highcharts.chart(id, {
+            chart: {
+                type: 'line'
+            },
+            title: {
+                text: title
+            },
+            xAxis: {
+                type: 'datetime',
+                title: {
+                    text: 'Data/Hora'
+                },
+                labels: {
+                    format: '{value:%d/%m %H:%M}',
+                    style: {
+                        fontSize: '12px',
+                        fontWeight: 'normal',
+                        color: '#333'
+                    }
+                }
+            },
+            yAxis: {
+                title: {
+                    text: 'Velocidade (nós)',
+                    style: {
+                        fontSize: '13px',
+                        fontWeight: 'bold',
+                        color: '#333'
+                    }
+                },
+                min: 0,
+                labels: {
+                    style: {
+                        fontSize: '12px',
+                        color: '#333'
+                    }
+                }
+            },
+            tooltip: {
+                shared: true,
+                xDateFormat: '%d/%m/%Y %H:%M:%S',
+                valueSuffix: ' nós',
+                style: {
+                    fontSize: '13px'
+                }
+            },
+            series: [{
+                    name: 'Velocidade',
+                    data: [],
+                    color: '#007bff',
+                    marker: {
+                        enabled: false
+                    }
+                }],
+            legend: {
+                align: 'center',
+                verticalAlign: 'bottom',
+                itemStyle: {
+                    fontSize: '13px',
+                    fontWeight: 'bold',
+                    color: '#333'
+                }
+            },
+            exporting: {
+                enabled: false
+            }
+        });
+
+    };
+
+    this.addValue = function (timestamp, speed) {
+        chartSeacurrentSpeed.series[0].addPoint([timestamp, speed], false);
+        chartSeacurrentSpeed.redraw();
+    };
+
+    this.addValues = function (dataArray) {
+
+        dataArray.forEach(item => {
+            chartSeacurrentSpeed.series[0].addPoint([item.timestamp, item.speed], false);
+        });
+
+        chartSeacurrentSpeed.redraw();
+    };
+
+    this.clear = function () {
+        chartSeacurrentSpeed.series.forEach(series => {
             while (series.data.length) {
                 series.data[0].remove(false);
             }

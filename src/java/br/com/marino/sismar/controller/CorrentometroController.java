@@ -1,6 +1,9 @@
 package br.com.marino.sismar.controller;
 
 import br.com.marino.sismar.entity.Correntometro;
+import br.com.marino.sismar.util.Util;
+import java.util.Date;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
@@ -55,6 +58,28 @@ public class CorrentometroController {
                 
         } catch (NoResultException ex) {
             
+            return null;
+        }
+
+    }
+    
+    public static List<Correntometro> getListByCodEquipamentoAndPeriod(EntityManager manager,
+            Integer codEquipamento,
+            Date startDate, Date endDate) {
+
+        try {
+
+            Query query = manager.createNativeQuery("SELECT * FROM correntometro WHERE "
+                    + "codEquipamento = " + codEquipamento + " "
+                    + "AND dataHora >= '" + Util.getDateFromBDSQL(startDate) + "' "
+                    + "AND dataHora <= '" + Util.getDateFromBDSQL(endDate) + "' "
+                    + "ORDER BY dataHora ASC",
+                    Correntometro.class);
+
+            return query.getResultList();
+
+        } catch (NoResultException ex) {
+
             return null;
         }
 
