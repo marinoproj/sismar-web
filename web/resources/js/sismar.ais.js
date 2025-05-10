@@ -43,7 +43,7 @@ Sismar.ais = function () {
     var layersMap;
     var bercosMap;
     var dataStartup;
-    
+
     var modalVesselInfo;
 
     //var filesKmz;
@@ -55,7 +55,7 @@ Sismar.ais = function () {
 
         // Coleta os dados iniciais
         getDataForStartup(false);
-        
+
         // carrega arquivos kml
         //getGeoJsonKml(false);
 
@@ -67,7 +67,7 @@ Sismar.ais = function () {
 
         // Carrega as cartas náuticas
         loadNauticalCharts();
-        
+
         // Carrega arquivos kml
         //loadFilesKml();
 
@@ -104,7 +104,7 @@ Sismar.ais = function () {
 
         addClickButtonCloseInfoAis();
         addClickButtonRefreshFila();
-        addClickOpenMoreInfoVessel();       
+        addClickOpenMoreInfoVessel();
 
     };
 
@@ -336,7 +336,7 @@ Sismar.ais = function () {
 
                     var latInicialDms = converterDecimalParaDMS(positionStart.lat, true);
                     var lonInicialDms = converterDecimalParaDMS(positionStart.lng, false);
-                    
+
                     var latFinalDms = converterDecimalParaDMS(positionEnd.lat, true);
                     var lonFinalDms = converterDecimalParaDMS(positionEnd.lng, false);
 
@@ -369,62 +369,62 @@ Sismar.ais = function () {
 
 
         /*var aisInfoFilaButton = L.Control.extend({
-
-            options: {
-                position: 'topleft'
-                        //control position - allowed: 'topleft', 'topright', 'bottomleft', 'bottomright'
-            },
-
-            onAdd: function () {
-                var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
-
-                container.type = "button";
-                container.title = "Fila - Programação";
-                container.style.backgroundImage = "url(/sismar/faces/javax.faces.resource/img/ais_info.png)";
-                container.style.backgroundSize = "18px 18px";
-                container.style.backgroundRepeat = "no-repeat";
-                container.style.backgroundPosition = "center";
-                container.style.cursor = "pointer";
-                container.style.backgroundColor = 'white';
-                container.style.width = '35px';
-                container.style.height = '35px';
-
-                container.onclick = function () {
-                    if (!activeButtonAisInfo) {
-                        $("#map").removeClass("map-ais-information-invisible");
-                        $("#ais-information").removeClass("ais-information-invisible");
-                        $("#map").addClass("map-ais-information-visible");
-                        $("#ais-information").addClass("ais-information-visible");
-                        activeButtonAisInfo = true;
-                        loadFilaVessels();
-                    } else {
-                        $("#map").removeClass("map-ais-information-visible");
-                        $("#ais-information").removeClass("ais-information-visible");
-                        $("#map").addClass("map-ais-information-invisible");
-                        $("#ais-information").addClass("ais-information-invisible");
-                        activeButtonAisInfo = false;
-                    }
-                };
-
-                container.onmouseover = function () {
-                    container.style.backgroundColor = '#f4f4f4';
-                };
-
-                container.onmouseout = function () {
-                    container.style.backgroundColor = 'white';
-                };
-
-                return container;
-            }
-
-        });
-
-        map.addControl(new aisInfoFilaButton());*/
+         
+         options: {
+         position: 'topleft'
+         //control position - allowed: 'topleft', 'topright', 'bottomleft', 'bottomright'
+         },
+         
+         onAdd: function () {
+         var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
+         
+         container.type = "button";
+         container.title = "Fila - Programação";
+         container.style.backgroundImage = "url(/sismar/faces/javax.faces.resource/img/ais_info.png)";
+         container.style.backgroundSize = "18px 18px";
+         container.style.backgroundRepeat = "no-repeat";
+         container.style.backgroundPosition = "center";
+         container.style.cursor = "pointer";
+         container.style.backgroundColor = 'white';
+         container.style.width = '35px';
+         container.style.height = '35px';
+         
+         container.onclick = function () {
+         if (!activeButtonAisInfo) {
+         $("#map").removeClass("map-ais-information-invisible");
+         $("#ais-information").removeClass("ais-information-invisible");
+         $("#map").addClass("map-ais-information-visible");
+         $("#ais-information").addClass("ais-information-visible");
+         activeButtonAisInfo = true;
+         loadFilaVessels();
+         } else {
+         $("#map").removeClass("map-ais-information-visible");
+         $("#ais-information").removeClass("ais-information-visible");
+         $("#map").addClass("map-ais-information-invisible");
+         $("#ais-information").addClass("ais-information-invisible");
+         activeButtonAisInfo = false;
+         }
+         };
+         
+         container.onmouseover = function () {
+         container.style.backgroundColor = '#f4f4f4';
+         };
+         
+         container.onmouseout = function () {
+         container.style.backgroundColor = 'white';
+         };
+         
+         return container;
+         }
+         
+         });
+         
+         map.addControl(new aisInfoFilaButton());*/
 
     };
 
 
-    this.setModalVesselInfo = function(modal){
+    this.setModalVesselInfo = function (modal) {
         modalVesselInfo = modal;
     };
 
@@ -700,7 +700,7 @@ Sismar.ais = function () {
     };
 
     function converterDecimalParaDMS(coordenada, isLatitude) {
-        
+
         const absCoordenada = Math.abs(coordenada);
         const graus = Math.floor(absCoordenada);
         const minutosDecimais = (absCoordenada - graus) * 60;
@@ -726,12 +726,12 @@ Sismar.ais = function () {
         for (var i = 0; i < bercosMap.length; i++) {
             layers.push(bercosMap[i].layer);
         }
-        for (var i = 0; i < layersMap.length; i++) {
+        /*for (var i = 0; i < layersMap.length; i++) {
             if (layersMap[i].name === "Sea") {
                 layers.push(layersMap[i].layer);
                 break;
             }
-        }
+        }*/
         return layers;
     };
 
@@ -752,11 +752,13 @@ Sismar.ais = function () {
             maxZoom: 20,
             subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
         });
-        var surferRoads = L.tileLayer('https://maps.heigit.org/openmapsurfer/tiles/roads/webmercator/{z}/{x}/{y}.png', {
+        var grayMapWithLabels = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png', {
+            subdomains: 'abcd',
             maxZoom: 19
         });
-        var hyddaFull = L.tileLayer('https://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png', {
-            maxZoom: 18
+        var darkMapWithLabels = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}.png', {
+            subdomains: 'abcd',
+            maxZoom: 19
         });
 
         var seaMapGroup = new L.layerGroup();
@@ -774,8 +776,8 @@ Sismar.ais = function () {
             {name: "Hybrid", primary: false, layer: googleHybrid},
             {name: "Satellite", primary: false, layer: googleSat},
             {name: "Terrain", primary: false, layer: googleTerrain},
-            {name: "Surfer Roads", primary: false, layer: surferRoads},
-            {name: "Hydda Full", primary: false, layer: hyddaFull},
+            {name: "Gray Map", primary: false, layer: grayMapWithLabels},
+            {name: "Dark Map", primary: false, layer: darkMapWithLabels},
             {name: "Sea", primary: true, layer: seaMapGroup}];
     };
 
@@ -793,10 +795,10 @@ Sismar.ais = function () {
             {name: "Parte Norte - Porto de Santos", layer: portoSantosParteNorte},
             {name: "Proximidades - Porto de São Sebastião", layer: proxPortoSaoSebastiao}];
     };
-    
+
     loadFilesKml = function () {
         console.log(geojsonLayer);
-        filesKmz = [{name: "Área do Porto Organizado de São Sebastião", layer: geojsonLayer}];               
+        filesKmz = [{name: "Área do Porto Organizado de São Sebastião", layer: geojsonLayer}];
     };
 
     loadTypeVessels = function () {
@@ -1027,7 +1029,7 @@ Sismar.ais = function () {
         };
         return layer;
     };
-    
+
     getFilesKmzLayer = function () {
         var children = [];
         for (var i = 0; i < filesKmz.length; i++) {
@@ -1108,7 +1110,7 @@ Sismar.ais = function () {
 
     getOverlayLayer = function () {
         //var overlayLayer = [getNauticalChartLayer(), getFilesKmzLayer(), getInfoVesselsLayer(),
-          //  getTypeVesselsLayer(), getWeatherLayer(), getLayersFromLayer(), getBercosLayer()];
+        //  getTypeVesselsLayer(), getWeatherLayer(), getLayersFromLayer(), getBercosLayer()];
         var overlayLayer = [getNauticalChartLayer(), getInfoVesselsLayer(),
             getTypeVesselsLayer(), getWeatherLayer(), getLayersFromLayer(), getBercosLayer()];
         return overlayLayer;
@@ -1735,8 +1737,8 @@ Sismar.ais = function () {
 
         xmlreq.send(null);
     };
-    
-    convertKMLColor = function(kmlColor) {
+
+    convertKMLColor = function (kmlColor) {
         if (kmlColor.length === 8) {
             const a = parseInt(kmlColor.substring(0, 2), 16) / 255;
             const b = parseInt(kmlColor.substring(2, 4), 16);
@@ -1746,21 +1748,21 @@ Sismar.ais = function () {
         }
         return 'rgba(255, 0, 0, 1)';
     };
-    
+
     getGeoJsonKml = function (async) {
         var xmlreq = getResquestAjax();
         xmlreq.open("GET", "/sismar/faces/javax.faces.resource/files/area_porto_sao_sebastiao.kml", async);
 
         xmlreq.onreadystatechange = function () {
             if (xmlreq.readyState === 4 && xmlreq.status === 200) {
-                
+
                 const parser = new DOMParser();
                 const kml = parser.parseFromString(xmlreq.responseText, "text/xml");
-                
+
                 const styleElements = kml.getElementsByTagName('Style');
-                
+
                 var styles = {};
-                
+
                 for (let style of styleElements) {
                     const id = style.getAttribute('id');
                     if (id) {
@@ -1777,12 +1779,12 @@ Sismar.ais = function () {
                                 iconUrl = href.textContent;
                             }
                         }
-                        styles[id] = { iconUrl, color };
+                        styles[id] = {iconUrl, color};
                     }
                 }
-                
+
                 const geojson = toGeoJSON.kml(kml);
-                
+
                 geojsonLayer = L.geoJSON(geojson, {
                     pointToLayer: function (feature, latlng) {
                         let iconUrl = 'http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png';
@@ -1798,7 +1800,7 @@ Sismar.ais = function () {
                             iconAnchor: [16, 16],
                             popupAnchor: [0, -16]
                         });
-                        return L.marker(latlng, { icon }).bindPopup(feature.properties.name || 'Sem nome');
+                        return L.marker(latlng, {icon}).bindPopup(feature.properties.name || 'Sem nome');
                     },
                     style: function (feature) {
                         let color = 'rgba(255, 0, 0, 1)';
@@ -1808,12 +1810,12 @@ Sismar.ais = function () {
                                 color = styles[styleId].color;
                             }
                         }
-                        return { color: color, weight: 2, fillOpacity: 0.5 };
+                        return {color: color, weight: 2, fillOpacity: 0.5};
                     }
                 });
-                
+
                 console.log(geojsonLayer);
-                
+
             }
         };
 
@@ -2014,7 +2016,7 @@ Sismar.ais = function () {
                 '<div class="dropdown" style="float: right;">' +
                 '<button class="btn btn-link dropdown-toggle" onclick="$(\'#vesselinfoais-main\').hide();" type="button" data-toggle="dropdown" style="color: white; padding-left: 0px !important; padding-top: 9px;">' +
                 '<i class="glyphicon glyphicon-remove-circle"></i></button>' +
-                '</div>' +               
+                '</div>' +
                 '<p class="container-popup-name">' + getValueFromContent(response.vessel.name, "", true, "DESCONHECIDO") + '</p>' +
                 '<p class="container-popup-type" style="padding-left: 30px;">' +
                 '<b>IMO:</b> ' + getValueFromContent(response.vessel.imo) + ' ' +
@@ -2100,11 +2102,11 @@ Sismar.ais = function () {
         }
 
         content += '</ul>' +
-                '</div>' +                
+                '</div>' +
                 '<div class="dropdown" style="float: right;">' +
                 '<button class="btn btn-link dropdown-toggle" onclick="modalVesselInfo.closed()" type="button" data-toggle="dropdown" style="color: white; padding-left: 0px !important; padding-top: 9px;">' +
                 '<i class="glyphicon glyphicon-remove-circle"></i></button>' +
-                '</div>' +               
+                '</div>' +
                 '<p class="container-popup-name">DESCONHECIDO</p>' +
                 '<p class="container-popup-type" style="padding-left: 30px;">' +
                 '<b>IMO:</b> DESCONHECIDO ' +
