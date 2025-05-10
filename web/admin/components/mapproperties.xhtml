@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets">    
+
+    <style>
+
+        #mapproperties{
+            position: fixed;
+            bottom: 70px;
+            left: 50%;                
+            margin-left: -115px;
+            background: #ffffff;
+            z-index: 100000000;
+            box-shadow: 0 3px 14px rgba(0,0,0,0.4);
+            border-radius: 12px;
+            font-size: 12px;
+            cursor: move;   
+            display: none;
+            height: 150px;
+            width: 436px;
+        }            
+
+        @media (max-width: 992px) {
+            #mapproperties{
+                position: fixed;
+                left: 0;
+                margin-left: 12%;
+                bottom: 50%;
+                background: #ffffff;
+                width: 86%;
+                height: 150px;
+            }            
+        }
+
+        .container-popup-mapproperties > .row{
+            margin: 0px;
+        }
+
+        .container-popup-mapproperties{
+            width: 436px;
+            background: #ffffff !important;
+            border-radius: 10px !important;
+        }
+
+    </style>
+
+    <div id="mapproperties">
+
+        <div class="container-popup-mapproperties">
+            <div class="row" style="padding: 0px !important;"> 
+                <div class="container-popup-title col-xs-12 col-md-12"> 
+                    <div class="dropdown" style="float: right;">
+                        <button class="btn btn-link dropdown-toggle" onclick="$('#mapproperties').hide();" type="button" data-toggle="dropdown" style="color: white; padding-left: 0px !important; padding-top: 9px;">
+                            <i class="glyphicon glyphicon-remove-circle"></i>
+                        </button>
+                    </div>
+                    <p class="container-popup-name">Propriedades</p>
+                </div>
+            </div>
+            <div class="row" style="padding: 10px !important;">
+
+                <div class="card p-4" style="box-shadow: none !important;">
+                    <h5 class="card-title">Tamanho da fonte</h5>
+                    <h6 class="card-subtitle mb-3 text-muted">Informações sobre embarcação</h6>
+                    <input type="range" class="form-range" min="8" max="50" step="1" id="fontSizeRange"></input>
+                    <p class="mt-2">Tamanho atual: <span id="fontSizeValue">14</span>px</p>
+                </div>
+
+            </div>
+        </div>
+
+    </div>               
+
+</ui:composition>

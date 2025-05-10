@@ -38,6 +38,7 @@ Sismar.ais = function () {
     var infoVessels;
     var ativeButtonRoute = false;
     var activeButtonAisInfo = false;
+    var activeButtonAisMapProperties = false;
     var routeLayer;
 
     var layersMap;
@@ -46,6 +47,7 @@ Sismar.ais = function () {
 
     var modalVesselInfo;
 
+    var fontSizeVessel = 10;
     //var filesKmz;
     //var geojsonLayer;
 
@@ -106,6 +108,27 @@ Sismar.ais = function () {
         addClickButtonRefreshFila();
         addClickOpenMoreInfoVessel();
 
+        const rangeInput = document.getElementById("fontSizeRange");
+        const output = document.getElementById("fontSizeValue");
+
+        rangeInput.value = fontSizeVessel;
+        output.textContent = fontSizeVessel;
+
+        rangeInput.addEventListener("input", () => {
+            output.textContent = rangeInput.value;
+            setFontSizeVessel(rangeInput.value);
+        });
+
+    };
+
+    setFontSizeVessel = function (value) {
+        fontSizeVessel = value;
+        document.querySelectorAll(".leaflet_label, .leaflet_label_more_vessel").forEach(el => {
+            el.style.setProperty("font-size", value + "px", "important");
+        });
+        document.querySelectorAll('.leaflet_label_more_vessel').forEach(el => {
+            el.style.setProperty("margin-top", value + "px", "important");
+        });
     };
 
     addClickButtonCloseInfoAis = function () {
@@ -367,6 +390,50 @@ Sismar.ais = function () {
 
         map.addControl(new routeButton());
 
+        var aisMapPropertiesButton = L.Control.extend({
+
+            options: {
+                position: 'topleft'
+            },
+
+            onAdd: function () {
+                var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
+
+                container.type = "button";
+                container.title = "Propriedades";
+                container.style.backgroundImage = "url(/sismar/faces/javax.faces.resource/img/icon_tools.png)";
+                container.style.backgroundSize = "18px 18px";
+                container.style.backgroundRepeat = "no-repeat";
+                container.style.backgroundPosition = "center";
+                container.style.cursor = "pointer";
+                container.style.backgroundColor = 'white';
+                container.style.width = '35px';
+                container.style.height = '35px';
+
+                container.onclick = function () {
+                    if (!activeButtonAisMapProperties) {
+                        $("#mapproperties").show();
+                        activeButtonAisMapProperties = true;
+                    } else {
+                        $("#mapproperties").hide();
+                        activeButtonAisMapProperties = false;
+                    }
+                };
+
+                container.onmouseover = function () {
+                    container.style.backgroundColor = '#f4f4f4';
+                };
+
+                container.onmouseout = function () {
+                    container.style.backgroundColor = 'white';
+                };
+
+                return container;
+            }
+
+        });
+
+        map.addControl(new aisMapPropertiesButton());
 
         /*var aisInfoFilaButton = L.Control.extend({
          
@@ -727,11 +794,11 @@ Sismar.ais = function () {
             layers.push(bercosMap[i].layer);
         }
         /*for (var i = 0; i < layersMap.length; i++) {
-            if (layersMap[i].name === "Sea") {
-                layers.push(layersMap[i].layer);
-                break;
-            }
-        }*/
+         if (layersMap[i].name === "Sea") {
+         layers.push(layersMap[i].layer);
+         break;
+         }
+         }*/
         return layers;
     };
 
@@ -1144,6 +1211,7 @@ Sismar.ais = function () {
             for (var i = 0; i < vessels.length; i++) {
                 vesselRefreshZoom(vessels[i], zoom);
             }
+            setFontSizeVessel(fontSizeVessel);
         });
 
         map.on('overlayadd', function (e) {
@@ -1165,6 +1233,7 @@ Sismar.ais = function () {
                     break;
                 }
             }
+            setFontSizeVessel(fontSizeVessel);
         });
 
     };
@@ -1270,6 +1339,8 @@ Sismar.ais = function () {
         vessels.push(vesselMap);
 
         vesselRefreshZoom(vesselMap, map.getZoom());
+        
+        setFontSizeVessel(fontSizeVessel);
 
     };
 
@@ -1650,6 +1721,8 @@ Sismar.ais = function () {
             }
 
         }
+        
+        setFontSizeVessel(fontSizeVessel);
 
     };
 

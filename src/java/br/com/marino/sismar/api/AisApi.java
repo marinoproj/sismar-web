@@ -179,18 +179,19 @@ public class AisApi {
 
             List<Ais> list = AisController.getListVesselActive(manager, period[1], period[0]);
 
+            
             for (Ais ais : list) {
 
                 List<Ais> boatTrail = new ArrayList<>();
 
-                if (ais.getVelocidadeSobreSolo() >= 1) {
+                /*if (ais.getVelocidadeSobreSolo() >= 1) {
                     Calendar current = Calendar.getInstance();
                     current.add(Calendar.MINUTE, -3);
                     if (current.getTime().before(ais.getDataHora())) {
                         boatTrail = AisController.getBoatTrail(manager, period[1],
                                 period[0], ais.getMmsi(), 10);
                     }
-                }
+                }*/
 
                 json.put(Util.getAisByJson(ais, boatTrail));
 

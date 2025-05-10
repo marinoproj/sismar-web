@@ -205,6 +205,9 @@
                     <!-- Importar informacoes embarcacao -->
                     <ui:include src="/admin/components/vesselinfoais.xhtml" />
                     
+                    <!-- Importar tela de propriedades -->
+                    <ui:include src="/admin/components/mapproperties.xhtml" />
+                    
                 </div>
 
                 <div id="ais-information" class="ais-information-invisible">
@@ -326,7 +329,12 @@
                 L.DomEvent.disableClickPropagation(document.getElementById('vesselinfoais-main'));
                 L.DomEvent.disableScrollPropagation(document.getElementById('vesselinfoais-main'));
                 
+                L.DomEvent.disableClickPropagation(document.getElementById('mapproperties'));
+                L.DomEvent.disableScrollPropagation(document.getElementById('mapproperties'));
+                
                 ais.setModalVesselInfo(vesselInfo);
+                
+                $("#mapproperties").draggable();
 
             });
 
