@@ -1339,7 +1339,7 @@ Sismar.ais = function () {
         vessels.push(vesselMap);
 
         vesselRefreshZoom(vesselMap, map.getZoom());
-        
+
         setFontSizeVessel(fontSizeVessel);
 
     };
@@ -1480,8 +1480,19 @@ Sismar.ais = function () {
             vesselMap.circle.setRadius(6);
         }
 
-        // Zoom acima de 13 -> Exibir nome do navio
-        if (zoom > 14) {
+        // Exibir nome e velocidade do navio
+        if (map.hasLayer(infoVessels[0].layer) && map.hasLayer(getLayerByTypeVessel(vesselMap.data.codType))) {
+            vesselMap.tooltipNameVessel.addTo(map);
+        } else {
+            vesselMap.tooltipNameVessel.remove();
+        }
+        if (map.hasLayer(infoVessels[1].layer) && map.hasLayer(getLayerByTypeVessel(vesselMap.data.codType))) {
+            vesselMap.tooltipMoreVessel.addTo(map);
+        } else {
+            vesselMap.tooltipMoreVessel.remove();
+        }
+
+        /*if (zoom >= 14) {
             if (map.hasLayer(infoVessels[0].layer) && map.hasLayer(getLayerByTypeVessel(vesselMap.data.codType))) {
                 vesselMap.tooltipNameVessel.addTo(map);
             } else {
@@ -1493,7 +1504,7 @@ Sismar.ais = function () {
                 vesselMap.tooltipMoreVessel.remove();
             }
 
-        } else if (zoom > 13 && vesselMap.data.proportionalMap) {
+        } else if (zoom >= 12 && vesselMap.data.proportionalMap) {
             if (map.hasLayer(infoVessels[0].layer) && map.hasLayer(getLayerByTypeVessel(vesselMap.data.codType))) {
                 vesselMap.tooltipNameVessel.addTo(map);
             } else {
@@ -1510,7 +1521,7 @@ Sismar.ais = function () {
             vesselMap.tooltipNameVessel.remove();
             vesselMap.tooltipMoreVessel.remove();
 
-        }
+        }*/
 
     };
 
@@ -1721,7 +1732,7 @@ Sismar.ais = function () {
             }
 
         }
-        
+
         setFontSizeVessel(fontSizeVessel);
 
     };
