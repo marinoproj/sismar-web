@@ -790,9 +790,9 @@ Sismar.ais = function () {
             var typeVessel = typeVessels[i];
             layers.push(typeVessel.layer);
         }
-        for (var i = 0; i < bercosMap.length; i++) {
-            layers.push(bercosMap[i].layer);
-        }
+        //for (var i = 0; i < bercosMap.length; i++) {
+         //   layers.push(bercosMap[i].layer);
+        //}
         /*for (var i = 0; i < layersMap.length; i++) {
          if (layersMap[i].name === "Sea") {
          layers.push(layersMap[i].layer);
@@ -1787,9 +1787,12 @@ Sismar.ais = function () {
 
     updateListVessels = function (async) {
 
+        var token = JSON.parse(localStorage.getItem('user_logged_in')).token;
+
         var xmlreq = getResquestAjax();
         xmlreq.open("GET", "/sismar/api/ais/all", async);
-
+        xmlreq.setRequestHeader("Authorization", "Bearer " + token);
+        
         xmlreq.onreadystatechange = function () {
             if (xmlreq.readyState === 4 && xmlreq.status === 200) {
                 var json = jQuery.parseJSON(xmlreq.responseText);

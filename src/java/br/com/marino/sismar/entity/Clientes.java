@@ -62,6 +62,9 @@ public class Clientes implements Serializable {
     @Column(name = "token")
     private String token;
     
+    @Column(name = "raioInteresseAis")
+    private String raioInteresseAis;
+    
     @Column(name = "tipoSensoresAproximacao")
     @Enumerated(EnumType.ORDINAL)
     private TipoSensoresAproximacao tipoSensoresAproximacao;
@@ -111,6 +114,14 @@ public class Clientes implements Serializable {
 
     public void setStatus(boolean status) {
         this.status = status;
+    }    
+
+    public String getRaioInteresseAis() {
+        return raioInteresseAis;
+    }
+
+    public void setRaioInteresseAis(String raioInteresseAis) {
+        this.raioInteresseAis = raioInteresseAis;
     }    
 
     public List<BercoCliente> getBercosCliente() {

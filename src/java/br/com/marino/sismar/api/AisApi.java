@@ -2,15 +2,18 @@ package br.com.marino.sismar.api;
 
 import br.com.marino.sismar.controller.AisController;
 import br.com.marino.sismar.controller.BercosController;
+import br.com.marino.sismar.controller.ClientesController;
 import br.com.marino.sismar.controller.LayerController;
 import br.com.marino.sismar.controller.NavioController;
 import br.com.marino.sismar.controller.NavioUltimaAtualizacaoController;
 import br.com.marino.sismar.entity.Ais;
 import br.com.marino.sismar.entity.Berco;
+import br.com.marino.sismar.entity.Clientes;
 import br.com.marino.sismar.entity.Layer;
 import br.com.marino.sismar.entity.Navio;
 import br.com.marino.sismar.entity.NavioUltimaAtualizacao;
 import br.com.marino.sismar.util.NavioMapAis;
+import br.com.marino.sismar.util.UserLoggedApi;
 import br.com.marino.sismar.util.Util;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -164,22 +167,39 @@ public class AisApi {
     @GET
     @Path("/all")
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public String all() throws Exception {
+    public String all(@HeaderParam("authorization") String auth) throws Exception {
 
         EntityManagerFactory factory = null;
         EntityManager manager = null;
         JSONArray json = new JSONArray();
 
-        try {
-
+        try {            
+            
             factory = Persistence.createEntityManagerFactory("sismarPU");
             manager = factory.createEntityManager();
 
             Date[] period = Util.getPeriodValidForAis(new Date());
 
-            List<Ais> list = AisController.getListVesselActive(manager, period[1], period[0]);
-
+            UserLoggedApi userLogged = Util.getUserLoggedApi(auth);
             
+            Clientes client = ClientesController.getByCod(manager, userLogged.getCodClient());
+            
+            List<Ais> list;
+            
+            if (client.getRaioInteresseAis() != null && !client.getRaioInteresseAis().isEmpty()){
+                
+                String parts[] = client.getRaioInteresseAis().split(";");
+                double latCentral = Double.parseDouble(parts[0]);
+                double longCentral = Double.parseDouble(parts[1]);
+                int raioMilhasNauticas = Integer.parseInt(parts[2]);
+                
+                list = AisController.getListVesselActive(manager, period[1], latCentral, longCentral, raioMilhasNauticas);
+                
+            } else {
+                list = AisController.getListVesselActive(manager, period[1], period[0]);
+                
+            }
+                        
             for (Ais ais : list) {
 
                 List<Ais> boatTrail = new ArrayList<>();

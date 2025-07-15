@@ -14,6 +14,91 @@ import javax.persistence.Query;
 
 public class AisController {
 
+    public static List<Ais> getListVesselActive(EntityManager manager, Date start, double latCentral,
+            double longCentral, int raioMilhasAuticas){
+        
+        String sql = "SELECT at.mmsi, "
+                + "at.codAisTabela, "
+                + "at.codAis, "
+                + "at.dataUltimaAtualizacao, "
+                + "at.destino, "
+                + "at.chegadaPrevista, "
+                + "at.latitude, "
+                + "at.longitude, "
+                + "at.statusNavegacao, "
+                + "at.velocidadeSobreSolo, "
+                + "at.cursoSobreSolo, "
+                + "at.velocidadeVento, "
+                + "at.maximaVento, "
+                + "at.direcaoVento, "
+                + "at.velocidadeCorrente, "
+                + "at.direcaoCorrente, "
+                + "at.epfd, "
+                + "at.draught, "
+                + "at.positionAccurate, "
+                + "at.heading, "
+                + "at.raim, "
+                + "n.codNavio "                
+                + "FROM ais_radio_ultima_atualizacao AS at "
+                + "LEFT JOIN navio AS n ON n.mmsi = at.mmsi "
+                + "WHERE at.dataUltimaAtualizacao >= '" + Util.getDateFromBDSQL(start) + "' AND "
+                + "at.latitude IS NOT NULL AND at.longitude IS NOT NULL "
+                + "AND at.latitude BETWEEN -90 AND 90 "
+                + "AND at.longitude BETWEEN -180 AND 180 "
+                + "AND GEOGRAPHY::Point(at.latitude, at.longitude, 4326).STDistance(GEOGRAPHY::Point(" + latCentral + ", " + longCentral + ", 4326)) <= (" + raioMilhasAuticas + " * 1852)";
+        
+        Query query = manager.createNativeQuery(sql);
+        List<Ais> listAis = new ArrayList<>();
+
+        try {
+
+            List<Object[]> list = query.getResultList();
+
+            for (int i = 0; i < list.size(); i++) {
+
+                Object[] obj = list.get(i);
+
+                Ais ais = new Ais();
+
+                ais.setMmsi((int) obj[0]);
+                ais.setCodAisTabela((int) obj[1]);
+                ais.setCodAis((int) obj[2]);
+                ais.setDataHora((Date) obj[3]);
+                ais.setDestino((String) obj[4]);
+                ais.setChegadaPrevista((String) obj[5]);
+                ais.setLatitude((Double) obj[6]);
+                ais.setLongitude((Double) obj[7]);
+                ais.setStatusNavegacao((String) obj[8]);
+                ais.setVelocidadeSobreSolo((Double) obj[9]);
+                ais.setCursoSobreSolo((Double) obj[10]);
+                ais.setVelocidadeVento((Double) obj[11]);
+                ais.setMaximaVento((Double) obj[12]);
+                ais.setDirecaoVento((Double) obj[13]);
+                ais.setVelocidadeCorrente((Double) obj[14]);
+                ais.setDirecaoCorrente((Double) obj[15]);
+                ais.setEpfd((Integer) obj[16]);
+                ais.setDraught((Double) obj[17]);
+                ais.setPositionAccurate((Short) obj[18]);
+                ais.setHeading((Integer) obj[19]);
+                ais.setRaim((Short) obj[20]);                
+                               
+                Integer codNavio = (Integer) obj[21];
+
+                if (codNavio != null) {                    
+                    ais.setCodNavio(NavioController.getVesselByMmsi(manager, ais.getMmsi()));                    
+                }
+
+                listAis.add(ais);
+
+            }
+
+        } catch (Exception e) {
+            return new ArrayList<>();
+        }
+
+        return listAis;
+    }
+    
     public static List<Ais> getListVesselActive(EntityManager manager, Date start, Date end)
             throws Exception {
 
