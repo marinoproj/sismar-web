@@ -340,7 +340,7 @@ Sismar.ais = function () {
                         ativeButtonRoute = true;
 
                     } else {
-                        removeLayer(map, routeLayer);
+                        destroyLayer(routeLayer);
                         ativeButtonRoute = false;
                     }
 
@@ -791,7 +791,7 @@ Sismar.ais = function () {
             layers.push(typeVessel.layer);
         }
         //for (var i = 0; i < bercosMap.length; i++) {
-         //   layers.push(bercosMap[i].layer);
+        //   layers.push(bercosMap[i].layer);
         //}
         /*for (var i = 0; i < layersMap.length; i++) {
          if (layersMap[i].name === "Sea") {
@@ -1046,7 +1046,7 @@ Sismar.ais = function () {
                 data: '',
                 success: function (data) {
                     popup_loading.closePopup();
-                    removeLayer(map, popup_loading);
+                    destroyLayer(popup_loading);
                     if (data.hasOwnProperty('error') && data.error) {
                         setContentError(markerWeather);
                     } else {
@@ -1382,6 +1382,9 @@ Sismar.ais = function () {
 
     setPopupVesselFromLayer = function (data, layer) {
 
+        // antes de registrar novo click, limpa listeners antigos
+        layer.off("click");
+
         layer.on('click', function (e) {
 
             if (layer.getPopup() !== undefined) {
@@ -1399,7 +1402,7 @@ Sismar.ais = function () {
                 data: 'mmsi=' + data.mmsi,
                 success: function (response) {
                     popup_loading.closePopup();
-                    removeLayer(map, popup_loading);
+                    destroyLayer(popup_loading);
                     setContentVesselSuccess(layer, response);
                     rewriteUrlParams(null, [{"key": "mmsi", "value": data.mmsi}], false);
                     layer.bindPopup().on("popupclose", function (e) {
@@ -1429,10 +1432,12 @@ Sismar.ais = function () {
         text += "<b>Curso: </b>" + data.direction + " º";
         text += "<br/><b>Destino: </b>" + data.destination;
 
-        if (circle.getTooltip() === null || circle.getTooltip() === undefined) {
-            circle.bindTooltip(text).openTooltip();
+        if (!circle.getTooltip()) {
+            circle.bindTooltip(text);
         } else {
-            circle.setTooltipContent(text);
+            if (circle.getTooltip().getContent() !== text) {
+                circle.setTooltipContent(text);
+            }
         }
 
     };
@@ -1493,35 +1498,35 @@ Sismar.ais = function () {
         }
 
         /*if (zoom >= 14) {
-            if (map.hasLayer(infoVessels[0].layer) && map.hasLayer(getLayerByTypeVessel(vesselMap.data.codType))) {
-                vesselMap.tooltipNameVessel.addTo(map);
-            } else {
-                vesselMap.tooltipNameVessel.remove();
-            }
-            if (map.hasLayer(infoVessels[1].layer) && map.hasLayer(getLayerByTypeVessel(vesselMap.data.codType))) {
-                vesselMap.tooltipMoreVessel.addTo(map);
-            } else {
-                vesselMap.tooltipMoreVessel.remove();
-            }
-
-        } else if (zoom >= 12 && vesselMap.data.proportionalMap) {
-            if (map.hasLayer(infoVessels[0].layer) && map.hasLayer(getLayerByTypeVessel(vesselMap.data.codType))) {
-                vesselMap.tooltipNameVessel.addTo(map);
-            } else {
-                vesselMap.tooltipNameVessel.remove();
-            }
-
-            if (map.hasLayer(infoVessels[1].layer) && map.hasLayer(getLayerByTypeVessel(vesselMap.data.codType))) {
-                vesselMap.tooltipMoreVessel.addTo(map);
-            } else {
-                vesselMap.tooltipMoreVessel.remove();
-            }
-
-        } else {
-            vesselMap.tooltipNameVessel.remove();
-            vesselMap.tooltipMoreVessel.remove();
-
-        }*/
+         if (map.hasLayer(infoVessels[0].layer) && map.hasLayer(getLayerByTypeVessel(vesselMap.data.codType))) {
+         vesselMap.tooltipNameVessel.addTo(map);
+         } else {
+         vesselMap.tooltipNameVessel.remove();
+         }
+         if (map.hasLayer(infoVessels[1].layer) && map.hasLayer(getLayerByTypeVessel(vesselMap.data.codType))) {
+         vesselMap.tooltipMoreVessel.addTo(map);
+         } else {
+         vesselMap.tooltipMoreVessel.remove();
+         }
+         
+         } else if (zoom >= 12 && vesselMap.data.proportionalMap) {
+         if (map.hasLayer(infoVessels[0].layer) && map.hasLayer(getLayerByTypeVessel(vesselMap.data.codType))) {
+         vesselMap.tooltipNameVessel.addTo(map);
+         } else {
+         vesselMap.tooltipNameVessel.remove();
+         }
+         
+         if (map.hasLayer(infoVessels[1].layer) && map.hasLayer(getLayerByTypeVessel(vesselMap.data.codType))) {
+         vesselMap.tooltipMoreVessel.addTo(map);
+         } else {
+         vesselMap.tooltipMoreVessel.remove();
+         }
+         
+         } else {
+         vesselMap.tooltipNameVessel.remove();
+         vesselMap.tooltipMoreVessel.remove();
+         
+         }*/
 
     };
 
@@ -1688,7 +1693,7 @@ Sismar.ais = function () {
             // atualiza o layer
             if (dataOld.data.codType !== dataNew.codType) {
                 var layerNew = dataOld.layer;
-                removeLayer(getParentLayerVesselFromTypeVessel(dataOld.layer), dataOld.layer);
+                destroyLayer(dataOld.layer);
                 addLayerVesselFromTypeVessel(dataNew, layerNew);
             }
 
@@ -1719,15 +1724,15 @@ Sismar.ais = function () {
             }
 
             if (!flag) {
-                removeLayer(dataOld.layer, dataOld.polygon);
-                removeLayer(dataOld.layer, dataOld.polyline);
-                removeLayer(dataOld.layer, dataOld.circle);
-                removeLayer(dataOld.layer, dataOld.circle_zoom);
-                removeLayer(dataOld.layer, dataOld.tooltipNameVessel);
-                removeLayer(infoVessels[0].layer, dataOld.tooltipNameVessel);
-                removeLayer(dataOld.layer, dataOld.tooltipMoreVessel);
-                removeLayer(infoVessels[1].layer, dataOld.tooltipMoreVessel);
-                removeLayer(getParentLayerVesselFromTypeVessel(dataOld.layer), dataOld.layer);
+
+                destroyLayer(dataOld.polygon);
+                destroyLayer(dataOld.polyline);
+                destroyLayer(dataOld.circle);
+                destroyLayer(dataOld.circle_zoom);
+                destroyLayer(dataOld.tooltipNameVessel);
+                destroyLayer(dataOld.tooltipMoreVessel);
+                destroyLayer(dataOld.layer);
+
                 vessels.splice(i, 1);
             }
 
@@ -1757,12 +1762,18 @@ Sismar.ais = function () {
         }
     };
 
-    removeLayer = function (parentLayer, layer) {
-        map.removeLayer(layer);
-        layer.remove();
-        layer.removeFrom(map);
-        parentLayer.removeLayer(layer);
-
+    // NOVA FUNÇÃO: cleanup para qualquer layer
+    destroyLayer = function (layer) {
+        if (!layer)
+            return;
+        layer.off(); // remove event listeners
+        if (layer.unbindPopup)
+            layer.unbindPopup(); // remove popup vinculado
+        if (layer.unbindTooltip)
+            layer.unbindTooltip(); // remove tooltip vinculado
+        map.removeLayer(layer); // remove do mapa
+        if (layer.remove)
+            layer.remove(); // garante que sai da memória
     };
 
     getResquestAjax = function () {
@@ -1792,7 +1803,7 @@ Sismar.ais = function () {
         var xmlreq = getResquestAjax();
         xmlreq.open("GET", "/sismar/api/ais/all", async);
         xmlreq.setRequestHeader("Authorization", "Bearer " + token);
-        
+
         xmlreq.onreadystatechange = function () {
             if (xmlreq.readyState === 4 && xmlreq.status === 200) {
                 var json = jQuery.parseJSON(xmlreq.responseText);

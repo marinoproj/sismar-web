@@ -85,7 +85,7 @@ function MeteorologiaAis() {
                 dataType: 'json'
             });
 
-            taskUpdate = setInterval(updateDataMeteorologia, 3000);
+            taskUpdate = setInterval(updateDataMeteorologia, 30000);
 
         }
 
