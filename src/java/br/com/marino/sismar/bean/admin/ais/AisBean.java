@@ -16,14 +16,13 @@ import org.primefaces.PrimeFaces;
 @ViewScoped
 public class AisBean implements Serializable {  
 
-    private boolean init;
     private int delay;
     private Date datetimesearch;
     
     @PostConstruct
     public void init() {  
-        init = false;
-        this.delay = 0;
+        UsuariosWeb user = SessionContext.getInstance().getUserLoggedIn();
+        delay = user.getTempoAtualizacao();
     }
 
     @PreDestroy
@@ -41,13 +40,8 @@ public class AisBean implements Serializable {
         }                
         
         datetimesearch = datetimesearchnew;        
-
-        UsuariosWeb user = SessionContext.getInstance().getUserLoggedIn();
-                      
+      
         PrimeFaces.current().executeScript("ais.refreshAndProcess(\"automatic\");");        
-        
-        init = true; 
-        delay = user.getTempoAtualizacao();
         
     }
 

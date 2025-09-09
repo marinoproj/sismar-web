@@ -273,9 +273,10 @@
 
     <h:form id="update-vessels">
       <p:poll
+        widgetVar="wvPoll"
+        autoStart="false"
         listener="#{AisBean.updateVessels(null)}"
         interval="#{AisBean.delay}"
-        update="update-vessels"
       >
       </p:poll>
     </h:form>
@@ -312,7 +313,9 @@
         containerId: "map",
         apiUrl: url,
         onReady: () => {
-          meteorologia.init("#meteorologiaais-main", ais);
+            ais.refreshAndProcess();
+            $(function(){ PF('wvPoll').start(); });
+            meteorologia.init("#meteorologiaais-main", ais);
         },
       });
 
