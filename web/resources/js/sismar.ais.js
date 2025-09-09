@@ -1801,7 +1801,9 @@ Sismar.ais = function () {
         var token = JSON.parse(localStorage.getItem('user_logged_in')).token;
 
         var xmlreq = getResquestAjax();
+        //xmlreq.open("GET", "/sismar/api/ais/all", async);
         xmlreq.open("GET", "/sismar/api/ais/all", async);
+        
         xmlreq.setRequestHeader("Authorization", "Bearer " + token);
 
         xmlreq.onreadystatechange = function () {

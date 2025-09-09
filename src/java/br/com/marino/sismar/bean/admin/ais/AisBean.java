@@ -43,12 +43,8 @@ public class AisBean implements Serializable {
         datetimesearch = datetimesearchnew;        
 
         UsuariosWeb user = SessionContext.getInstance().getUserLoggedIn();
-              
-        if (!init){
-            PrimeFaces.current().executeScript("ais.updateVessels(false); ais.fitBoundsShowAllVessels(); ais.execByParamsUrl();");               
-        } else {
-            PrimeFaces.current().executeScript("ais.updateVessels(true);");               
-        }                       
+                      
+        PrimeFaces.current().executeScript("ais.refreshAndProcess(\"automatic\");");        
         
         init = true; 
         delay = user.getTempoAtualizacao();

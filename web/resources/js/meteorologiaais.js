@@ -1,190 +1,217 @@
-function MeteorologiaAis() {
+// ES Module
+export default class MeteorologiaAis {
+  
+  API_URL;
+  
+  idPanel = null;
+  mapModule = null;
+  show = false;
+  taskUpdate = null;
+  equipaments = [];
 
-    var idPanel;
-    var mapModule;
-    var show = false;
-    var taskUpdate;
+  jpMeteorologiaAis = null;
+  cbVento = null;
+  cbCorrente = null;
 
-    var equipaments;
+  lbVentoVel = null;
+  lbVentoDir = null;
+  lbCorrenteVel = null;
+  lbCorrenteDir = null;
 
-    var jpMeteorologiaAis;
-    var cbVento;
-    var cbCorrente;
+  lbCorrenteStatus = null;
+  lbVentoStatus = null;
 
-    var lbVentoVel;
-    var lbVentoDir;
+  constructor({
+    apiUrl = "/"
+  }) {
+    this.API_URL = apiUrl;
+  }
 
-    var lbCorrenteVel;
-    var lbCorrenteDir;
-    
-    var lbCorrenteStatus;
-    var lbVentoStatus;
+  init(id, map) {
+    this.idPanel = id;
+    this.mapModule = map;
 
-    initialize = function () {
+    this.initializeDom();
+    this.loadEquipaments();
+    $(this.idPanel).hide();
+    this.addButtonToMap();
+  }
 
-        $(idPanel).draggable();
+  stop() {
+    if (this.taskUpdate) {
+      clearInterval(this.taskUpdate);
+      this.taskUpdate = null;
+    }
+  }
 
-        jpMeteorologiaAis = $("#meteorologiaais-main");
+  togglePanel() {
+    this.showPanelMeteorologia();
+  }
 
-        lbVentoVel = $("#card-group-value-vento-vel");
-        lbVentoDir = $("#card-group-value-vento-dir");
+  initializeDom() {
+    $(this.idPanel).draggable();
 
-        lbCorrenteVel = $("#card-group-value-corrente-vel");
-        lbCorrenteDir = $("#card-group-value-corrente-dir");
+    this.jpMeteorologiaAis = $("#meteorologiaais-main");
 
-        cbVento = $("#cb-vento");
-        cbCorrente = $("#cb-corrente");
-        
-        lbVentoStatus = $("#card-group-vento-status");
-        lbCorrenteStatus = $("#card-group-corrente-status");
+    this.lbVentoVel = $("#card-group-value-vento-vel");
+    this.lbVentoDir = $("#card-group-value-vento-dir");
 
-    };
+    this.lbCorrenteVel = $("#card-group-value-corrente-vel");
+    this.lbCorrenteDir = $("#card-group-value-corrente-dir");
 
-    this.realtime = function (id, map) {
+    this.cbVento = $("#cb-vento");
+    this.cbCorrente = $("#cb-corrente");
 
-        idPanel = id;
-        mapModule = map;
+    this.lbVentoStatus = $("#card-group-vento-status");
+    this.lbCorrenteStatus = $("#card-group-corrente-status");
 
-        initialize();
-        loadEquipaments();
-        $(idPanel).hide();
+    this.cbVento.on("change", () => {
+      this.updateDataMeteorologia();
+    });
 
-        addButtonToMap();
+    this.cbCorrente.on("change", () => {
+      this.updateDataMeteorologia();
+    });
 
-    };
+    L.DomEvent.disableClickPropagation(document.getElementById("meteorologiaais-main"));
+    L.DomEvent.disableScrollPropagation(document.getElementById("meteorologiaais-main"));
+  }
 
-    showPanelMeteorologia = function (codBercoForce) {
+  getToken() {
+    try {
+      return JSON.parse(localStorage.getItem("user_logged_in"))?.token || "";
+    } catch {
+      return "";
+    }
+  }
 
-        if (show) {
+  showPanelMeteorologia() {
+    if (this.show) {
+      this.show = false;
+      this.stop();
+      $(this.idPanel).hide();
+      return;
+    }
 
-            show = !show;
-            clearInterval(taskUpdate);
-            $(idPanel).hide();
+    this.show = true;
+    $(this.idPanel).show();
 
-        } else {
+    const token = this.getToken();
 
-            show = !show;
-            $(idPanel).show();
-
-            var token = JSON.parse(localStorage.getItem('user_logged_in')).token;
-
-            $.ajax({
-                type: 'GET',
-                url: "/sismar/api/meteorologia",
-                async: false,
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader("Authorization", "Bearer " + token);
-                },
-                success: function (response) {
-                    if (!response.error) {
-                        setDataMeteorologia(response);
-                    }
-                },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                },
-                dataType: 'json'
-            });
-
-            taskUpdate = setInterval(updateDataMeteorologia, 30000);
-
+    $.ajax({
+      type: "GET",
+      url: this.API_URL + "/api/meteorologia",
+      async: false,
+      beforeSend: (xhr) => {
+        xhr.setRequestHeader("Authorization", "Bearer " + token);
+      },
+      success: (response) => {
+        if (!response?.error) {
+          this.setDataMeteorologia(response);
         }
+      },
+      error: () => {},
+      dataType: "json",
+    });
 
-    };
+    this.taskUpdate = setInterval(() => this.updateDataMeteorologia(), 30000);
+  }
 
-    loadEquipaments = function () {
+  loadEquipaments() {
+    const token = this.getToken();
 
-        var token = JSON.parse(localStorage.getItem('user_logged_in')).token;
+    $.ajax({
+      type: "GET",
+      url: this.API_URL + "/api/equipaments",
+      async: false,
+      beforeSend: (xhr) => {
+        xhr.setRequestHeader("Authorization", "Bearer " + token);
+      },
+      success: (response) => {
+        if (!response?.error) {
+          this.equipaments = response.equipamentos || [];
 
-        $.ajax({
-            type: 'GET',
-            url: '/sismar/api/equipaments',
-            async: false,
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader("Authorization", "Bearer " + token);
-            },
-            success: function (response) {
-                if (!response.error) {
-                    equipaments = response.equipamentos;
+          // limpa selects antes de preencher
+          this.cbVento.empty();
+          this.cbCorrente.empty();
 
-                    for (var i = 0, max = equipaments.length; i < max; i++) {
-                        var equipament = equipaments[i];
-                        if (equipament.tipo === "vento") {
-                            cbVento.append($('<option>', {
-                                value: equipament.cod,
-                                text: equipament.nome
-                            }));
-                        } else if (equipament.tipo === "corrente") {
-                            cbCorrente.append($('<option>', {
-                                value: equipament.cod,
-                                text: equipament.nome
-                            }));
-                        }
-                    }
+          for (let equip of this.equipaments) {
+            const opt = $("<option>", { value: equip.cod, text: equip.nome });
 
-                }
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                console.log(errorThrown);
-            },
-            dataType: 'json'
-        });
-
-    };
-
-    addButtonToMap = function () {
-        if (equipaments.length > 0) {
-            mapModule.addButtonToMap("Meteorologia", "wind.png", showPanelMeteorologia);
-        }
-    };
-
-    updateDataMeteorologia = function () {
-
-        var token = JSON.parse(localStorage.getItem('user_logged_in')).token;
-
-        $.ajax({
-            type: 'GET',
-            url: "/sismar/api/meteorologia",
-            async: true,
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader("Authorization", "Bearer " + token);
-            },
-            success: function (response) {
-                if (!response.error) {
-                    setDataMeteorologia(response);
-                }
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-            },
-            dataType: 'json'
-        });
-
-    };
-
-    setDataMeteorologia = function (data) {
-
-        var codEquipamentVento = cbVento.children("option:selected").val();
-
-        var codEquipamentCorrente = cbCorrente.children("option:selected").val();
-
-        for (var i = 0, max = data.meteorologia.length; i < max; i++) {
-            var meteorologia = data.meteorologia[i];
-            if (meteorologia.codEquipamento == codEquipamentVento) {
-                lbVentoVel.html(meteorologia.vel);
-                lbVentoDir.html(meteorologia.dir);
-                lbVentoStatus.html(meteorologia.status);
-                lbVentoStatus.removeClass();
-                lbVentoStatus.addClass("message-status-" + meteorologia.status);
-                
-            } else if (meteorologia.codEquipamento == codEquipamentCorrente) {
-                lbCorrenteVel.html(meteorologia.vel);
-                lbCorrenteDir.html(meteorologia.dir);
-                lbCorrenteStatus.html(meteorologia.status);
-                lbCorrenteStatus.removeClass();
-                lbCorrenteStatus.addClass("message-status-" + meteorologia.status);                
-                
+            if (equip.tipo === "vento") {
+              this.cbVento.append(opt);
+            } else if (equip.tipo === "corrente") {
+              this.cbCorrente.append(opt.clone());
             }
+          }
+
+          // seleciona primeira opção por padrão (se houver)
+          if (this.cbVento.children().length && !this.cbVento.val()) {
+            this.cbVento.prop("selectedIndex", 0);
+          }
+          if (this.cbCorrente.children().length && !this.cbCorrente.val()) {
+            this.cbCorrente.prop("selectedIndex", 0);
+          }
         }
+      },
+      error: (xhr, textStatus, errorThrown) => {
+        console.log(errorThrown);
+      },
+      dataType: "json",
+    });
+  }
 
-    };
+  addButtonToMap() {
+    if (this.equipaments.length > 0 && this.mapModule?.addButtonToMap) {
+      this.mapModule.addButtonToMap("Meteorologia", "wind.png", () =>
+        this.showPanelMeteorologia()
+      );
+    }
+  }
 
+  updateDataMeteorologia() {
+    const token = this.getToken();
+
+    $.ajax({
+      type: "GET",
+      url: this.API_URL + "/api/meteorologia",
+      async: true,
+      beforeSend: (xhr) => {
+        xhr.setRequestHeader("Authorization", "Bearer " + token);
+      },
+      success: (response) => {
+        if (!response?.error) {
+          this.setDataMeteorologia(response);
+        }
+      },
+      error: () => {},
+      dataType: "json",
+    });
+  }
+
+  setDataMeteorologia(data) {
+    const codEquipVento =
+      this.cbVento.children("option:selected").val() ||
+      this.cbVento.children().first().val();
+    const codEquipCorr =
+      this.cbCorrente.children("option:selected").val() ||
+      this.cbCorrente.children().first().val();
+
+    const lista = data?.meteorologia || [];
+    for (let m of lista) {
+      if (String(m.codEquipamento) === String(codEquipVento)) {
+        this.lbVentoVel.html(m.vel);
+        this.lbVentoDir.html(m.dir);
+        this.lbVentoStatus.html(m.status);
+        this.lbVentoStatus.removeClass().addClass("message-status-" + m.status);
+      } else if (String(m.codEquipamento) === String(codEquipCorr)) {
+        this.lbCorrenteVel.html(m.vel);
+        this.lbCorrenteDir.html(m.dir);
+        this.lbCorrenteStatus.html(m.status);
+        this.lbCorrenteStatus
+          .removeClass()
+          .addClass("message-status-" + m.status);
+      }
+    }
+  }
 }
