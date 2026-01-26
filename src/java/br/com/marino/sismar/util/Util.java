@@ -73,7 +73,7 @@ public class Util {
     public static final String DATE_START_AIS = "24-04-2019 00:00:00";
     private static final DecimalFormat FORMAT_VALUE = new DecimalFormat("###,##0.0");
     private static final NumberFormat VALUE = NumberFormat.getInstance();
-    public static final int LEVEL_DEFAULT_CORRENTOMETRO = 6;
+    public static final int LEVEL_DEFAULT_CORRENTOMETRO = 1; // sempre foi 6
     public static final int TMP_MINUTES_ONLINE_AIS = 180;
     public static final int TMP_SECONDS_ONLINE_WIND = 180;
     public static final int TMP_SECONDS_ONLINE_SEACURRENT = 2400;
