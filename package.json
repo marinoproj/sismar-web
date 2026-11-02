@@ -1,0 +1,13 @@
+{
+  "name": "sismar-web-santos-js-tests",
+  "private": true,
+  "description": "Testes JavaScript do frontend (não participa do build Ant/NetBeans nem do WAR).",
+  "type": "module",
+  "scripts": {
+    "test": "node --test test/js/"
+  },
+  "devDependencies": {
+    "jsdom": "^24.1.3",
+    "leaflet": "1.9.4"
+  }
+}

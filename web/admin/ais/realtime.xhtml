@@ -66,6 +66,55 @@
         border-left-color: transparent !important;
       }
 
+      /* praticagem: setores angulares */
+      .praticagem-origem {
+        background: #b22222;
+        border: 2px solid #fff;
+        border-radius: 50%;
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.6);
+        box-sizing: border-box;
+        cursor: move;
+      }
+
+      .leaflet_label.praticagem-rotulo {
+        color: #b22222;
+        font-weight: bold;
+        font-size: 13px !important;
+      }
+
+      .praticagem-popup {
+        font-size: 14px;
+      }
+
+      .praticagem-popup-titulo {
+        font-size: 16px;
+        font-weight: bold;
+        color: #b22222;
+        margin-bottom: 12px;
+      }
+
+      .praticagem-popup label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 12px;
+      }
+
+      .praticagem-popup input {
+        display: block;
+        width: 100%;
+        margin-top: 6px;
+        padding: 6px 8px;
+        font-size: 15px;
+        box-sizing: border-box;
+      }
+
+      .praticagem-popup button {
+        width: 100%;
+        padding: 8px;
+        font-size: 14px;
+        cursor: pointer;
+      }
+
       .icon-weather > img {
         width: 100px;
       }
@@ -301,6 +350,7 @@
       import AisMap from "#{resource['js/sismar.ais.realtime.js']}";
       import MeteorologiaAis from "#{resource['js/meteorologiaais.js']}";
       import VesselInfoAis from "#{resource['js/vesselinfoais.js']}";
+      import Praticagem from "#{resource['js/sismar.praticagem.js']}";
 
       const url = "/sismar";
       //const url = "https://sismarapp.com.br/sismar";      
@@ -312,6 +362,7 @@
       const ais = new AisMap({
         containerId: "map",
         apiUrl: url,
+        praticagem: new Praticagem(),
         onReady: () => {
             ais.refreshAndProcess();
             $(function(){ PF('wvPoll').start(); });

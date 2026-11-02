@@ -21,6 +21,7 @@ O SISMAR é um sistema web de monitoramento marítimo portuário que combina ras
 | Servidor | Apache Tomcat 8.0 |
 | Build / Deploy | Ant + NetBeans → WAR `sismar-web-santos.war` |
 | Relatórios | JasperReports 5.1.0 |
+| Testes JS | `node --test` + jsdom + Leaflet 1.9.4 (`npm test`) — só desenvolvimento, fora do WAR |
 
 ---
 
@@ -83,6 +84,7 @@ Cada módulo funcional tem três artefatos que trabalham juntos: uma página XHT
 |---------|-----------------|--------|
 | `sismar.ais.js` | Mapa AIS em tempo real — marcadores, layers, controles Leaflet | IIFE Singleton (`Sismar.ais`) |
 | `sismar.ais.realtime.js` | Reimplementação moderna do mapa AIS | ES6 Class (`export default class AisMap`) |
+| `sismar.praticagem.js` | Grupo "Praticagem" no controle de layers do AIS realtime — hoje, setores angulares arrastáveis com raio editável (posição/raio no `localStorage`) | ES6 Class (`export default class Praticagem`), injetada no `AisMap` pela opção `praticagem` |
 | `sismar.ais.preview.js` | Preview de embarcação com histórico de posições | IIFE Singleton |
 | `sismar.playback.js` | Animação de histórico temporal no mapa | IIFE Singleton |
 | `sismar.track.js` | Rastreamento de uma única embarcação | XMLHttpRequest legacy |
@@ -217,6 +219,8 @@ Polling contínuo que mantém os navios atualizados no mapa.
 | Adicionar consulta ao banco | `src/.../controller/{Entidade}Controller.java` — método estático recebendo `EntityManager` |
 | Adicionar entidade | `src/.../entity/{Entidade}.java` + registrar em `src/conf/persistence.xml` |
 | Adicionar módulo JS no mapa | `web/resources/js/sismar.{módulo}.js` — seguir padrão ES6 Class de `sismar.ais.realtime.js` |
+| Adicionar recurso de praticagem no mapa | `web/resources/js/sismar.praticagem.js` — novo filho em `getLayerTree()`; grupos extras do AIS realtime entram por `AisMap.getOverlayTree()` |
+| Testar módulo JS do mapa | `test/js/*.test.js` — `npm install` uma vez, depois `npm test`; helper `test/js/helpers/leaflet-dom.js` monta jsdom + Leaflet real |
 | Adicionar feature de acesso | `util/Util.java` (constante) + `filter/AdminFilter.java` (mapeamento página → feature) |
 | Entender um fluxo do mapa | `web/resources/js/sismar.ais.js` (legado) ou `sismar.ais.realtime.js` (ES6) |
 | Entender autenticação | `filter/LoginFilter.java` → `filter/AdminFilter.java` → `session/SessionContext.java` |

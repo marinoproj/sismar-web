@@ -49,12 +49,14 @@ export default class AisMap {
   activeButtonAisMapProperties = false;
   fontSizeExtraLabel = 10;
   modalVesselInfo;
+  praticagem = null; // opcional: instância de Praticagem (sismar.praticagem.js)
 
   // ====== CONSTRUTOR ======
-  constructor({ containerId, apiUrl = "/", onReady = () => {} }) {
+  constructor({ containerId, apiUrl = "/", onReady = () => {}, praticagem = null }) {
     this.containerId = containerId;
     this.API_URL = apiUrl;
     this.onReady = onReady;
+    this.praticagem = praticagem;
 
     this.typeMaps = this.getTypeMaps();
     this.typeVessels = this.getTypeVessels();
@@ -189,7 +191,12 @@ export default class AisMap {
   async addControlLayers() {
     const baseLayer = this.getBaseLayer();
     const dataStartup = await this.getLayersAndBercos();
+    const overlayLayer = this.getOverlayTree(dataStartup);
 
+    L.control.layers.tree(baseLayer, overlayLayer).addTo(this.map);
+  }
+
+  getOverlayTree(dataStartup) {
     const overlayLayer = [
       this.getNauticalChartLayer(),
       this.getInfoVesselsLayer(),
@@ -198,7 +205,12 @@ export default class AisMap {
       this.getBercosLayers(dataStartup),
     ];
 
-    L.control.layers.tree(baseLayer, overlayLayer).addTo(this.map);
+    if (this.praticagem) {
+      this.praticagem.attach(this.map);
+      overlayLayer.push(this.praticagem.getLayerTree());
+    }
+
+    return overlayLayer;
   }
 
   getNauticalChartLayer() {

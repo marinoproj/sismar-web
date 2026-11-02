@@ -9,3 +9,5 @@ nbdist/
 
 # Others
 exe/
+# Testes JS
+node_modules/
